@@ -1,0 +1,43 @@
+.dashboard {
+  @apply flex flex-col h-screen;
+
+  & .views-manager {
+    @apply flex-1 overflow-y-auto;
+
+    .inbox-previews {
+      @apply flex flex-col gap-0.5 min-h-full bg-gradient-to-r from-blueish to-purple-400;
+
+      & .inbox-item {
+        @apply flex items-center p-3 gap-4 text-light border-b-2 border-b-[#b880ff80] last:border-none;
+
+        & .inbox-avatar {
+          @apply p-2 rounded-full bg-[#a079ffb8] w-20 h-20;
+
+          & img {
+            @apply max-w-full;
+          }
+
+          & svg {
+            @apply w-full h-full;
+          }
+        }
+
+        & p {
+          @apply flex-1 text-xl truncate;
+        }
+
+        & .inbox-u-counter {
+          @apply w-9 h-9;
+
+          & svg {
+            @apply text-emerald-200 h-full w-full;
+          }
+
+          & > div {
+            @apply absolute flex justify-center items-center bg-emerald-200 text-sm w-8 h-8 p-0.5 rounded-full -top-[8px] -right-[6px] text-darkish text-center border-2 border-purple-400;
+          }
+        }
+      }
+    }
+  }
+}

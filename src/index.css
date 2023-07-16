@@ -1,31 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,700;1,800&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;800&display=swap");
-
 @tailwind base;
-
-body {
-  background-color: #f5f6fa;
-  font-family: 'Work Sans', sans-serif;
-}
+@import "./resources/styles/base.css";
 
 @tailwind components;
-
-.get-started__front {
-  @apply  min-h-screen flex flex-col justify-center px-2.5 pt-8 relative;
-}
-.get-started__front h1 {
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  @apply text-8xl text-blueish bg-gradient-to-r from-blueish from-30% via-stone-400 via-50% to-sky-200 to-90%;
-}
-.get-started__front p {
-  @apply text-4xl text-darkish-2x mt-4 leading-tight;
-}
-.get-started__front a {
-  @apply text-5xl bg-gradient-to-r from-blueish to-blue-400 rounded-lg shadow-md py-3 px-10 w-fit mt-8
-}
-.get-started__front .get-started__dangling-cover {
-  @apply absolute top-0 right-1 bg-transparent
-}
+@import "./resources/styles/components";
 
 @tailwind utilities;
