@@ -1,12 +1,12 @@
 import { isAxiosError, AxiosError } from "axios"
-import { SessionStore } from "../helpers/store"
+import { SessionStore } from "../store"
 
 export type Resolve<T> = (param: PromiseLike<T> | T) => void
 export type Reject = (reason?: any) => void
 type ApiError = { error: string }
 
 
-export class ApplicationController {
+export default class ApplicationController {
   protected static authorize() {
     return {
       headers: {

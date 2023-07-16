@@ -1,11 +1,12 @@
 import { AxiosResponse } from "axios"
-import { ApplicationController, Resolve } from './applicationController'
+import ApplicationController from './applicationController'
+import type { Resolve } from "./applicationController"
 import { Axios } from '../helpers/requests'
-import { SessionStore } from '../helpers/store'
+import { SessionStore } from '../store'
 
 type CredentialsProps = Pick<NewUser, 'email' | 'password'>
 
-export class SessionController extends ApplicationController {
+export default class SessionController extends ApplicationController {
   protected static onSuccess(resp: AxiosResponse, resolve: Resolve<CurrentUser>) {
     const { data: { user }, headers: { authorization } } = resp
     SessionStore.persist(authorization)

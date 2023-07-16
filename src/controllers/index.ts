@@ -1,1 +1,5 @@
-export { SessionController } from './sessionController'
+import SessionController from './sessionController'
+
+export {
+  SessionController,
+}
