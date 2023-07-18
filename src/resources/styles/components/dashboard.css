@@ -4,13 +4,16 @@
   & .views-manager {
     @apply flex-1 overflow-y-auto bg-gradient-to-r from-blueish to-purple-400;
 
-    & .inbox-previews, & .people-list {
+    & .inbox-previews,
+    & .people-list {
       @apply flex flex-col gap-0.5 min-h-full;
 
-      & .inbox-item, & .people-item {
+      & .inbox-item,
+      & .people-item {
         @apply flex items-center p-3 gap-4 text-light border-b-2 border-b-[#b880ff85] last:border-none;
 
-        & .inbox-avatar, & .people-item-avatar {
+        & .inbox-avatar,
+        & .people-item-avatar {
           @apply p-2 rounded-full bg-[#a079ffb8] w-20 h-20;
 
           & img {
