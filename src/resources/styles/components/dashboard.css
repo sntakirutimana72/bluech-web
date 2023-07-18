@@ -2,15 +2,15 @@
   @apply flex flex-col h-screen;
 
   & .views-manager {
-    @apply flex-1 overflow-y-auto;
+    @apply flex-1 overflow-y-auto bg-gradient-to-r from-blueish to-purple-400;
 
-    .inbox-previews {
-      @apply flex flex-col gap-0.5 min-h-full bg-gradient-to-r from-blueish to-purple-400;
+    & .inbox-previews, & .people-list {
+      @apply flex flex-col gap-0.5 min-h-full;
 
-      & .inbox-item {
-        @apply flex items-center p-3 gap-4 text-light border-b-2 border-b-[#b880ff80] last:border-none;
+      & .inbox-item, & .people-item {
+        @apply flex items-center p-3 gap-4 text-light border-b-2 border-b-[#b880ff85] last:border-none;
 
-        & .inbox-avatar {
+        & .inbox-avatar, & .people-item-avatar {
           @apply p-2 rounded-full bg-[#a079ffb8] w-20 h-20;
 
           & img {
@@ -22,7 +22,19 @@
           }
         }
 
-        & p {
+        & .people-item-body {
+          @apply flex-1;
+
+          & h3 {
+            @apply text-xl mb-0.5 truncate;
+          }
+
+          & p {
+            @apply truncate text-lg opacity-80;
+          }
+        }
+
+        & p.inbox-msg-preview {
           @apply flex-1 text-xl truncate;
         }
 

@@ -8,7 +8,7 @@ type Counter = {
 }
 
 type InboxState = {
-  status: 'idle' | 'pending' | 'loaded' | 'failed'
+  status: ThunkStatus
   previews: InboxPreview[]
 }
 

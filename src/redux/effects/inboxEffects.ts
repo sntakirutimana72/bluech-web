@@ -1,3 +1,3 @@
 import { RootState } from "../../store/redux"
 
-export const getState = ({ inbox }: RootState) => inbox;
+export const inboxSelector = (state: RootState) => state.inbox

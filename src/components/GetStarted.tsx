@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 const GetStarted = () => (
   <div className="get-started">
     <section className="get-started__front">
-      <h1>bluech</h1>
+      <h1 className="text-gradient">bluech</h1>
       <p>
         Great experience is our culture. Talk to your friends, family from anywhere in the world.
       </p>

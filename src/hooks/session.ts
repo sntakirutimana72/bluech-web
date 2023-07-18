@@ -1,6 +1,6 @@
 import { useContext } from "react"
-import { SessionContext } from "../providers"
+import { sessionContext } from "../providers"
 
-const useSession = () => useContext(SessionContext)
+const useSession = () => useContext(sessionContext)
 
 export default useSession

@@ -2,3 +2,5 @@
 @import "./components/session-pages.css";
 @import "./components/navs.css";
 @import "./components/dashboard.css";
+@import "./components/channels-chats.css";
+@import "./components/not-found.css";

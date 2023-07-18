@@ -1,7 +1,7 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
-import type { SessionContextType } from '../providers'
+import type { SessionContext } from '../providers'
 
-type Props = Pick<SessionContextType, "authenticated"> & {
+type Props = Pick<SessionContext, "authenticated"> & {
   redirectTo: string
 }
 

@@ -1,10 +1,9 @@
 import { isAxiosError, AxiosError } from "axios"
-import { SessionStore } from "../store"
+import SessionStore from "../store/session"
 
 export type Resolve<T> = (param: PromiseLike<T> | T) => void
 export type Reject = (reason?: any) => void
 type ApiError = { error: string }
-
 
 export default class ApplicationController {
   protected static authorize() {
@@ -14,7 +13,6 @@ export default class ApplicationController {
       }
     }
   }
-
   protected static reject(error: Error | AxiosError<ApiError>, reject: Reject) {
     if (isAxiosError(error)) {
       reject(error.response?.data.error)

@@ -49,10 +49,10 @@
 }
 
 .bottom-nav {
-  @apply flex justify-center items-center px-4 gap-3 bg-white text-blueish;
+  @apply flex justify-center items-center px-4 gap-3.5 bg-white text-blueish;
 
   & .bottom-nav-item {
-    @apply p-2.5 rounded-xl bg-none border-none focus:bg-blueish focus:text-light focus:outline-0;
+    @apply p-2.5 px-3 rounded-xl bg-none border-none focus:bg-blueish focus:text-light focus:outline-0;
 
     &.active {
       @apply bg-blueish text-light;

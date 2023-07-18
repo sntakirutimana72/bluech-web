@@ -4,11 +4,9 @@ export default class Session {
   static persist(token: string) {
     localStorage.setItem(this.STORE_KEY, token)
   }
-
   static fetch(): string | null {
     return localStorage.getItem(this.STORE_KEY)
   }
-
   static destroy() {
     localStorage.removeItem(this.STORE_KEY)
   }

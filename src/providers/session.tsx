@@ -6,21 +6,21 @@ import React, {
   useMemo,
 } from 'react'
 import { SessionController } from '../controllers'
-import { isInit } from '../helpers/serializers/asserters'
+import { isInit } from '../helpers/utils'
+import { LoaderOverlay } from "../components/Elements";
 
-export type SessionContextType = {
+export type SessionContext = {
   authenticated?: boolean
   currentUser?: CurrentUser
   login: (currentUser: CurrentUser) => void
   logout: () => void
   restartSessionRefresh: () => void
 }
-
 type Props = { children: React.ReactNode }
 
-const initialSession = {} as SessionContextType
+const initialSession = {} as SessionContext
 
-export const SessionContext = createContext<SessionContextType>(initialSession)
+export const sessionContext= createContext<SessionContext>(initialSession)
 
 const SessionProvider = ({ children }: Props) => {
   const [currentUser, setCurrentUser] = useState<CurrentUser>()
@@ -30,12 +30,10 @@ const SessionProvider = ({ children }: Props) => {
     setCurrentUser(user);
     setAuthenticated(true);
   }, [])
-
   const logout = useCallback(() => {
     setAuthenticated(false);
     setCurrentUser(undefined);
   }, [])
-
   const restartSessionRefresh = useCallback(() => { }, [])
 
   useEffect(
@@ -57,8 +55,7 @@ const SessionProvider = ({ children }: Props) => {
       restartSessionRefresh
     ]
   )
-
-  const session = useMemo<SessionContextType>(
+  const session = useMemo<SessionContext>(
     () => ({
       currentUser, authenticated, login, logout, restartSessionRefresh
     }),
@@ -70,12 +67,11 @@ const SessionProvider = ({ children }: Props) => {
       restartSessionRefresh
     ]
   )
-
-  return (
-    <SessionContext.Provider value={session}>
+  return isInit(authenticated) ? (
+    <sessionContext.Provider value={session}>
       {children}
-    </SessionContext.Provider>
-  );
+    </sessionContext.Provider>
+  ) : <div className="h-screen"><LoaderOverlay /></div>
 }
 
 export default SessionProvider

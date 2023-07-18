@@ -15,7 +15,6 @@ export default class MessagesController extends ApplicationController {
         .catch(exc => { this.reject(exc, reject) })
     })
   }
-
   static inbox() {
     return new Promise<InboxPreview[]>((resolve) => {
       setTimeout(() => {
@@ -49,7 +48,6 @@ export default class MessagesController extends ApplicationController {
       }, 4000)
     })
   }
-
   static all() {
     return new Promise<CableMessage[]>((resolve, reject) => {
       Axios

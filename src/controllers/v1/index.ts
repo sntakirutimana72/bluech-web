@@ -1,5 +1,5 @@
-import MessagesController from './messagesController'
+import MessagesController from './messagesController';
 
 export {
-  MessagesController,
-}
+  MessagesController
+};

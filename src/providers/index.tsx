@@ -1,8 +1,11 @@
 import SessionProvider from './session'
-
-export { SessionContext } from './session'
-export type { SessionContextType } from './session'
+import CableProvider from "./cable"
+export type { SessionContext } from './session'
+export { sessionContext } from './session'
+export { cableContext } from './cable'
+export type { CableContext } from './cable'
 
 export {
   SessionProvider,
+  CableProvider,
 }

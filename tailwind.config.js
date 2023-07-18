@@ -45,10 +45,10 @@ module.exports = {
         },
         'load-flash': {
           from: {
-            background: '#f5f6fa',
+            background: '#a065ff',
           },
           to: {
-            background: '#999',
+            background: '#e040ff',
           }
         },
       },
