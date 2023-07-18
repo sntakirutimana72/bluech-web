@@ -1,9 +1,9 @@
-import ApplicationChannel from './applicationChannel'
-import ChatsChannel from "./chatsChannel"
+import ApplicationChannel from './applicationChannel';
+import ChatsChannel from './chatsChannel';
 
-export type { ChatMessage, TypingMessage } from './applicationChannel'
+export type { ChatMessage, TypingMessage } from './applicationChannel';
 
 export {
   ApplicationChannel,
   ChatsChannel,
-}
+};

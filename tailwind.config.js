@@ -1,6 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{ts,tsx}"],
+  content: [
+    './src/**/*.{ts,tsx}',
+    './public/index.html',
+  ],
   theme: {
     extend: {
       colors: {
@@ -21,17 +24,17 @@ module.exports = {
       keyframes: {
         toggled: {
           '0%': {
-            opacity: 0,
+            opacity: '0',
             display: 'none',
             transform: 'translateX(100%)',
           },
           '1%': {
-            opacity: 1,
+            opacity: '1',
             display: 'block',
           },
           '100%': {
             transform: 'translateX(0)',
-          }
+          },
         },
         'load-bounce': {
           from: {
@@ -41,7 +44,7 @@ module.exports = {
           to: {
             position: 'relative',
             top: '10%',
-          }
+          },
         },
         'load-flash': {
           from: {
@@ -49,7 +52,7 @@ module.exports = {
           },
           to: {
             background: '#e040ff',
-          }
+          },
         },
       },
       transitionProperty: {
@@ -60,4 +63,4 @@ module.exports = {
   plugins: [
     require('@tailwindcss/forms'),
   ],
-}
+};

@@ -1,32 +1,32 @@
-import React, { useState } from "react"
-import { NavLink, NavLinkProps } from "react-router-dom"
+import React, { useState } from 'react';
+import { NavLink, NavLinkProps } from 'react-router-dom';
 import {
   Logout,
   ManageAccounts,
   Inbox,
   People,
   Search,
-} from '@mui/icons-material'
-import { uid } from 'uid'
+} from '@mui/icons-material';
+import { uid } from 'uid';
 
 type Props = { currentUser: CurrentUser }
 
 export const TopNav = ({ currentUser }: Props) => {
-  const [toggled, setToggled] = useState(false)
+  const [toggled, setToggled] = useState(false);
 
   const toggleToolbar = () => {
-    setToggled(prevState => !prevState)
-  }
+    setToggled((prevState) => !prevState);
+  };
 
   return (
     <nav className="top-nav desktop-top-nav">
       <NavLink to="/dashboard" className="nav-logo">
         <span>bluech</span>
       </NavLink>
-      <button onClick={toggleToolbar} className={toggled ? 'open' : undefined}>
-        <span></span>
-        <span></span>
-        <span></span>
+      <button type="button" onClick={toggleToolbar} className={toggled ? 'open' : undefined}>
+        <span />
+        <span />
+        <span />
       </button>
       <div className={`acc-options animate-toggled${toggled ? ' open' : ''}`}>
         <div className="container">
@@ -46,36 +46,41 @@ export const TopNav = ({ currentUser }: Props) => {
         </div>
       </div>
     </nav>
-  )
-}
+  );
+};
 
 const BottomNavLink = ({ children, ...props }: NavLinkProps) => (
   <NavLink {...props} end>
     {children}
   </NavLink>
-)
+);
 
 export const BottomNav = () => {
-  const toUrl = '/dashboard'
+  const toUrl = '/dashboard';
   const config = {
-    className: 'bottom-nav-item'
-  }
+    className: 'bottom-nav-item',
+  };
 
   return (
     <nav className="bottom-nav desktop-bottom-nav">
       {
         [
-          { ...config, title: 'Chats', to: toUrl, children: <Inbox /> },
-          { ...config, title: 'People', to: `${toUrl}/people`, children: <People /> },
-        ].map(props => <BottomNavLink {...props} key={uid()} />)
+          {
+            ...config, title: 'Chats', to: toUrl, children: <Inbox />,
+          },
+          {
+            ...config, title: 'People', to: `${toUrl}/people`, children: <People />,
+          },
+        ].map((props) => <BottomNavLink {...props} key={uid()} />)
       }
       <button
+        type="button"
         className="bottom-nav-item search-btn"
         title="Search"
-        onClick={() => { console.log('toggle search box') }}
+        onClick={() => {}}
       >
         <Search />
       </button>
     </nav>
-  )
-}
+  );
+};

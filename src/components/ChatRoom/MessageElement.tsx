@@ -6,7 +6,7 @@ type Props = {
 const MessageElement = ({ item, isSelf }: Props) => (
   <div className={`stack-${isSelf ? 'right' : 'left'}`}>
     <div className="item-container">
-      <div></div>
+      <div />
       <div className="item-body">{item.desc}</div>
       <div className="item-footer">
         <span>{item.creation_date.toString()}</span>
@@ -14,6 +14,6 @@ const MessageElement = ({ item, isSelf }: Props) => (
       </div>
     </div>
   </div>
-)
+);
 
-export default MessageElement
+export default MessageElement;

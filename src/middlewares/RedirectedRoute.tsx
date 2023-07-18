@@ -1,21 +1,21 @@
-import { Navigate, useLocation, Outlet } from 'react-router-dom'
-import type { SessionContext } from '../providers'
+import { Navigate, useLocation, Outlet } from 'react-router-dom';
+import type { SessionContext } from '../providers';
 
-type Props = Pick<SessionContext, "authenticated"> & {
+type Props = Pick<SessionContext, 'authenticated'> & {
   redirectTo: string
 }
 
 const RedirectedRoute = ({ redirectTo, authenticated }: Props) => {
-  const { state } = useLocation()
+  const { state } = useLocation();
 
   if (authenticated) {
-    let newState = state
+    let newState = state;
     if (state === process.env.REACT_APP_BLUECH_RB_API_LOGOUT) {
-      newState = null
+      newState = null;
     }
-    return <Navigate to={newState || redirectTo} replace />
+    return <Navigate to={newState || redirectTo} replace />;
   }
-  return <Outlet />
-}
+  return <Outlet />;
+};
 
-export default RedirectedRoute
+export default RedirectedRoute;

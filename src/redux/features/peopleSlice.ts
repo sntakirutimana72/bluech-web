@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { UsersController } from '../../controllers'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { UsersController } from '../../controllers';
 
 type PeopleState = {
   status: ThunkStatus
@@ -8,9 +8,9 @@ type PeopleState = {
 
 export const queryPeople = createAsyncThunk<PeopleObj[], number>(
   'dashboard/people',
-  UsersController.people
-)
-const initialState: PeopleState = { status: 'idle', people: [] }
+  UsersController.people,
+);
+const initialState: PeopleState = { status: 'idle', people: [] };
 
 const slicer = createSlice({
   name: 'dashboard/people',
@@ -19,16 +19,16 @@ const slicer = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(queryPeople.pending, (state) => {
-        state.status = 'pending'
+        state.status = 'pending';
       })
       .addCase(queryPeople.fulfilled, (state, action) => {
-        state.status = 'loaded'
-        state.people = action.payload
+        state.status = 'loaded';
+        state.people = action.payload;
       })
       .addCase(queryPeople.rejected, (state) => {
-        state.status = 'failed'
-      })
-  }
-})
+        state.status = 'failed';
+      });
+  },
+});
 
-export default slicer.reducer
+export default slicer.reducer;

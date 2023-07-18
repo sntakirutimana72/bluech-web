@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link } from 'react-router-dom';
 
 const GetStarted = () => (
   <div className="get-started">
@@ -13,6 +13,6 @@ const GetStarted = () => (
       </div>
     </section>
   </div>
-)
+);
 
-export default GetStarted
+export default GetStarted;

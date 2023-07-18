@@ -1,6 +1,6 @@
-import { useContext } from 'react'
-import { cableContext } from "../providers"
+import { useContext } from 'react';
+import { cableContext } from '../providers';
 
-const useCable = () => useContext(cableContext)
+const useCable = () => useContext(cableContext);
 
-export default useCable
+export default useCable;

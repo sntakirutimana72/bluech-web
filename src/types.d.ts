@@ -23,7 +23,7 @@ type NewUser = {
   password: string
 }
 
-type CurrentUser = Pick<NewUser, "name" | "email"> & {
+type CurrentUser = Pick<NewUser, 'name' | 'email'> & {
   id: AlphaNumeric
 }
 
