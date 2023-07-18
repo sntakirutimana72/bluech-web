@@ -1,0 +1,19 @@
+.not-found {
+  @apply flex flex-col justify-center items-center h-screen text-blueish bg-light;
+
+  & p {
+    @apply text-5xl mb-24 opacity-40;
+  }
+
+  & a {
+    @apply flex flex-col items-center gap-2 bg-white rounded-full p-9 px-14 shadow-lg;
+
+    & svg {
+      @apply w-16 h-16;
+    }
+
+    & span {
+      @apply text-lg font-medium;
+    }
+  }
+}

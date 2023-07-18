@@ -1,0 +1,19 @@
+.get-started__front {
+  @apply min-h-screen flex flex-col justify-center px-2.5 pt-8 relative;
+
+  & h1 {
+    @apply text-8xl text-blueish font-medium bg-gradient-to-r from-blueish from-30% via-stone-400 via-50% to-sky-200 to-90%;
+  }
+
+  & p {
+    @apply text-4xl text-darkish-3x mt-4 leading-tight;
+  }
+
+  & a {
+    @apply text-5xl text-light font-medium bg-gradient-to-r from-darkish-2x to-emerald-300 rounded-lg shadow-md py-3 px-10 w-fit mt-8;
+  }
+
+  & .get-started__dangling-cover {
+    @apply absolute top-0 right-1 bg-transparent;
+  }
+}

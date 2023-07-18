@@ -1,0 +1,19 @@
+.field {
+  @apply flex flex-col;
+
+  & label {
+    @apply pl-1 mb-0.5;
+  }
+
+  & input {
+    @apply border-none rounded-md shadow-md placeholder-gray-300;
+  }
+}
+
+.loader {
+  @apply flex m-auto items-center justify-around;
+
+  & > div {
+    @apply bg-gray-200 min-h-[40px] min-w-[40px] rounded-full;
+  }
+}

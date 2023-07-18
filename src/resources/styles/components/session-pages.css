@@ -1,0 +1,77 @@
+.session-pg {
+  @apply flex flex-col my-8;
+
+  & .session-form {
+    @apply flex flex-col px-4 gap-7;
+
+    & h1 {
+      @apply text-center text-darkish text-7xl bg-gradient-to-r from-darkish to-blueish font-medium mt-12;
+    }
+
+    & .field {
+      & input {
+        @apply focus:ring-2 focus:ring-indigo-300;
+      }
+
+      & label {
+        @apply text-xl text-darkish-2.5x;
+      }
+    }
+
+    & .btn {
+      @apply text-4xl font-medium px-12 py-2 rounded-md;
+    }
+
+    &.login-form {
+      & .submit-btn {
+        @apply bg-gradient-to-r from-blueish to-blue-300 text-light;
+      }
+    }
+
+    &.register-form {
+      & h1 {
+        @apply bg-gradient-to-r from-darkish to-emerald-400;
+      }
+
+      & .submit-btn {
+        @apply bg-gradient-to-r from-blue-400 to-green-300 text-light mt-8;
+      }
+    }
+  }
+
+  & .checkbox {
+    @apply flex items-center gap-2;
+
+    & input {
+      @apply border-teal-300 shadow-sm rounded-md w-5 h-5;
+    }
+
+    & label {
+      @apply text-xl text-darkish-3x;
+    }
+  }
+
+  & .forgot-password {
+    @apply text-lg text-indigo-500 mx-5 mt-6 self-end w-fit;
+  }
+
+  & .already-have-acc {
+    @apply text-lg text-blueish self-end mx-5 my-8;
+  }
+
+  & .session-otherwise {
+    @apply flex items-center gap-5 mx-4 mt-14 mb-8;
+
+    & hr {
+      @apply flex-1 bg-darkish-3x;
+    }
+
+    & span {
+      @apply text-lg text-indigo-500 font-medium;
+    }
+
+    & a {
+      @apply text-lg text-darkish font-medium px-5 py-0.5 rounded-md shadow-md bg-white;
+    }
+  }
+}

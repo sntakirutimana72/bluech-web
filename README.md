@@ -1,46 +1,50 @@
-# Getting Started with Create React App
+![Development](https://img.shields.io/badge/Development-v)
+[![API-Endpoints](https://img.shields.io/badge/Server-Endpoints-ee4f51)](https://github.com/sntakirutimana72/bluech)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+# Bluech-Web
 
-In the project directory, you can run:
+**Bluech-Web** is a client chat-app designed to handle multi users, threaded, and other complex forms of chatting.
+The idea is to support media attachments, video & audio calls, text messages, and continuous notifications through its built-in push notification features.
+Currently, it only supports text messaging and one-on-one single threaded user chat.
 
-### `yarn start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## UIX Templates
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+<blockquote>
+  <img src="docs/UIX/drawio.png" alt="UIX Templates" />
+</blockquote>
 
-### `yarn test`
+## 🛠️ Built With
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+![](https://skillicons.dev/icons?i=react,redux,html,css,tailwind,materialui,ts)
 
-### `yarn build`
+### Tools & Methods
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![Tools](https://skillicons.dev/icons?i=git,github,githubactions,postman,idea,netlify)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## ✍️ Authors
 
-### `yarn eject`
+👤 **Steve**
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- GitHub: [@sntakirutimana72](https://github.com/sntakirutimana72/)
+- LinkedIn: [steve-ntakirutimana](https://www.linkedin.com/in/steve-ntakirutimana/)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🤝 Contributing
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Contributions, issues, and feature requests are welcome!
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Feel free to check the [issues page](../../issues/).
 
-## Learn More
+## 🫶 Show your support
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Give a ⭐️ if you like this project!
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 🤓 Acknowledgments
+
+- Devs Communities for great free and resourceful articles.
+
+## 📝 License
+
+This project is [MIT](./LICENSE) licensed.

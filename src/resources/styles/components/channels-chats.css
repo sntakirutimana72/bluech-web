@@ -1,0 +1,35 @@
+.chats-room {
+  @apply flex flex-col h-full bg-light;
+
+  & .chats-room-nav {
+    @apply p-2 bg-purple-500 text-white text-lg;
+  }
+
+  & .chats-list-overlay {
+    @apply flex-1 min-h-max overflow-y-auto;
+
+    & .chats-list {
+      @apply flex flex-col gap-2;
+    }
+  }
+
+  & .chats-room-composer {
+    @apply flex items-center mx-2 mb-5 rounded-xl text-darkish shadow-lg bg-white;
+
+    & .field {
+      @apply flex-1 bg-white rounded-l-xl;
+
+      & input {
+        @apply rounded-none focus:outline-blueish focus:rounded-r-none rounded-l-xl pl-4 pr-2 py-3 bg-transparent shadow-none text-darkish text-lg;
+      }
+    }
+
+    & button {
+      @apply bg-blueish rounded-r-xl text-white px-2.5 h-full;
+
+      & svg {
+        @apply w-8 h-8;
+      }
+    }
+  }
+}
