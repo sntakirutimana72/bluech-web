@@ -55,6 +55,7 @@
     "no-use-before-define": "off",
     "import/no-unresolved": "off",
     "no-shadow": "off",
+    "camelcase": "off",
     "global-require": "off",
     "no-plusplus": "off",
     "@typescript-eslint/no-explicit-any": "off",
