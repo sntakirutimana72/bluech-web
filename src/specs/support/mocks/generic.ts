@@ -28,4 +28,12 @@ export default class Generic {
       unreadCount: 0,
     }
   }
+
+  static peopleObj(id: AlphaNumeric): PeopleObj {
+    return {
+      id,
+      name: 'FirstPersonName',
+      bio: 'SOME_BIO',
+    }
+  }
 }
