@@ -7,7 +7,6 @@ import React, {
 } from 'react';
 import { SessionController } from '../controllers';
 import { isInit } from '../helpers/utils';
-import { LoaderOverlay } from '../components/Elements';
 
 export type SessionContext = {
   authenticated?: boolean
@@ -63,11 +62,11 @@ const SessionProvider = ({ children }: Props) => {
       restartSessionRefresh,
     ],
   );
-  return isInit(authenticated) ? (
+  return (
     <sessionContext.Provider value={session}>
       {children}
     </sessionContext.Provider>
-  ) : <div className="h-screen"><LoaderOverlay /></div>;
+  )
 };
 
 export default SessionProvider;
