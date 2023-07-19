@@ -73,7 +73,7 @@ const Dashboard = () => {
       currentUser,
       dispatch,
     ],
-  );
+  )
 
   return ready ? (
     <div className="dashboard">
@@ -83,7 +83,7 @@ const Dashboard = () => {
       </div>
       <BottomNav />
     </div>
-  ) : <LoaderOverlay />;
-};
+  ) : <LoaderOverlay />
+}
 
-export default Dashboard;
+export default Dashboard

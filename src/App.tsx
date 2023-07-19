@@ -1,16 +1,16 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { useSession } from './hooks';
-import { RedirectedRoute, PrivateRoute } from './middlewares';
-import { Login, Logout, Register } from './components/Session';
-import GetStarted from './components/GetStarted';
-import Dashboard from './components/Dashboard';
-import Inbox from './components/Inbox';
-import People from './components/People';
-import ChatRoom from './components/ChatRoom';
-import NotFound from './components/NotFound';
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { useSession } from './hooks'
+import { RedirectedRoute, PrivateRoute } from './middlewares'
+import { Login, Logout, Register } from './components/Session'
+import GetStarted from './components/GetStarted'
+import Dashboard from './components/Dashboard'
+import Inbox from './components/Inbox'
+import People from './components/People'
+import ChatRoom from './components/ChatRoom'
+import NotFound from './components/NotFound'
 
 const App = () => {
-  const { authenticated, logout, login } = useSession();
+  const { authenticated, logout, login } = useSession()
 
   return (
     <BrowserRouter>
@@ -33,7 +33,7 @@ const App = () => {
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
-  );
-};
+  )
+}
 
-export default App;
+export default App

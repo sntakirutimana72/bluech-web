@@ -21,7 +21,7 @@ export const TopNav = ({ currentUser }: Props) => {
   return (
     <nav className="top-nav desktop-top-nav">
       <NavLink to="/dashboard" className="nav-logo">
-        <span>bluech</span>
+        <span data-testid="app-name">bluech</span>
       </NavLink>
       <button type="button" onClick={toggleToolbar} className={toggled ? 'open' : undefined}>
         <span />
@@ -83,4 +83,4 @@ export const BottomNav = () => {
       </button>
     </nav>
   );
-};
+}
