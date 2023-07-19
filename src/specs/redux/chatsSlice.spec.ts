@@ -9,8 +9,7 @@ const initialState: ReturnType<typeof reducer> = { messages: {}, typings: {} }
 
 describe('chatsSlice', () => {
   test('userTyping', () => {
-    const state = { ...initialState }
-    expect(reducer(state, userTyping(77))).toEqual({
+    expect(reducer(initialState, userTyping(77))).toEqual({
       ...initialState, typings: { 77: true },
     })
   })
@@ -22,9 +21,8 @@ describe('chatsSlice', () => {
   })
 
   test('mapMessage', () => {
-    const state = { ...initialState }
     const msg = Generic.cableMessage(11, 3)
-    expect(reducer(state, mapMessage(msg))).toEqual({
+    expect(reducer(initialState, mapMessage(msg))).toEqual({
       ...initialState, messages: { 3: [msg] },
     })
   })

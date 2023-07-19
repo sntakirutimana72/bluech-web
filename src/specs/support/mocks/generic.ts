@@ -20,4 +20,12 @@ export default class Generic {
       },
     }
   }
+
+  static inboxPreview(id: AlphaNumeric): InboxPreview {
+    return {
+      id,
+      preview: 'SOME_PREVIEW',
+      unreadCount: 0,
+    }
+  }
 }
