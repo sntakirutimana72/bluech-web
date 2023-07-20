@@ -4,15 +4,17 @@ import { render } from '@testing-library/react';
 import reduxStore from '../../store/redux';
 import { SessionProvider, CableProvider } from '../../providers';
 
-type WrapperProps = { children: React.ReactNode }
+type Wrapper = {
+  children: React.ReactNode
+}
 
-export const ReduxWrapper = ({ children }: WrapperProps) => (
-  <Provider store={reduxStore}>
+export const SessionWrapper = ({ children }: Wrapper) => (
+  <SessionProvider>
     { children }
-  </Provider>
+  </SessionProvider>
 )
 
-export const CableLessWrapper = ({ children }: WrapperProps) => (
+export const CableLessWrapper = ({ children }: Wrapper) => (
   <SessionProvider>
     <Provider store={reduxStore}>
       { children }
@@ -20,7 +22,7 @@ export const CableLessWrapper = ({ children }: WrapperProps) => (
   </SessionProvider>
 )
 
-export const AppWrapper = ({ children }: WrapperProps) => (
+export const AppWrapper = ({ children }: Wrapper) => (
   <SessionProvider>
     <CableProvider>
       <Provider store={reduxStore}>
@@ -30,8 +32,8 @@ export const AppWrapper = ({ children }: WrapperProps) => (
   </SessionProvider>
 )
 
-export const reduxRender = (element: React.ReactElement) => render(element, {
-  wrapper: ReduxWrapper,
+export const sessionRender = (element: React.ReactElement) => render(element, {
+  wrapper: SessionWrapper,
 })
 
 export const cableLessRender = (element: React.ReactElement) => render(element, {
