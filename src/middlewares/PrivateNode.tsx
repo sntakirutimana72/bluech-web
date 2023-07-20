@@ -1,13 +1,15 @@
-import React from 'react';
-import { Outlet } from 'react-router-dom';
-import type { SessionContext } from '../providers';
+import React from 'react'
+import type { SessionContext } from '../providers'
 
 type Props = Pick<SessionContext, 'authenticated'> & {
   children: React.ReactNode
 }
 
 const PrivateNode = ({ authenticated, children }: Props) => (
-  authenticated ? (children || <Outlet />) : null
-);
+  <>
+    <i className="opacity-0 hidden" aria-label="PrivateNode Placeholder" />
+    { authenticated && children }
+  </>
+)
 
-export default PrivateNode;
+export default PrivateNode
