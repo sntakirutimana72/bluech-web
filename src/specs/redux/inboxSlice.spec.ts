@@ -7,6 +7,8 @@ import reducer, {
 
 const initialState: ReturnType<typeof reducer> = { status: 'idle', previews: [] }
 
+afterEach(() => { localStorage.clear() })
+
 describe('inboxSlice', () => {
   test('incrementUCounter', () => {
     const state = { ...initialState }

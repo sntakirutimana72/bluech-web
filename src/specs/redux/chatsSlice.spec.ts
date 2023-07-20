@@ -7,6 +7,8 @@ import reducer, {
 
 const initialState: ReturnType<typeof reducer> = { messages: {}, typings: {} }
 
+afterEach(() => { localStorage.clear() })
+
 describe('chatsSlice', () => {
   test('userTyping', () => {
     expect(reducer(initialState, userTyping(77))).toEqual({

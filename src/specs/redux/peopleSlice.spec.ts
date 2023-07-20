@@ -3,6 +3,8 @@ import reducer, { queryPeople } from '../../redux/features/peopleSlice'
 
 const initialState: ReturnType<typeof reducer> = { status: 'idle', people: [] }
 
+afterEach(() => { localStorage.clear() })
+
 describe('peopleSlice', () => {
   test('[queryPeople.pending]', () => {
     const { status } = reducer(initialState, { type: queryPeople.pending.type })
