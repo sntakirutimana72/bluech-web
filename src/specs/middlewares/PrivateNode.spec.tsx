@@ -3,18 +3,18 @@ import { PrivateNode } from '../../middlewares'
 
 type Props = { authenticated?: boolean }
 
-const CustomNode = ({ authenticated }: Props) => (
+const CustomApp = ({ authenticated }: Props) => (
   <PrivateNode authenticated={authenticated}>
     <span data-testid="private-node" />
   </PrivateNode>
 )
 
 test('When &:authenticated is :false or :undefined', () => {
-  render(<CustomNode />)
+  render(<CustomApp />)
   expect(screen.queryByTestId('private-node')).toBeNull()
 })
 
 test('When &:authenticated is :true', () => {
-  render(<CustomNode authenticated />)
+  render(<CustomApp authenticated />)
   expect(screen.getByTestId('private-node')).toBeInTheDocument()
 })
