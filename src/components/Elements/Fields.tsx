@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 type TextProps = {
   className?: string
@@ -13,4 +13,4 @@ export const Text = ({ className, input, label: { val, ...props } }: TextProps) 
     <label aria-label={val} {...props}>{val}</label>
     <input {...input} />
   </div>
-);
+)

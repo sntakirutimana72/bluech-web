@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Send } from '@mui/icons-material';
-import { useCable } from '../../hooks';
-import { mapMessage } from '../../redux/features/chatsSlice';
-import { ChatsChannel } from '../../channels';
-import { MessagesController } from '../../controllers/v1';
-import { Text } from '../Elements';
+import React, { useEffect, useState } from 'react'
+import { Send } from '@mui/icons-material'
+import { useCable } from '../../hooks'
+import { mapMessage } from '../../redux/features/chatsSlice'
+import { ChatsChannel } from '../../channels'
+import { MessagesController } from '../../controllers/v1'
+import { Text } from '../Elements'
 
 type Props = React.HTMLProps<HTMLFormElement> & {
   partnerId: AlphaNumeric
@@ -12,41 +12,41 @@ type Props = React.HTMLProps<HTMLFormElement> & {
 }
 
 const Composer = ({ partnerId, currentUser, ...props }: Props) => {
-  const [value, setValue] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
-  const { cable } = useCable();
-  const { id, name } = currentUser;
+  const [value, setValue] = useState('')
+  const [isTyping, setIsTyping] = useState(false)
+  const { cable } = useCable()
+  const { id, name } = currentUser
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.currentTarget.value);
-    setIsTyping(true);
-  };
+    setValue(event.currentTarget.value)
+    setIsTyping(true)
+  }
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    event.preventDefault()
 
     if (value.length) {
       MessagesController
         .create({ desc: value, recipient_id: partnerId })
-        .then(mapMessage, () => {});
-      setValue('');
+        .then(mapMessage, () => {})
+      setValue('')
     }
-  };
+  }
 
   useEffect(
     () => {
-      let resetTyping: NodeJS.Timer;
+      let resetTyping: NodeJS.Timer
 
       if (isTyping && cable) {
-        const channel = cable.subscribe(new ChatsChannel({ id, name }));
+        const channel = cable.subscribe(new ChatsChannel({ id, name }))
         channel
           .typing(partnerId)
-          .then(() => {}, () => {});
-        resetTyping = setTimeout(() => { setIsTyping(false); }, 15000);
+          .then(() => {}, () => {})
+        resetTyping = setTimeout(() => { setIsTyping(false) }, 15000)
       }
-      return () => { clearTimeout(resetTyping); };
+      return () => { clearTimeout(resetTyping) }
     },
     [isTyping, partnerId, cable, id, name],
-  );
+  )
 
   return (
     <form onSubmit={onSubmit} {...props}>
@@ -57,7 +57,7 @@ const Composer = ({ partnerId, currentUser, ...props }: Props) => {
           placeholder: 'Enter Message',
           value,
           onChange,
-          onBlur: () => { setIsTyping(false); },
+          onBlur: () => { setIsTyping(false) },
         }}
         label={{ val: 'Message', className: 'hidden' }}
       />
@@ -65,7 +65,7 @@ const Composer = ({ partnerId, currentUser, ...props }: Props) => {
         <Send />
       </button>
     </form>
-  );
-};
+  )
+}
 
-export default Composer;
+export default Composer

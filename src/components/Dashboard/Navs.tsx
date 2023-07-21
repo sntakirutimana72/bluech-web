@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
-import { NavLink, NavLinkProps } from 'react-router-dom';
+import React, { useState } from 'react'
+import { NavLink, NavLinkProps } from 'react-router-dom'
 import {
   Logout,
   ManageAccounts,
   Inbox,
   People,
   Search,
-} from '@mui/icons-material';
-import { uid } from 'uid';
+} from '@mui/icons-material'
+import { uid } from 'uid'
 
 type Props = { currentUser: CurrentUser }
 
 export const TopNav = ({ currentUser }: Props) => {
-  const [toggled, setToggled] = useState(false);
+  const [toggled, setToggled] = useState(false)
 
   const toggleToolbar = () => {
-    setToggled((prevState) => !prevState);
-  };
+    setToggled((prevState) => !prevState)
+  }
 
   return (
     <nav className="top-nav desktop-top-nav">
@@ -46,20 +46,20 @@ export const TopNav = ({ currentUser }: Props) => {
         </div>
       </div>
     </nav>
-  );
-};
+  )
+}
 
 const BottomNavLink = ({ children, ...props }: NavLinkProps) => (
   <NavLink {...props} end>
     {children}
   </NavLink>
-);
+)
 
 export const BottomNav = () => {
-  const toUrl = '/dashboard';
+  const toUrl = '/dashboard'
   const config = {
     className: 'bottom-nav-item',
-  };
+  }
 
   return (
     <nav className="bottom-nav desktop-bottom-nav">
@@ -82,5 +82,5 @@ export const BottomNav = () => {
         <Search />
       </button>
     </nav>
-  );
+  )
 }

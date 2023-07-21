@@ -34,7 +34,7 @@ const slicer = createSlice({
       messages[id].push(payload)
     },
   },
-});
+})
 
-export const { userTyping, typingExpired, mapMessage } = slicer.actions;
+export const { userTyping, typingExpired, mapMessage } = slicer.actions
 export default slicer.reducer

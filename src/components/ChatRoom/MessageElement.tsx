@@ -14,6 +14,6 @@ const MessageElement = ({ item, isSelf }: Props) => (
       </div>
     </div>
   </div>
-);
+)
 
-export default MessageElement;
+export default MessageElement

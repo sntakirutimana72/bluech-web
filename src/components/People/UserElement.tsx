@@ -1,5 +1,5 @@
-import { NavLink } from 'react-router-dom';
-import { Person } from '@mui/icons-material';
+import { NavLink } from 'react-router-dom'
+import { Person } from '@mui/icons-material'
 
 type Props = {
   user: PeopleObj
@@ -19,6 +19,6 @@ const UserElement = ({ user }: Props) => (
       <p>{user.bio}</p>
     </div>
   </NavLink>
-);
+)
 
-export default UserElement;
+export default UserElement

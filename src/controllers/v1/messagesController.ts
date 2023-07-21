@@ -1,5 +1,5 @@
-import ApplicationController from '../applicationController';
-import { Axios } from '../../helpers/requests';
+import ApplicationController from '../applicationController'
+import { Axios } from '../../helpers/requests'
 
 type NewMessage = {
   desc: string
@@ -11,9 +11,9 @@ export default class MessagesController extends ApplicationController {
     return new Promise<CableMessage>((resolve, reject) => {
       Axios
         .post(process.env.REACT_APP_BLUECH_RB_API_V1_MESSAGES!, { message }, this.authorize())
-        .then(({ data: { message } }) => { resolve(message); })
-        .catch((exc) => { this.reject(exc, reject); });
-    });
+        .then(({ data: { message } }) => { resolve(message) })
+        .catch((exc) => { this.reject(exc, reject) })
+    })
   }
 
   static inbox() {
@@ -45,17 +45,17 @@ export default class MessagesController extends ApplicationController {
             unreadCount: 60,
             preview: 'Hey! How are you? Can we meet today?',
           },
-        ]);
-      }, 4000);
-    });
+        ])
+      }, 4000)
+    })
   }
 
   static all() {
     return new Promise<CableMessage[]>((resolve, reject) => {
       Axios
         .get(process.env.REACT_APP_BLUECH_RB_API_V1_MESSAGES!, this.authorize())
-        .then(({ data: { messages } }) => { resolve(messages); })
-        .catch((exc) => { this.reject(exc, reject); });
-    });
+        .then(({ data: { messages } }) => { resolve(messages) })
+        .catch((exc) => { this.reject(exc, reject) })
+    })
   }
 }

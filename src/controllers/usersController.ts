@@ -1,10 +1,10 @@
-import ApplicationController from './applicationController';
+import ApplicationController from './applicationController'
 
 export default class UsersController extends ApplicationController {
   static people(page: number) {
     return new Promise<PeopleObj[]>((resolve) => {
       setTimeout(() => {
-        const origin = 25 * (page - 1);
+        const origin = 25 * (page - 1)
         resolve([
           {
             id: 1,
@@ -47,8 +47,8 @@ export default class UsersController extends ApplicationController {
             name: 'lionel105',
             bio: "Hey there! I'm using bluech",
           },
-        ].slice(origin, origin + 25));
-      }, 4000);
-    });
+        ].slice(origin, origin + 25))
+      }, 4000)
+    })
   }
 }

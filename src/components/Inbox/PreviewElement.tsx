@@ -1,5 +1,5 @@
-import { NavLink } from 'react-router-dom';
-import { MarkChatUnread, Person } from '@mui/icons-material';
+import { NavLink } from 'react-router-dom'
+import { MarkChatUnread, Person } from '@mui/icons-material'
 
 type Props = {
   inbox: InboxPreview
@@ -29,6 +29,6 @@ const PreviewElement = ({ inbox }: Props) => (
           ) : ''
       }
   </NavLink>
-);
+)
 
-export default PreviewElement;
+export default PreviewElement

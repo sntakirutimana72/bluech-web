@@ -17,7 +17,7 @@ export const previewInbox = createAsyncThunk<InboxPreview[]>(
   MessagesController.inbox,
 )
 
-const initialState: InboxState = { status: 'idle', previews: [] };
+const initialState: InboxState = { status: 'idle', previews: [] }
 
 const slicer = createSlice({
   name: 'dashboard/inbox',
@@ -65,7 +65,7 @@ const slicer = createSlice({
       }))
       .addCase(previewInbox.rejected, (state) => {
         state.status = 'failed'
-      });
+      })
   },
 })
 
