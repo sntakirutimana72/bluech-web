@@ -11,7 +11,7 @@ const PrivateRoute = ({ redirectTo, authenticated }: Props) => {
   return (
     authenticated
       ? <Outlet />
-      : <Navigate to={redirectTo} state={{ next: pathname }} replace />
+      : <Navigate to={redirectTo} state={{ nextTo: pathname }} replace />
   )
 }
 
