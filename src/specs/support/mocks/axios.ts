@@ -1,7 +1,22 @@
-import { Axios } from '../../../helpers/requests';
+import { Axios } from '../../../helpers/requests'
 
-export default function mocker(attribute: 'get' | 'post' | 'delete', response: { [key: string]: any }) {
-  const spyware = jest.spyOn(Axios, attribute);
-  spyware.mockResolvedValue(response);
-  return spyware;
+type AllowedMethods = 'head' | 'get' | 'post' | 'delete'
+type Response = { [key: string]: any }
+
+export default class AxiosMocker {
+  protected static spyware(method: AllowedMethods) {
+    return jest.spyOn(Axios, method)
+  }
+
+  static resolved(method: AllowedMethods, response: Response) {
+    const mocker = this.spyware(method)
+    mocker.mockResolvedValue(response)
+    return mocker
+  }
+
+  static rejected(method: AllowedMethods, response: Response) {
+    const mocker = this.spyware(method)
+    mocker.mockRejectedValue(response)
+    return mocker
+  }
 }
