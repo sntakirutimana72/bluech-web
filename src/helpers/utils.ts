@@ -1,6 +1,12 @@
 /**
+ * Returns FALSE if the given parameter is undefined, TRUE otherwise.
+ * @param obj
  *
- * @param obj asserts if a given parameter has been instantiated.
- * Its value can't be of type undefined
  */
 export const isInit = (obj: any) => obj !== undefined
+
+/**
+ * Returns TRUE if the given parameter is null, FALSE otherwise
+ * @param obj
+ */
+export const isNil = (obj: any) => obj === null
