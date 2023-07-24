@@ -7,7 +7,7 @@ import {
 } from '@testing-library/react';
 import { cableLessRender, appRender } from './support/render';
 import Generic from './support/mocks/generic'
-import axiosMocker from './support/mocks/axios'
+import AxiosMocker from './support/mocks/axios'
 import App from '../App';
 import SessionStore from '../store/session'
 
@@ -51,7 +51,7 @@ describe('renders app', () => {
   describe('With active session', () => {
     beforeEach(() => {
       SessionStore.persist('SOME_AUTH_X_TOKEN')
-      axiosMocker('get', {
+      AxiosMocker.resolved('get', {
         status: 200,
         headers: { authorization: 'SOME_AUTH_X_TOKEN' },
         data: { user: Generic.currentUser() },

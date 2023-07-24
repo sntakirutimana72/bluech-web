@@ -3,7 +3,15 @@ export default class Generic {
     return {
       id: 80,
       email: 'tmp-user@email.com',
-      name: 'mocked-user',
+      name: 'tmp-user',
+    }
+  }
+
+  static newUser(): NewUser {
+    return {
+      email: 'tmp-user@email.com',
+      name: 'tmp-user',
+      password: '',
     }
   }
 

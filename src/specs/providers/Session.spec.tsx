@@ -3,7 +3,7 @@ import {
   screen,
   fireEvent,
 } from '@testing-library/react'
-import mocker from '../support/mocks/axios'
+import AxiosMocker from '../support/mocks/axios'
 import Generic from '../support/mocks/generic'
 import { sessionRender } from '../support/render'
 import { useSession } from '../../hooks'
@@ -47,7 +47,7 @@ const CustomApp = () => {
 
 describe('SessionProvider', () => {
   test('without active session [mounted]', async () => {
-    mocker('get', { data: '', status: 401 })
+    AxiosMocker.resolved('get', { data: '', status: 401 })
     sessionRender(<CustomApp />)
 
     await waitFor(() => {
@@ -56,7 +56,7 @@ describe('SessionProvider', () => {
   })
 
   test('remember session', async () => {
-    mocker('get', {
+    AxiosMocker.resolved('get', {
       data: { user: mockedUser },
       status: 200,
       headers: { authorization: 'SOME_AUTH_X_TOKEN' },
@@ -71,7 +71,7 @@ describe('SessionProvider', () => {
   })
 
   test('&:login', async () => {
-    mocker('get', { data: '', status: 401 })
+    AxiosMocker.resolved('get', { data: '', status: 401 })
     sessionRender(<CustomApp />)
 
     await waitFor(() => {
@@ -88,7 +88,7 @@ describe('SessionProvider', () => {
   })
 
   test(':logout', async () => {
-    mocker('get', {
+    AxiosMocker.resolved('get', {
       data: { user: mockedUser },
       status: 200,
       headers: { authorization: 'SOME_AUTH_X_TOKEN' },

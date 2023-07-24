@@ -1,7 +1,10 @@
 import { Axios } from '../../../helpers/requests'
 
 type AllowedMethods = 'head' | 'get' | 'post' | 'delete'
-type Response = { [key: string]: any }
+type Response = {
+  status: number
+  [key: string]: any
+}
 
 export default class AxiosMocker {
   protected static spyware(method: AllowedMethods) {
