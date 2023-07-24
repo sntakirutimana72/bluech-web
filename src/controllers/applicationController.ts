@@ -1,4 +1,5 @@
 import { isAxiosError, AxiosError } from 'axios'
+import { isNil } from '../helpers/utils'
 import SessionStore from '../store/session'
 
 export type Resolve<T> = (param: PromiseLike<T> | T) => void
@@ -12,6 +13,15 @@ export default class ApplicationController {
         Authorization: SessionStore.fetch()!,
       },
     }
+  }
+
+  protected static destroyAndReject(reject: Reject) {
+    SessionStore.destroy()
+    reject()
+  }
+
+  protected static ensureAuthorizationExists(reject: Reject) {
+    if (isNil(SessionStore.fetch())) { reject() }
   }
 
   protected static reject(error: Error | AxiosError<ApiError>, reject: Reject) {

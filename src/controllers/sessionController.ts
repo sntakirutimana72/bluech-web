@@ -26,6 +26,7 @@ export default class SessionController extends ApplicationController {
     return new Promise<void>((resolve) => {
       Axios
         .delete(process.env.REACT_APP_BLUECH_RB_API_LOGOUT!, this.authorize())
+        .catch(() => {})
         .finally(() => {
           SessionStore.destroy()
           resolve()
@@ -44,22 +45,24 @@ export default class SessionController extends ApplicationController {
 
   static signedUser() {
     return new Promise<CurrentUser>((resolve, reject) => {
+      this.ensureAuthorizationExists(reject)
       Axios
         .get(process.env.REACT_APP_BLUECH_RB_API_SESSION_USER!, this.authorize())
         .then((resp) => { this.onSuccess(resp, resolve) })
-        .catch(() => { reject() })
+        .catch(() => { this.destroyAndReject(reject) })
     })
   }
 
   static refresh() {
     return new Promise<void>((resolve, reject) => {
+      this.ensureAuthorizationExists(reject)
       Axios
         .head(process.env.REACT_APP_BLUECH_RB_API_REFRESH_SESSION!, this.authorize())
         .then(({ headers: { authorization } }) => {
           SessionStore.persist(authorization)
           resolve()
         })
-        .catch(() => { reject() })
+        .catch(() => { this.destroyAndReject(reject) })
     })
   }
 }
