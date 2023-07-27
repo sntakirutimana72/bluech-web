@@ -6,12 +6,10 @@ afterEach(() => { localStorage.clear() })
 
 describe('UsersController', () => {
   describe('#people( page )', () => {
-    const mockedPeople: People = {
-      people: [Generic.personnel()],
-      pagination: Generic.paginate(),
-    }
-
     test('[resolved]', async () => {
+      const mockedPeople: People = {
+        people: [Generic.personnel()], pagination: Generic.paginate(),
+      }
       AxiosMocker.resolved('get', { data: mockedPeople, status: 200 })
       expect(await UsersController.people(1)).toEqual(mockedPeople)
     })
