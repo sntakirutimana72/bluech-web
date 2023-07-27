@@ -5,7 +5,7 @@ import React, {
   useCallback,
   useMemo,
 } from 'react'
-import { SessionController } from '../controllers'
+import { UsersController } from '../controllers'
 import { isInit } from '../helpers/utils'
 
 export type SessionContext = {
@@ -39,9 +39,9 @@ const SessionProvider = ({ children }: Props) => {
   useEffect(() => {
     let refreshTask: NodeJS.Timer
 
-    if (!isInit(authenticated)) SessionController.signedUser().then(login, logout)
+    if (!isInit(authenticated)) UsersController.signedUser().then(login, logout)
     if (authenticated) {
-      refreshTask = setInterval(() => { SessionController.refresh().catch(logout) }, 3.48e+6)
+      refreshTask = setInterval(() => { UsersController.refresh().catch(logout) }, 3.48e+6)
     }
     return () => { clearInterval(refreshTask) }
   }, [

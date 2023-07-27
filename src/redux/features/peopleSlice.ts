@@ -7,7 +7,7 @@ type PeopleState = {
   pagination: Pagination
 }
 
-export const queryPeople = createAsyncThunk<People, number>(
+export const populatePeople = createAsyncThunk<People, number>(
   'home/people',
   UsersController.people,
 )
@@ -24,13 +24,13 @@ const slicer = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(queryPeople.pending, () => ({
+      .addCase(populatePeople.pending, () => ({
         ...initialState, status: 'pending',
       }))
-      .addCase(queryPeople.fulfilled, (_, action) => ({
+      .addCase(populatePeople.fulfilled, (_, action) => ({
         ...action.payload, status: 'loaded',
       }))
-      .addCase(queryPeople.rejected, (state) => {
+      .addCase(populatePeople.rejected, (state) => {
         state.status = 'failed'
       })
   },

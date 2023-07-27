@@ -10,7 +10,7 @@ import {
 import { ChatsChannel } from '../../channels'
 import type { ChatMessage, TypingMessage } from '../../channels'
 import { statusesSelector } from '../../redux/effects/appEffects'
-import { queryPeople } from '../../redux/features/peopleSlice'
+import { populatePeople } from '../../redux/features/peopleSlice'
 import { previewInbox } from '../../redux/features/inboxSlice'
 import { mapMessage, userTyping } from '../../redux/features/chatsSlice'
 import { TopNav, BottomNav } from './Navs'
@@ -39,7 +39,7 @@ const Dashboard = () => {
       let channel: ChatsChannel
 
       if (!ready && inboxStatus === 'idle' && peopleStatus === 'idle') {
-        dispatch(queryPeople(1))
+        dispatch(populatePeople(1))
         dispatch(previewInbox())
       } else if (
         !ready

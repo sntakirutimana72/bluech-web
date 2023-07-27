@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import type { SessionContext } from '../../../providers'
-import { SessionController } from '../../../controllers'
+import { UsersController } from '../../../controllers'
 import { Text } from '../../Elements'
 
 type Props = React.HTMLProps<HTMLFormElement> & Pick<SessionContext, 'login'>
@@ -18,7 +18,7 @@ const Form = ({ login, ...props }: Props) => {
 
   const handleSubmit = (event: React.FormEvent<CustomFormElement>) => {
     event.preventDefault()
-    SessionController
+    UsersController
       .login({ email, password })
       .then(login, (err) => { setErrors(err) })
   }

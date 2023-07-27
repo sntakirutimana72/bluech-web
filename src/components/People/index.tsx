@@ -5,7 +5,7 @@ import { LoaderOverlay } from '../Elements'
 import UserElement from './UserElement'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { peopleSelector } from '../../redux/effects/peopleEffects'
-import { queryPeople } from '../../redux/features/peopleSlice'
+import { populatePeople } from '../../redux/features/peopleSlice'
 
 const People = () => {
   const [page] = useState(1)
@@ -14,7 +14,7 @@ const People = () => {
 
   useEffect(() => {
     if (status === 'idle') {
-      dispatch(queryPeople(page))
+      dispatch(populatePeople(page))
     }
   }, [status, page, dispatch])
 

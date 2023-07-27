@@ -1,27 +1,31 @@
 import Generic from '../support/mocks/generic'
-import reducer, { queryPeople } from '../../redux/features/peopleSlice'
+import reducer, { populatePeople } from '../../redux/features/peopleSlice'
 
-const initialState: ReturnType<typeof reducer> = { status: 'idle', people: [] }
+const initialState: ReturnType<typeof reducer> = {
+  status: 'idle',
+  people: [],
+  pagination: {},
+}
 
 afterEach(() => { localStorage.clear() })
 
 describe('peopleSlice', () => {
-  test('[queryPeople.pending]', () => {
-    const { status } = reducer(initialState, { type: queryPeople.pending.type })
+  test('[populatePeople.pending]', () => {
+    const { status } = reducer(initialState, { type: populatePeople.pending.type })
     expect(status).toBe('pending')
   })
 
-  test('[queryPeople.rejected]', () => {
-    const { status } = reducer(initialState, { type: queryPeople.rejected.type })
+  test('[populatePeople.rejected]', () => {
+    const { status } = reducer(initialState, { type: populatePeople.rejected.type })
     expect(status).toBe('failed')
   })
 
-  test('[queryPeople.fulfilled]', () => {
+  test('[populatePeople.fulfilled]', () => {
     expect(initialState.people).toHaveLength(0)
 
     const { status, people } = reducer(initialState, {
-      type: queryPeople.fulfilled.type,
-      payload: [Generic.peopleObj(77)],
+      type: populatePeople.fulfilled.type,
+      payload: { people: [Generic.personnel(77)], pagination: {} },
     })
 
     expect(status).toBe('loaded')

@@ -7,9 +7,9 @@ export default class Generic {
     }
   }
 
-  static personnel(): Personnel {
+  static personnel(id: AlphaNumeric): Personnel {
     return {
-      id: 89,
+      id,
       name: 'tmp-personnel',
       bio: "Hey there! I'm using bluech",
     }
@@ -51,14 +51,6 @@ export default class Generic {
       id,
       preview: 'SOME_PREVIEW',
       unreadCount: 0,
-    }
-  }
-
-  static peopleObj(id: AlphaNumeric): Personnel {
-    return {
-      id,
-      name: 'FirstPersonName',
-      bio: 'SOME_BIO',
     }
   }
 }
