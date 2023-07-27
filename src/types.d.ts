@@ -8,7 +8,7 @@ type CableMessage = {
   desc: string
   is_edited: boolean
   creation_date: Date
-  last_update: Date
+  last_update: Date | null
   author: CableMessageAuthor
 }
 // Message Author
