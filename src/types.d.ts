@@ -36,8 +36,31 @@ type InboxPreview = {
   preview: string
 }
 
-type PeopleObj = CableMessageAuthor & {
+type Personnel = CableMessageAuthor & {
   bio: string
   avatar?: string
   online?: boolean
+}
+
+type Pagination = {
+  previous?: number | null
+  current?: number
+  next?: number | null
+  pages?: number
+}
+
+type Conversation = {
+  chats: CableMessage[]
+  pagination: Pagination
+  channel?: AlphaNumeric
+}
+
+type ConvoParams = {
+  page?: number
+  channel: AlphaNumeric
+}
+
+type People = {
+  people: Personnel[]
+  pagination: Pagination
 }
