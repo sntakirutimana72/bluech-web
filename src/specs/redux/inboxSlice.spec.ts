@@ -17,23 +17,23 @@ describe('inboxSlice', () => {
 
     expect(previews).toEqual([
       {
-        id, preview, unreadCount: 1,
+        id, preview, unread: 1,
       },
     ])
   })
 
   test('resetUCounter', () => {
     const inboxPreview = Generic.inboxPreview(5)
-    ++inboxPreview.unreadCount
+    ++inboxPreview.unread
     const state = { ...initialState }
-    expect(inboxPreview.unreadCount).not.toBe(0)
+    expect(inboxPreview.unread).not.toBe(0)
     state.previews = [inboxPreview]
     const { id, preview } = inboxPreview
     const { previews } = reducer(state, resetUCounter({ id, preview }))
 
     expect(previews).toEqual([
       {
-        id, preview, unreadCount: 0,
+        id, preview, unread: 0,
       },
     ])
   })

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, createAction } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { MessagesController } from '../../controllers/v1'
 
@@ -7,9 +7,22 @@ type ChatsState = {
   messages: { [key: AlphaNumeric]: Conversation }
 }
 
-export const populateConversation = createAsyncThunk<Conversation, ConvoParams>(
-  'messages/conversation',
-  MessagesController.conversation,
+export const setConvoPendingStatus = createAction<AlphaNumeric>('channels/convo/pending')
+
+export const populateConversation = createAsyncThunk<
+  Conversation,
+  ConvoParams,
+  { rejectValue: AlphaNumeric }
+>(
+  'channels/conversation',
+  async (params, { rejectWithValue, dispatch }) => {
+    try {
+      dispatch(setConvoPendingStatus(params.channel))
+      return await MessagesController.conversation(params)
+    } catch {
+      return rejectWithValue(params.channel)
+    }
+  },
 )
 
 const initialState: ChatsState = {
@@ -26,7 +39,9 @@ const slicer = createSlice({
     },
     typingExpired(state, action: PayloadAction<AlphaNumeric>) {
       state.typings = Object.fromEntries(
-        Object.entries(state.typings).filter(([id]) => id !== action.payload),
+        Object
+          .entries(state.typings)
+          .filter(([id]) => id !== action.payload.toString()),
       )
     },
     mapMessage(state, action: PayloadAction<CableMessage>) {
@@ -44,7 +59,17 @@ const slicer = createSlice({
     builder
       .addCase(populateConversation.fulfilled, (state, action) => {
         const { chats, pagination, channel } = action.payload
-        state.messages[channel!] = { chats, pagination }
+        state.messages[channel!] = { chats, pagination, status: 'loaded' }
+      })
+      .addCase(setConvoPendingStatus, (state, action) => {
+        const { messages } = state
+        const convo = (messages[action.payload!] ||= { chats: [], pagination: {} })
+        convo.status = 'pending'
+      })
+      .addCase(populateConversation.rejected, (state, action) => {
+        const { messages } = state
+        const convo = (messages[action.payload!] ||= { chats: [], pagination: {} })
+        convo.status = 'failed'
       })
   },
 })

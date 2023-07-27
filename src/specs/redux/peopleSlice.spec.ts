@@ -1,10 +1,11 @@
 import Generic from '../support/mocks/generic'
 import reducer, { populatePeople } from '../../redux/features/peopleSlice'
 
+const initialPagy: Pagination = { current: null, pages: null }
 const initialState: ReturnType<typeof reducer> = {
   status: 'idle',
   people: [],
-  pagination: {},
+  pagination: initialPagy,
 }
 
 afterEach(() => { localStorage.clear() })
@@ -25,7 +26,7 @@ describe('peopleSlice', () => {
 
     const { status, people } = reducer(initialState, {
       type: populatePeople.fulfilled.type,
-      payload: { people: [Generic.personnel(77)], pagination: {} },
+      payload: { people: [Generic.personnel(77)], pagination: initialPagy },
     })
 
     expect(status).toBe('loaded')

@@ -50,7 +50,7 @@ export default class Generic {
     return {
       id,
       preview: 'SOME_PREVIEW',
-      unreadCount: 0,
+      unread: 0,
     }
   }
 }

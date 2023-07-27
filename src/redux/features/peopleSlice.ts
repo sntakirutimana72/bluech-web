@@ -12,11 +12,7 @@ export const populatePeople = createAsyncThunk<People, number>(
   UsersController.people,
 )
 
-const initialState: PeopleState = {
-  status: 'idle',
-  people: [],
-  pagination: {},
-}
+const initialState: PeopleState = { status: 'idle', people: [], pagination: {} }
 
 const slicer = createSlice({
   name: 'dashboard/people',

@@ -32,9 +32,9 @@ const slicer = createSlice({
       )
 
       if (!inbox) {
-        previews.push({ id: dataId, unreadCount: 1, preview })
+        previews.push({ id: dataId, unread: 1, preview })
       } else {
-        inbox.unreadCount++
+        inbox.unread++
         inbox.preview = preview
       }
     },
@@ -47,9 +47,9 @@ const slicer = createSlice({
       )
 
       if (!inbox) {
-        previews.push({ id: dataId, preview, unreadCount: 0 })
+        previews.push({ id: dataId, preview, unread: 0 })
       } else {
-        inbox.unreadCount = 0
+        inbox.unread = 0
         inbox.preview = preview
       }
     },

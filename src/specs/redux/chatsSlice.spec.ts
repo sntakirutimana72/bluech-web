@@ -4,6 +4,7 @@ import reducer, {
   typingExpired,
   mapMessage,
   populateConversation,
+  setConvoPendingStatus,
 } from '../../redux/features/chatsSlice'
 
 const initialState: ReturnType<typeof reducer> = { messages: {}, typings: {} }
@@ -18,8 +19,7 @@ describe('chatsSlice', () => {
   })
 
   test('typingExpired', () => {
-    const state = { ...initialState }
-    state.typings[33] = true
+    const state = { ...initialState, typings: { 33: true } }
     expect(reducer(state, typingExpired(33))).toEqual(initialState)
   })
 
@@ -30,6 +30,13 @@ describe('chatsSlice', () => {
     })
   })
 
+  test('setConvoPendingStatus', () => {
+    const channel = 3
+    const { messages } = reducer(initialState, setConvoPendingStatus(channel))
+
+    expect(messages[channel].status).toBe('pending')
+  })
+
   test('[populateConversation.fulfilled]', () => {
     const channel = 3
     const msg = Generic.cableMessage(11, channel)
@@ -37,11 +44,23 @@ describe('chatsSlice', () => {
       typings: {},
       messages: { [channel]: { chats: [msg], pagination: {} } },
     }
-    const newState = reducer(state, {
+    const { messages } = reducer(state, {
       type: populateConversation.fulfilled.type,
-      payload: { chats: [msg], pagination: { current: 1 }, channel },
+      payload: { chats: [msg], pagination: { current: 1, pages: 2 }, channel },
     })
 
-    expect(state.messages[channel].pagination).not.toEqual(newState.messages[channel].pagination)
+    const convo = messages[channel]
+    expect(convo.status).toBe('loaded')
+    expect(state.messages[channel].pagination).not.toEqual(convo.pagination)
+  })
+
+  test('[populateConversation.rejected]', () => {
+    const channel = 3
+    const { messages } = reducer(initialState, {
+      type: populateConversation.rejected.type,
+      payload: channel,
+    })
+
+    expect(messages[channel].status).toBe('failed')
   })
 })
