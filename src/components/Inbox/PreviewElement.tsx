@@ -18,12 +18,12 @@ const PreviewElement = ({ inbox }: Props) => (
     <p className="inbox-msg-preview">{inbox.preview}</p>
 
     {
-        inbox.unreadCount
+        inbox.unread
           ? (
             <div className="relative inbox-u-counter">
               <MarkChatUnread />
               <div>
-                <span className="truncate">{inbox.unreadCount}</span>
+                <span className="truncate">{inbox.unread}</span>
               </div>
             </div>
           ) : ''

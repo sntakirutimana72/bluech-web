@@ -7,11 +7,11 @@ import { MessagesController } from '../../controllers/v1'
 import { Text } from '../Elements'
 
 type Props = React.HTMLProps<HTMLFormElement> & {
-  partnerId: AlphaNumeric
+  channelId: AlphaNumeric
   currentUser: CurrentUser
 }
 
-const Composer = ({ partnerId, currentUser, ...props }: Props) => {
+const Composer = ({ channelId, currentUser, ...props }: Props) => {
   const [value, setValue] = useState('')
   const [isTyping, setIsTyping] = useState(false)
   const { cable } = useCable()
@@ -26,7 +26,7 @@ const Composer = ({ partnerId, currentUser, ...props }: Props) => {
 
     if (value.length) {
       MessagesController
-        .create({ desc: value, recipient_id: partnerId })
+        .create({ desc: value, recipient_id: channelId })
         .then(mapMessage, () => {})
       setValue('')
     }
@@ -39,13 +39,13 @@ const Composer = ({ partnerId, currentUser, ...props }: Props) => {
       if (isTyping && cable) {
         const channel = cable.subscribe(new ChatsChannel({ id, name }))
         channel
-          .typing(partnerId)
+          .typing(channelId)
           .then(() => {}, () => {})
         resetTyping = setTimeout(() => { setIsTyping(false) }, 15000)
       }
       return () => { clearTimeout(resetTyping) }
     },
-    [isTyping, partnerId, cable, id, name],
+    [isTyping, channelId, cable, id, name],
   )
 
   return (
