@@ -3,14 +3,20 @@ import { UsersController } from '../../controllers'
 
 type PeopleState = {
   status: ThunkStatus
-  people: PeopleObj[]
+  people: Personnel[]
+  pagination: Pagination
 }
 
-export const queryPeople = createAsyncThunk<PeopleObj[], number>(
-  'dashboard/people',
+export const queryPeople = createAsyncThunk<People, number>(
+  'home/people',
   UsersController.people,
 )
-const initialState: PeopleState = { status: 'idle', people: [] }
+
+const initialState: PeopleState = {
+  status: 'idle',
+  people: [],
+  pagination: {},
+}
 
 const slicer = createSlice({
   name: 'dashboard/people',
@@ -18,13 +24,12 @@ const slicer = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(queryPeople.pending, (state) => {
-        state.status = 'pending'
-      })
-      .addCase(queryPeople.fulfilled, (state, action) => {
-        state.status = 'loaded'
-        state.people = action.payload
-      })
+      .addCase(queryPeople.pending, () => ({
+        ...initialState, status: 'pending',
+      }))
+      .addCase(queryPeople.fulfilled, (_, action) => ({
+        ...action.payload, status: 'loaded',
+      }))
       .addCase(queryPeople.rejected, (state) => {
         state.status = 'failed'
       })
