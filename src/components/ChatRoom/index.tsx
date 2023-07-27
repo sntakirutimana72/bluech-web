@@ -10,7 +10,8 @@ const ChatRoom = () => {
   const { currentUser } = useSession()
   const { id: partnerId } = useParams()
   const partner = useAppSelector(userSelector(partnerId!))
-  const { items, isTyping } = useAppSelector(chatsSelector(partnerId!))
+  const { conversation, isTyping } = useAppSelector(chatsSelector(partnerId!))
+  const { chats: items } = conversation
 
   return (
     <div className="chats-room">

@@ -37,7 +37,7 @@ export default class Generic {
     }
   }
 
-  static peopleObj(id: AlphaNumeric): PeopleObj {
+  static peopleObj(id: AlphaNumeric): Personnel {
     return {
       id,
       name: 'FirstPersonName',
