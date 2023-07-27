@@ -3,8 +3,7 @@ import { useParams } from 'react-router-dom'
 import { uid } from 'uid'
 import Composer from './Composer'
 import MessageElement from './MessageElement'
-import { isInit } from '../../helpers/utils'
-import { useAppSelector, useSession } from '../../hooks'
+import { useAppSelector, useAppDispatch, useSession } from '../../hooks'
 import { populateConversation } from '../../redux/features/chatsSlice'
 import { chatsSelector } from '../../redux/effects/chatsEffects'
 import { userSelector } from '../../redux/effects/peopleEffects'
@@ -14,19 +13,21 @@ const ChatRoom = () => {
   const { id: channelId } = useParams()
   const partner = useAppSelector(userSelector(channelId!))
   const { conversation, isTyping } = useAppSelector(chatsSelector(channelId!))
-  const { chats, pagination } = conversation
+  const dispatch = useAppDispatch()
+
+  const { chats, pagination, status } = conversation
   const { current: currentPage, pages } = pagination
-  const [page, setPage] = useState(currentPage)
+  const [page] = useState(currentPage)
 
   useEffect(
     () => {
-      if (!isInit(pages)) {
-        setPage(1)
-      } else if (page && pages && page <= pages) {
-        populateConversation({ channel: channelId!, page })
+      if (!status) {
+        dispatch(populateConversation({ channel: channelId! }))
+      } else if (page && pages && page !== currentPage && page <= pages && status !== 'pending') {
+        dispatch(populateConversation({ channel: channelId!, page }))
       }
     },
-    [channelId, page],
+    [channelId, page, status],
   )
 
   return (
