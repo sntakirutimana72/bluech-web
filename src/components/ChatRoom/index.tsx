@@ -41,8 +41,8 @@ const ChatRoom = () => {
 
       <div className="chats-list-overlay">
         <div className="chats-list">
-          { chats && chats.map((item) => (
-            <MessageElement key={uid()} item={item} isSelf={item.author.id === currentUser!.id} />
+          { chats && chats.map((msg) => (
+            <MessageElement key={uid()} msg={msg} isSelf={msg.author.id === currentUser!.id} />
           )) }
         </div>
       </div>

@@ -4,7 +4,6 @@ import reducer, {
   typingExpired,
   mapMessage,
   populateConversation,
-  setConvoPendingStatus,
 } from '../../redux/features/chatsSlice'
 
 const initialState: ReturnType<typeof reducer> = { messages: {}, typings: {} }
@@ -12,6 +11,8 @@ const initialState: ReturnType<typeof reducer> = { messages: {}, typings: {} }
 afterEach(() => { localStorage.clear() })
 
 describe('chatsSlice', () => {
+  const mockedMeta = (id: AlphaNumeric) => ({ meta: { arg: { channel: id } } })
+
   test('userTyping', () => {
     expect(reducer(initialState, userTyping(77))).toEqual({
       ...initialState, typings: { 77: true },
@@ -30,9 +31,13 @@ describe('chatsSlice', () => {
     })
   })
 
-  test('setConvoPendingStatus', () => {
+  test('[populateConversation.pending]', () => {
     const channel = 3
-    const { messages } = reducer(initialState, setConvoPendingStatus(channel))
+    const action = {
+      type: populateConversation.pending.type,
+      ...mockedMeta(channel),
+    }
+    const { messages } = reducer(initialState, action)
 
     expect(messages[channel].status).toBe('pending')
   })
@@ -47,6 +52,7 @@ describe('chatsSlice', () => {
     const { messages } = reducer(state, {
       type: populateConversation.fulfilled.type,
       payload: { chats: [msg], pagination: { current: 1, pages: 2 }, channel },
+      ...mockedMeta(channel),
     })
 
     const convo = messages[channel]
@@ -58,7 +64,7 @@ describe('chatsSlice', () => {
     const channel = 3
     const { messages } = reducer(initialState, {
       type: populateConversation.rejected.type,
-      payload: channel,
+      ...mockedMeta(channel),
     })
 
     expect(messages[channel].status).toBe('failed')

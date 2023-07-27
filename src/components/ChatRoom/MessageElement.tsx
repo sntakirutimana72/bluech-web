@@ -1,16 +1,16 @@
 type Props = {
-  item: CableMessage
+  msg: CableMessage
   isSelf: boolean
 }
 
-const MessageElement = ({ item, isSelf }: Props) => (
+const MessageElement = ({ msg, isSelf }: Props) => (
   <div className={`stack-${isSelf ? 'right' : 'left'}`}>
     <div className="item-container">
       <div />
-      <div className="item-body">{item.desc}</div>
+      <div className="item-body">{msg.desc}</div>
       <div className="item-footer">
-        <span>{item.creation_date.toString()}</span>
-        { item.is_edited && <span className="edited">(Edited)</span> }
+        <span>{msg.creation_date.toString()}</span>
+        { msg.is_edited && <span className="edited">(Edited)</span> }
       </div>
     </div>
   </div>
