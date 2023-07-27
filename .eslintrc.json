@@ -57,6 +57,7 @@
     "no-shadow": "off",
     "camelcase": "off",
     "semi": "off",
+    "no-multi-assign": "off",
     "global-require": "off",
     "no-plusplus": "off",
     "@typescript-eslint/no-explicit-any": "off",
