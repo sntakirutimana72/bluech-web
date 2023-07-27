@@ -1,10 +1,16 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
+import { MessagesController } from '../../controllers/v1'
 
 type ChatsState = {
   typings: { [key: AlphaNumeric]: boolean }
-  messages: { [key: AlphaNumeric]: CableMessage[] }
+  messages: { [key: AlphaNumeric]: Conversation }
 }
+
+export const populateConversation = createAsyncThunk<Conversation, ConvoParams>(
+  'messages/conversation',
+  MessagesController.conversation,
+)
 
 const initialState: ChatsState = {
   typings: {},
@@ -29,10 +35,17 @@ const slicer = createSlice({
       const { messages } = state
 
       if (!messages[id]) {
-        messages[id] = []
+        messages[id] = { chats: [], pagination: {} }
       }
-      messages[id].push(payload)
+      messages[id].chats.push(payload)
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(populateConversation.fulfilled, (state, action) => {
+        const { chats, pagination, channel } = action.payload
+        state.messages[channel!] = { chats, pagination }
+      })
   },
 })
 
