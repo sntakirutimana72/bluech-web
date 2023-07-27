@@ -54,7 +54,6 @@ type Conversation = {
   status?: ThunkStatus
   chats: CableMessage[]
   pagination: Pagination
-  channel?: AlphaNumeric
 }
 
 type ConvoParams = {

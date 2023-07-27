@@ -29,7 +29,6 @@ describe('MessagesController', () => {
       const mockedConvo: Conversation = {
         chats: [Generic.cableMessage(11, 27)],
         pagination: Generic.paginate(),
-        channel,
       }
       AxiosMocker.resolved('get', { data: mockedConvo, status: 200 })
       expect(await MessagesController.conversation({ channel })).toEqual(mockedConvo)

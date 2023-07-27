@@ -21,7 +21,7 @@ export default class MessagesController extends ApplicationController {
       Axios
         .get(process.env.REACT_APP_BLUECH_RB_API_V1_MESSAGES!, { ...this.authorize(), params })
         .then(({ data: { chats, pagination } }) => {
-          resolve({ chats, pagination, channel: params.channel })
+          resolve({ chats, pagination })
         })
         .catch((exc) => { this.reject(exc, reject) })
     })
