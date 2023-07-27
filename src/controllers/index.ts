@@ -1,7 +1,5 @@
-import SessionController from './sessionController'
-import UsersController from './usersController'
+import UsersController from './UsersController'
 
 export {
-  SessionController,
   UsersController,
 }

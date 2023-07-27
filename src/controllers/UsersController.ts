@@ -6,11 +6,20 @@ import type { Resolve } from './applicationController'
 
 type CredentialsProps = Pick<NewUser, 'email' | 'password'>
 
-export default class SessionController extends ApplicationController {
+export default class UsersController extends ApplicationController {
   protected static onSuccess(resp: AxiosResponse, resolve: Resolve<CurrentUser>) {
     const { data: { user }, headers: { authorization } } = resp
     SessionStore.persist(authorization)
     resolve(user)
+  }
+
+  static people(page: number) {
+    return new Promise<People>((resolve, reject) => {
+      Axios
+        .get(process.env.REACT_APP_BLUECH_RB_API_PEOPLE!, { ...this.authorize(), params: { page } })
+        .then(({ data: { people, pagination } }) => { resolve({ people, pagination }) })
+        .catch((exc) => { this.reject(exc, reject) })
+    })
   }
 
   static login(creds: CredentialsProps) {
