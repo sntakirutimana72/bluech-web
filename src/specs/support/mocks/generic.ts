@@ -7,6 +7,23 @@ export default class Generic {
     }
   }
 
+  static personnel(): Personnel {
+    return {
+      id: 89,
+      name: 'tmp-personnel',
+      bio: "Hey there! I'm using bluech",
+    }
+  }
+
+  static paginate(): Pagination {
+    return {
+      previous: null,
+      current: 1,
+      next: 2,
+      pages: 2,
+    }
+  }
+
   static newUser(): NewUser {
     return {
       email: 'tmp-user@email.com',
