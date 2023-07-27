@@ -1,5 +1,7 @@
 type AlphaNumeric = string | number
 
+type NullableNumeric = number | null
+
 // Cable Objects Types
 //
 // Message
@@ -32,8 +34,9 @@ type ThunkStatus = 'idle' | 'pending' | 'loaded' | 'failed'
 type InboxPreview = {
   id: AlphaNumeric
   avatar?: string
-  unreadCount: number
+  unread: number
   preview: string
+  creation_date: Date
 }
 
 type Personnel = CableMessageAuthor & {
@@ -43,13 +46,12 @@ type Personnel = CableMessageAuthor & {
 }
 
 type Pagination = {
-  previous?: number | null
-  current?: number
-  next?: number | null
-  pages?: number
+  current?: NullableNumeric
+  pages?: NullableNumeric
 }
 
 type Conversation = {
+  status?: ThunkStatus
   chats: CableMessage[]
   pagination: Pagination
   channel?: AlphaNumeric
