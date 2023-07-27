@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { MessagesController } from '../../controllers/v1'
+import { InboxController } from '../../controllers/v1'
 
 type Counter = {
   id: AlphaNumeric
@@ -13,8 +13,8 @@ type InboxState = {
 }
 
 export const previewInbox = createAsyncThunk<InboxPreview[]>(
-  'dashboard/inbox',
-  MessagesController.inbox,
+  'home/inbox',
+  InboxController.preview,
 )
 
 const initialState: InboxState = { status: 'idle', previews: [] }
