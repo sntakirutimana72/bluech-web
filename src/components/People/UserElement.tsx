@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom'
 import { Person } from '@mui/icons-material'
 
 type Props = {
-  user: PeopleObj
+  user: Personnel
 }
 
 const UserElement = ({ user }: Props) => (
