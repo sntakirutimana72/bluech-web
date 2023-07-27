@@ -38,7 +38,7 @@ export default class Generic {
       desc: 'SOME_MSG_DESC',
       is_edited: false,
       creation_date: new Date(),
-      last_update: new Date(),
+      last_update: null,
       author: {
         id: authorId,
         name: 'SOME_AUTHOR',
