@@ -1,4 +1,9 @@
-import { screen, render, fireEvent } from '@testing-library/react'
+import {
+  screen,
+  render,
+  fireEvent,
+  cleanup,
+} from '@testing-library/react'
 import {
   BrowserRouter as Router,
   Routes,
@@ -11,6 +16,7 @@ type Props = { authenticated?: boolean }
 
 const GetStarted = () => {
   const { state } = useLocation()
+
   return (
     <div data-testid="get-started">
       { state && <span data-testid="nextTo">{ state.nextTo }</span> }
@@ -23,33 +29,37 @@ const CustomApp = ({ authenticated }: Props) => (
     <a href="/home">Go To Home</a>
     <Router>
       <Routes>
-        <Route element={<PrivateRoute redirectTo="/" />}>
-          <Route path="/home" element={<div data-testid="home" />} />
-        </Route>
         <Route element={<RedirectedRoute redirectTo="/home" authenticated={authenticated} />}>
           <Route index element={<GetStarted />} />
+        </Route>
+        <Route element={<PrivateRoute redirectTo="/" authenticated={authenticated} />}>
+          <Route path="/home" element={<div data-testid="home" />} />
         </Route>
       </Routes>
     </Router>
   </div>
 )
 
-test('&:authenticated is TRUE', async () => {
-  render(<CustomApp authenticated />)
-  expect(screen.queryByTestId('get-started')).toBeNull()
-  expect(screen.queryByTestId('home')).not.toBeNull()
-})
+afterEach(() => { cleanup() })
 
-test('&:authenticated is FALSE', async () => {
-  render(<CustomApp />)
-  expect(screen.queryByTestId('home')).toBeNull()
-  expect(screen.queryByTestId('get-started')).not.toBeNull()
-  expect(screen.queryByTestId('nextTo')).toBeNull()
-})
+describe('RedirectedRoute', () => {
+  test('&:authenticated is FALSE', () => {
+    render(<CustomApp />)
+    expect(screen.queryByTestId('home')).toBeNull()
+    expect(screen.queryByTestId('get-started')).not.toBeNull()
+    expect(screen.queryByTestId('nextTo')).toBeNull()
+  })
 
-test('&:nextTo redirect state', async () => {
-  render(<CustomApp />)
-  expect(screen.queryByTestId('nextTo')).toBeNull()
-  fireEvent.click(screen.getByText(/Go To Home/))
-  expect(screen.queryByTestId('nextTo')).not.toBeNull()
+  test('&:nextTo redirect state', () => {
+    render(<CustomApp />)
+    expect(screen.queryByTestId('nextTo')).toBeNull()
+    fireEvent.click(screen.getByText(/Go To Home/))
+    expect(screen.queryByTestId('nextTo')).toBeNull()
+  })
+
+  test('&:authenticated is TRUE', () => {
+    render(<CustomApp authenticated />)
+    expect(screen.queryByTestId('get-started')).toBeNull()
+    expect(screen.queryByTestId('home')).not.toBeNull()
+  })
 })

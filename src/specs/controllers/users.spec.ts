@@ -1,6 +1,7 @@
-import AxiosMocker from '../support/mocks/axios'
+import Spy from '../support/mocks/spy'
 import Generic from '../support/mocks/generic'
 import SessionStore from '../../store/session'
+import { Axios } from '../../helpers/requests'
 import { UsersController } from '../../controllers'
 
 afterEach(() => { localStorage.clear() })
@@ -13,12 +14,12 @@ describe('UsersController', () => {
       const mockedPeople: People = {
         people: [Generic.personnel(89)], pagination: Generic.paginate(),
       }
-      AxiosMocker.resolved('get', { data: mockedPeople, status: 200 })
+      Spy.resolved(Axios, 'get', { data: mockedPeople, status: 200 })
       expect(await UsersController.people(1)).toEqual(mockedPeople)
     })
 
     test('[rejected]', async () => {
-      AxiosMocker.rejected('get', { message: 'Unauthorized', status: 401 })
+      Spy.rejected(Axios, 'get', { message: 'Unauthorized', status: 401 })
       try {
         await UsersController.people(1)
       } catch (exc) {
@@ -31,7 +32,7 @@ describe('UsersController', () => {
     const credentials = { email: '', password: '' }
 
     test('[resolved]', async () => {
-      AxiosMocker.resolved('post', {
+      Spy.resolved(Axios, 'post', {
         data: { user: mockedUser },
         status: 200,
         headers: { authorization: 'SOME_AUTH_X_HEADER' },
@@ -42,7 +43,7 @@ describe('UsersController', () => {
     })
 
     test('[rejected]', async () => {
-      AxiosMocker.rejected('post', {
+      Spy.rejected(Axios, 'post', {
         message: 'Unauthorized',
         status: 401,
       })
@@ -62,14 +63,14 @@ describe('UsersController', () => {
 
     test('successfully logs out on server', async () => {
       expect(SessionStore.fetch()).not.toBeNull()
-      AxiosMocker.resolved('delete', { status: 200 })
+      Spy.resolved(Axios, 'delete', { status: 200 })
       await UsersController.logout()
       expect(SessionStore.fetch()).toBeNull()
     })
 
     test('fails to log out on server', async () => {
       expect(SessionStore.fetch()).not.toBeNull()
-      AxiosMocker.rejected('delete', { status: 500 })
+      Spy.rejected(Axios, 'delete', { status: 500 })
       try {
         await UsersController.logout()
       } catch {
@@ -80,7 +81,7 @@ describe('UsersController', () => {
 
   describe('#register( requirements ) ', () => {
     test('[resolved]', async () => {
-      AxiosMocker.resolved('post', {
+      Spy.resolved(Axios, 'post', {
         status: 201,
         headers: { authorization: 'SOME_AUTH_TOKEN' },
         data: { user: mockedUser },
@@ -91,7 +92,7 @@ describe('UsersController', () => {
     })
 
     test('[rejected]', async () => {
-      AxiosMocker.rejected('post', {
+      Spy.rejected(Axios, 'post', {
         status: 402,
         message: 'unprocessable entity',
       })
@@ -107,7 +108,7 @@ describe('UsersController', () => {
   describe('#signedUser()', () => {
     test('[resolved]', async () => {
       SessionStore.persist('SOME_AUTH_TOKEN')
-      AxiosMocker.resolved('get', {
+      Spy.resolved(Axios, 'get', {
         status: 200,
         headers: { authorization: 'SOME_NEW_AUTH_TOKEN' },
         data: { user: mockedUser },
@@ -118,7 +119,7 @@ describe('UsersController', () => {
 
     test('[rejected]', async () => {
       SessionStore.persist('SOME_AUTH_TOKEN')
-      AxiosMocker.rejected('get', { status: 401 })
+      Spy.rejected(Axios, 'get', { status: 401 })
 
       try {
         await UsersController.signedUser()
@@ -137,7 +138,7 @@ describe('UsersController', () => {
 
   describe('#refresh()', () => {
     test('[resolved]', async () => {
-      AxiosMocker.resolved('head', {
+      Spy.resolved(Axios, 'head', {
         status: 200,
         headers: { authorization: 'SOME_NEW_AUTH_TOKEN' },
       })
@@ -148,7 +149,7 @@ describe('UsersController', () => {
 
     test('[rejected]', async () => {
       SessionStore.persist('SOME_AUTH_TOKEN')
-      AxiosMocker.rejected('head', { status: 401 })
+      Spy.rejected(Axios, 'head', { status: 401 })
 
       try {
         await UsersController.refresh()

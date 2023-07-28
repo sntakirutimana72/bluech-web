@@ -14,14 +14,6 @@ export const SessionWrapper = ({ children }: Wrapper) => (
   </SessionProvider>
 )
 
-export const CableLessWrapper = ({ children }: Wrapper) => (
-  <SessionProvider>
-    <Provider store={reduxStore}>
-      { children }
-    </Provider>
-  </SessionProvider>
-)
-
 export const AppWrapper = ({ children }: Wrapper) => (
   <SessionProvider>
     <CableProvider>
@@ -36,10 +28,4 @@ export const sessionRender = (element: React.ReactElement) => render(element, {
   wrapper: SessionWrapper,
 })
 
-export const cableLessRender = (element: React.ReactElement) => render(element, {
-  wrapper: CableLessWrapper,
-})
-
-export const appRender = (element: React.ReactElement) => render(element, {
-  wrapper: AppWrapper,
-})
+export const appRender = (element: React.ReactElement) => render(element, { wrapper: AppWrapper })

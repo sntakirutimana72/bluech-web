@@ -1,18 +1,18 @@
-import React from 'react';
+import React from 'react'
 import {
+  act,
   screen,
   fireEvent,
   waitFor,
-  cleanup,
-} from '@testing-library/react';
-import { cableLessRender, appRender } from './support/render';
+} from '@testing-library/react'
+import Spy from './support/mocks/spy'
+import { appRender } from './support/render'
 import Generic from './support/mocks/generic'
-import AxiosMocker from './support/mocks/axios'
-import App from '../App';
+import App from '../App'
 import SessionStore from '../store/session'
+import { UsersController } from '../controllers'
 
 afterEach(() => {
-  cleanup()
   localStorage.clear()
 })
 
@@ -26,17 +26,19 @@ const CustomApp = () => (
 
 describe('renders app', () => {
   describe('When no active session', () => {
-    test('renders /', async () => {
-      cableLessRender(<App />)
+    beforeEach(() => {
+      Spy.rejected(UsersController, 'signedUser')
+    })
 
+    test('renders /', async () => {
+      act(() => { appRender(<App />) })
       await waitFor(() => {
         expect(screen.queryByText(/Join Us/)).toBeTruthy()
       })
     })
 
     test('/dashboard redirects to /', async () => {
-      cableLessRender(<CustomApp />)
-
+      act(() => { appRender(<CustomApp />) })
       await waitFor(() => {
         expect(screen.queryByText(/Join Us/)).toBeTruthy()
       })
@@ -44,31 +46,25 @@ describe('renders app', () => {
       await waitFor(() => {
         expect(screen.queryByTestId('app-name')).toBeNull()
         expect(screen.queryByText(/Join Us/)).toBeTruthy()
-      });
+      })
     })
   })
 
   describe('With active session', () => {
     beforeEach(() => {
-      SessionStore.persist('SOME_AUTH_X_TOKEN')
-      AxiosMocker.resolved('get', {
-        status: 200,
-        headers: { authorization: 'SOME_AUTH_X_TOKEN' },
-        data: { user: Generic.currentUser() },
-      })
+      SessionStore.persist('x-token')
+      Spy.resolved(UsersController, 'signedUser', Generic.currentUser())
     })
 
     test('renders /dashboard', async () => {
-      cableLessRender(<CustomApp />)
-
+      act(() => { appRender(<App />) })
       await waitFor(() => {
         expect(screen.queryByText(/Join Us/)).toBeNull()
       })
     })
 
     test('/users/login redirects to /dashboard', async () => {
-      appRender(<CustomApp />)
-
+      act(() => { appRender(<CustomApp />) })
       await waitFor(() => {
         expect(screen.queryByText(/Join Us/)).toBeNull()
       })

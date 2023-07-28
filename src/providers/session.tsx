@@ -30,27 +30,28 @@ const SessionProvider = ({ children }: Props) => {
     setCurrentUser(user)
     setAuthenticated(true)
   }, [])
+
   const logout = useCallback(() => {
     setAuthenticated(false)
     setCurrentUser(undefined)
   }, [])
+
   const restartSessionRefresh = useCallback(() => { }, [])
 
-  useEffect(() => {
-    let refreshTask: NodeJS.Timer
+  useEffect(
+    () => {
+      let refreshTask: NodeJS.Timer
 
-    if (!isInit(authenticated)) UsersController.signedUser().then(login, logout)
-    if (authenticated) {
-      refreshTask = setInterval(() => { UsersController.refresh().catch(logout) }, 3.48e+6)
-    }
-    return () => { clearInterval(refreshTask) }
-  }, [
-    currentUser,
-    authenticated,
-    login,
-    logout,
-    restartSessionRefresh,
-  ])
+      if (!isInit(authenticated)) {
+        UsersController.signedUser().then(login, logout)
+      } else if (authenticated) {
+        refreshTask = setInterval(() => { UsersController.refresh().catch(logout) }, 3.48e+6)
+      }
+      return () => { clearInterval(refreshTask) }
+    },
+    [authenticated],
+  )
+
   const session = useMemo<SessionContext>(
     () => ({
       currentUser, authenticated, login, logout, restartSessionRefresh,
@@ -63,6 +64,7 @@ const SessionProvider = ({ children }: Props) => {
       restartSessionRefresh,
     ],
   )
+
   return (
     <sessionContext.Provider value={session}>
       {children}

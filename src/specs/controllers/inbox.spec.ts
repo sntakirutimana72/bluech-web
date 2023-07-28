@@ -1,5 +1,6 @@
-import AxiosMocker from '../support/mocks/axios'
+import Spy from '../support/mocks/spy'
 import Generic from '../support/mocks/generic'
+import { Axios } from '../../helpers/requests'
 import { InboxController } from '../../controllers/v1'
 
 afterEach(() => { localStorage.clear() })
@@ -8,12 +9,12 @@ describe('InboxController', () => {
   describe('#preview()', () => {
     test('[resolved]', async () => {
       const mockedInbox = [Generic.inboxPreview(9)]
-      AxiosMocker.resolved('get', { data: { previews: mockedInbox }, status: 200 })
+      Spy.resolved(Axios, 'get', { data: { previews: mockedInbox }, status: 200 })
       expect(await InboxController.preview()).toEqual(mockedInbox)
     })
 
     test('[rejected]', async () => {
-      AxiosMocker.rejected('get', { message: 'Unauthorized', status: 401 })
+      Spy.rejected(Axios, 'get', { message: 'Unauthorized', status: 401 })
 
       try {
         await InboxController.preview()
