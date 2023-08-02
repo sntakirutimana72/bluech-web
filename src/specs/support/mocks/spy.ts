@@ -3,7 +3,7 @@ type Response = {
 }
 
 export default class Spy {
-  static resolved(obj: any, method: string, response: Response) {
+  static resolved(obj: any, method: string, response?: Response) {
     return jest.spyOn(obj, method).mockResolvedValue(response)
   }
 
