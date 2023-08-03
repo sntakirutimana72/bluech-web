@@ -6,4 +6,8 @@ export default class Spy {
   static rejected(obj: any, method: string, rejectValue?: any) {
     return jest.spyOn(obj, method).mockRejectedValue(rejectValue)
   }
+
+  static returned(obj: any, method: string, returnValue?: any) {
+    return jest.spyOn(obj, method).mockReturnValue(returnValue)
+  }
 }

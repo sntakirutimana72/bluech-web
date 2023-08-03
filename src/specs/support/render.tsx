@@ -8,13 +8,19 @@ type Wrapper = {
   children: React.ReactNode
 }
 
-export const SessionWrapper = ({ children }: Wrapper) => (
+const SessionWrapper = ({ children }: Wrapper) => (
   <SessionProvider>
     { children }
   </SessionProvider>
 )
 
-export const AppWrapper = ({ children }: Wrapper) => (
+const ReduxWrapper = ({ children }: Wrapper) => (
+  <Provider store={reduxStore}>
+    { children }
+  </Provider>
+)
+
+const AppWrapper = ({ children }: Wrapper) => (
   <SessionProvider>
     <CableProvider>
       <Provider store={reduxStore}>
@@ -26,6 +32,10 @@ export const AppWrapper = ({ children }: Wrapper) => (
 
 export const sessionRender = (element: React.ReactElement) => render(element, {
   wrapper: SessionWrapper,
+})
+
+export const reduxRender = (element: React.ReactElement) => render(element, {
+  wrapper: ReduxWrapper,
 })
 
 export const appRender = (element: React.ReactElement) => render(element, { wrapper: AppWrapper })
