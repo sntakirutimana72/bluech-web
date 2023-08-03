@@ -8,15 +8,30 @@ import { peopleSelector } from '../../redux/effects/peopleEffects'
 import { populatePeople } from '../../redux/features/peopleSlice'
 
 const People = () => {
-  const [page] = useState(1)
-  const { status, people } = useAppSelector(peopleSelector)
+  const {
+    status,
+    people,
+    pagination: { current },
+  } = useAppSelector(peopleSelector)
+  const [page] = useState(current)
   const dispatch = useAppDispatch()
 
-  useEffect(() => {
-    if (status === 'idle') {
-      dispatch(populatePeople(page))
+  const refresh = () => {
+    if (['failed', 'loaded'].includes(status)) {
+      dispatch(populatePeople(page || 1))
     }
-  }, [status, page, dispatch])
+  }
+
+  useEffect(
+    () => {
+      if (status === 'idle') {
+        dispatch(populatePeople(1))
+      } else if (page && page !== current && status !== 'pending') {
+        dispatch(populatePeople(page))
+      }
+    },
+    [page],
+  )
 
   switch (status) {
     case 'loaded':
@@ -26,7 +41,11 @@ const People = () => {
         </div>
       )
     case 'failed':
-      return <button type="button" aria-label="Refresh"><Refresh /></button>
+      return (
+        <button type="button" aria-label="Refresh" onClick={refresh}>
+          <Refresh />
+        </button>
+      )
     default:
       return <LoaderOverlay />
   }

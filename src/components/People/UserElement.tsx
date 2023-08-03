@@ -9,10 +9,10 @@ const UserElement = ({ user }: Props) => (
   <NavLink to={`/dashboard/chats/${user.id}`} className="people-item" title={user.name}>
     <div className="people-item-avatar">
       {
-          user.avatar
-            ? <img src={user.avatar} alt={user.name} />
-            : <Person />
-        }
+        user.avatar
+          ? <img src={user.avatar} alt={user.name} />
+          : <Person />
+      }
     </div>
     <div className="people-item-body">
       <h3>{user.name}</h3>
