@@ -27,7 +27,7 @@ const Component = () => (
   </BrowserRouter>
 )
 
-test('contains 3 text & 1 submit inputs', () => {
+test('contains 2 text, 1 password & 1 submit inputs', () => {
   render(<Component />)
   expect(screen.getAllByRole('textbox')).toHaveLength(2)
   expect(screen.getByPlaceholderText(/Password/)).toBeInTheDocument()
@@ -38,8 +38,7 @@ test('displays errors occur while registering', async () => {
   Spy.rejected(UsersController, 'register', 'Oops!')
   render(<Component />)
 
-  const signupButton = screen.getByRole('button', { name: 'Sign up' })
-  fireEvent.click(signupButton)
+  fireEvent.click(screen.getByRole('button', { name: 'Sign up' }))
   await waitFor(() => {
     expect(screen.queryByText(/Oops!/)).toBeTruthy()
   })
