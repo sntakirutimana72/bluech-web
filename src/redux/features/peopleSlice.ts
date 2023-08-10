@@ -1,15 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { UsersController } from '../../controllers'
 
-type PeopleState = {
+type PeopleState = People & {
   status: ThunkStatus
-  people: Personnel[]
-  pagination: Pagination
 }
 
 export const populatePeople = createAsyncThunk<People, number>(
   'home/people',
-  UsersController.people,
+  (page: number) => UsersController.people(page),
 )
 
 const initialState: PeopleState = { status: 'idle', people: [], pagination: {} }

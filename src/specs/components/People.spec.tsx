@@ -1,6 +1,5 @@
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom'
 import {
-  waitFor,
   fireEvent,
   screen,
   act,
@@ -10,7 +9,7 @@ import Spy from '../support/mocks/spy'
 import Generic from '../support/mocks/generic'
 import { reduxRender } from '../support/render'
 import PeopleList from '../../components/People'
-import * as PeopleSelectors from '../../redux/effects/peopleEffects'
+import { UsersController } from '../../controllers'
 
 const Component = () => (
   <Router>
@@ -21,46 +20,50 @@ const Component = () => (
   </Router>
 )
 
+const personnels = [
+  Generic.personnel(18),
+  Generic.personnel(13),
+  Generic.personnel(7),
+]
+
 afterEach(() => {
-  localStorage.clear()
   cleanup()
+  localStorage.clear()
 })
 
 test('renders without people', async () => {
+  Spy.rejected(UsersController, 'people')
   await act(async () => { reduxRender(<Component />) })
 
   expect(screen.queryByTestId('ball-loader')).toBeFalsy()
   expect(screen.queryByRole('button', { name: 'Refresh' })).toBeTruthy()
 })
 
-test('refresh button behavior', async () => {
-  reduxRender(<Component />)
+test('renders people after a refresh', async () => {
+  const spyware = Spy.rejected(UsersController, 'people')
+  await act(async () => { reduxRender(<Component />) })
 
-  act(() => {
+  spyware.mockResolvedValue({
+    people: [personnels[0]],
+    pagination: { current: 1, pages: 1 },
+  })
+
+  expect(screen.queryAllByRole('link')).toHaveLength(0)
+  await act(async () => {
     fireEvent.click(screen.getByRole('button', { name: 'Refresh' }))
   })
-  await waitFor(() => {
-    expect(screen.queryByTestId('ball-loader')).toBeTruthy()
-  })
+  expect(screen.queryAllByRole('link')).toHaveLength(1)
 })
 
 test('renders with people', async () => {
-  Spy.returned(PeopleSelectors, 'peopleSelector', {
-    status: 'loaded',
-    people: [
-      Generic.personnel(17),
-      Generic.personnel(13),
-      Generic.personnel(7),
-    ],
-    pagination: {
-      current: 1,
-      pages: 2,
-    },
+  Spy.resolved(UsersController, 'people', {
+    people: personnels,
+    pagination: { current: 1, pages: 2 },
   })
-  reduxRender(<Component />)
+  await act(async () => { reduxRender(<Component />) })
 
   const links = screen.queryAllByRole('link')
-  expect(links).toHaveLength(3)
+  expect(links).toHaveLength(personnels.length)
   fireEvent.click(links[0])
   expect(screen.getByText(/Chatroom/)).toBeInTheDocument()
 })

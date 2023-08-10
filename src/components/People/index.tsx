@@ -16,18 +16,14 @@ const People = () => {
   const [page] = useState(current)
   const dispatch = useAppDispatch()
 
-  const refresh = () => {
-    if (['failed', 'loaded'].includes(status)) {
-      dispatch(populatePeople(page || 1))
-    }
+  const reloadRepository = () => {
+    dispatch(populatePeople(page || 1))
   }
 
   useEffect(
     () => {
-      if (status === 'idle') {
-        dispatch(populatePeople(1))
-      } else if (page && page !== current && status !== 'pending') {
-        dispatch(populatePeople(page))
+      if (status === 'idle' || (page && page !== current && status !== 'pending')) {
+        reloadRepository()
       }
     },
     [page],
@@ -42,7 +38,7 @@ const People = () => {
       )
     case 'failed':
       return (
-        <button type="button" aria-label="Refresh" onClick={refresh}>
+        <button type="button" aria-label="Refresh" onClick={reloadRepository}>
           <Refresh />
         </button>
       )
