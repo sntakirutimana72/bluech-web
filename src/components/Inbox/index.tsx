@@ -11,9 +11,13 @@ const Inbox = () => {
   const { status, previews } = useAppSelector(inboxSelector)
   const dispatch = useAppDispatch()
 
+  const reloadPreviews = () => {
+    dispatch(previewInbox())
+  }
+
   useEffect(() => {
     if (status === 'idle') {
-      dispatch(previewInbox())
+      reloadPreviews()
     }
   }, [status, dispatch])
 
@@ -25,7 +29,11 @@ const Inbox = () => {
         </div>
       )
     case 'failed':
-      return <button type="button" aria-label="Refresh"><Refresh /></button>
+      return (
+        <button type="button" aria-label="Refresh" onClick={reloadPreviews}>
+          <Refresh />
+        </button>
+      )
     default:
       return <LoaderOverlay />
   }

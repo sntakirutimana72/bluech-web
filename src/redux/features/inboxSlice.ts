@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { InboxController } from '../../controllers/v1'
+import { now } from '../../helpers/utils'
 
 type Counter = {
   id: AlphaNumeric
@@ -14,7 +15,7 @@ type InboxState = {
 
 export const previewInbox = createAsyncThunk<InboxPreview[]>(
   'home/inbox',
-  InboxController.preview,
+  () => InboxController.preview(),
 )
 
 const initialState: InboxState = { status: 'idle', previews: [] }
@@ -32,7 +33,9 @@ const slicer = createSlice({
       )
 
       if (!inbox) {
-        previews.push({ id: dataId, unread: 1, preview })
+        previews.push({
+          id: dataId, unread: 1, preview, creation_date: now(),
+        })
       } else {
         inbox.unread++
         inbox.preview = preview
@@ -47,10 +50,13 @@ const slicer = createSlice({
       )
 
       if (!inbox) {
-        previews.push({ id: dataId, preview, unread: 0 })
+        previews.push({
+          id: dataId, unread: 0, preview, creation_date: now(),
+        })
       } else {
         inbox.unread = 0
         inbox.preview = preview
+        inbox.creation_date = now()
       }
     },
   },
@@ -60,8 +66,7 @@ const slicer = createSlice({
         state.status = 'pending'
       })
       .addCase(previewInbox.fulfilled, (_, action) => ({
-        status: 'loaded',
-        previews: action.payload,
+        previews: action.payload, status: 'loaded',
       }))
       .addCase(previewInbox.rejected, (state) => {
         state.status = 'failed'
