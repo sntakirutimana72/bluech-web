@@ -8,15 +8,16 @@ type ChannelParams = ChannelParamsMap & CableMessageAuthor & {
 }
 
 type ChannelMessage = {
-  type: 'typing' | 'message'
   [key: string]: any
 }
 
 export type TypingMessage = ChannelMessage & {
+  type: 'typing'
   author: CableMessageAuthor
 }
 
 export type ChatMessage = ChannelMessage & {
+  type: 'message'
   message: CableMessage
 }
 
