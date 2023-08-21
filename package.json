@@ -2,6 +2,10 @@
   "name": "bluech-web",
   "version": "0.1.0",
   "private": true,
+  "repository": "git@github.com:sntakirutimana72/bluech-web.git",
+  "author": "Steve <sntakirutimana72@gmail.com>",
+  "license": "MIT",
+
   "dependencies": {
     "@anycable/core": "^0.7.1",
     "@anycable/web": "^0.7.0",
