@@ -17,9 +17,7 @@ export default class Generic {
 
   static paginate(): Pagination {
     return {
-      previous: null,
       current: 1,
-      next: 2,
       pages: 2,
     }
   }
@@ -51,6 +49,7 @@ export default class Generic {
       id,
       preview: 'SOME_PREVIEW',
       unread: 0,
+      creation_date: new Date(),
     }
   }
 }
