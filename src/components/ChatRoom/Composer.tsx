@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { Send } from '@mui/icons-material'
-import { useCable } from '../../hooks'
+import { useCable, useAppDispatch } from '../../hooks'
+import { nilFunc } from '../../helpers/utils'
 import { mapMessage } from '../../redux/features/chatsSlice'
 import { ChatsChannel } from '../../channels'
 import { MessagesController } from '../../controllers/v1'
@@ -8,14 +9,14 @@ import { Text } from '../Elements'
 
 type Props = React.HTMLProps<HTMLFormElement> & {
   channelId: AlphaNumeric
-  currentUser: CurrentUser
 }
 
-const Composer = ({ channelId, currentUser, ...props }: Props) => {
+const Composer = ({ channelId, ...props }: Props) => {
   const [value, setValue] = useState('')
   const [isTyping, setIsTyping] = useState(false)
   const { cable } = useCable()
-  const { id, name } = currentUser
+  const channelRef = useRef<ChatsChannel>()
+  const dispatch = useAppDispatch()
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.currentTarget.value)
@@ -24,10 +25,12 @@ const Composer = ({ channelId, currentUser, ...props }: Props) => {
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    if (value.length) {
+    if (value) {
       MessagesController
         .create({ desc: value, recipient_id: channelId })
-        .then(mapMessage, () => {})
+        .then((msg) => {
+          dispatch(mapMessage({ ...msg, recipientId: channelId }))
+        }, nilFunc)
       setValue('')
     }
   }
@@ -37,15 +40,18 @@ const Composer = ({ channelId, currentUser, ...props }: Props) => {
       let resetTyping: NodeJS.Timer
 
       if (isTyping && cable) {
-        const channel = cable.subscribe(new ChatsChannel({ id, name }))
-        channel
-          .typing(channelId)
-          .then(() => {}, () => {})
+        if (!channelRef.current) {
+          channelRef.current = cable.subscribe(new ChatsChannel())
+        }
+        channelRef.current?.typing(channelId).then(nilFunc, nilFunc)
         resetTyping = setTimeout(() => { setIsTyping(false) }, 15000)
       }
-      return () => { clearTimeout(resetTyping) }
+      return () => {
+        clearTimeout(resetTyping)
+        channelRef.current?.leave()
+      }
     },
-    [isTyping, channelId, cable, id, name],
+    [isTyping, cable],
   )
 
   return (
@@ -61,7 +67,7 @@ const Composer = ({ channelId, currentUser, ...props }: Props) => {
         }}
         label={{ val: 'Message', className: 'hidden' }}
       />
-      <button type="submit">
+      <button type="submit" title="Send">
         <Send />
       </button>
     </form>

@@ -7,10 +7,10 @@ const MessageElement = ({ msg, isSelf }: Props) => (
   <div className={`stack-${isSelf ? 'right' : 'left'}`}>
     <div className="item-container">
       <div />
-      <div className="item-body">{msg.desc}</div>
+      <p className="item-body">{msg.desc}</p>
       <div className="item-footer">
-        <span>{msg.creation_date.toString()}</span>
-        { msg.is_edited && <span className="edited">(Edited)</span> }
+        <span>{msg.createdAt}</span>
+        { msg.isEdited && <span className="edited">(Edited)</span> }
       </div>
     </div>
   </div>

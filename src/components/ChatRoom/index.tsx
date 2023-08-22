@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { uid } from 'uid'
 import Composer from './Composer'
@@ -10,48 +10,53 @@ import { userSelector } from '../../redux/effects/peopleEffects'
 
 const ChatRoom = () => {
   const { currentUser } = useSession()
-  const { id: channelId } = useParams()
+  const { channelId } = useParams()
   const partner = useAppSelector(userSelector(channelId!))
   const { conversation, isTyping } = useAppSelector(chatsSelector(channelId!))
   const dispatch = useAppDispatch()
 
-  const { chats, pagination, status } = conversation
-  const { current: currentPage, pages } = pagination
-  const [page] = useState(currentPage)
+  const {
+    status,
+    chats,
+    pagination: { current, pages },
+  } = conversation
+  const [page] = useState(current)
 
   useEffect(
     () => {
       if (!status) {
-        dispatch(populateConversation({ channel: channelId! }))
-      } else if (page && pages && page !== currentPage && page <= pages && status !== 'pending') {
-        dispatch(populateConversation({ channel: channelId!, page }))
+        dispatch(populateConversation({ channelId: channelId! }))
+      } else if (page && pages && page !== current && page <= pages && status !== 'pending') {
+        dispatch(populateConversation({ channelId: channelId!, page }))
       }
     },
     [channelId, page, status],
   )
 
+  const ChatsList = useMemo(() => (
+    <div className="chats-list-overlay">
+      <div className="chats-list">
+        { chats.map((msg) => (
+          <MessageElement key={uid()} msg={msg} isSelf={msg.author.id === currentUser!.id} />
+        )) }
+      </div>
+    </div>
+  ), [chats])
+
+  const Prompt = useMemo(() => (
+    <Composer channelId={channelId!} className="chats-room-composer" />
+  ), [channelId])
+
   return (
     <div className="chats-room">
       <nav className="chats-room-nav">
-        <h2>
-          Room #:
-          {channelId}
-        </h2>
+        <h2>{partner?.name}</h2>
       </nav>
-
-      <div className="chats-list-overlay">
-        <div className="chats-list">
-          { chats && chats.map((msg) => (
-            <MessageElement key={uid()} msg={msg} isSelf={msg.author.id === currentUser!.id} />
-          )) }
-        </div>
-      </div>
-
+      {ChatsList}
       { isTyping && (
         <div className="is-typing">{`${partner!.name} is typing..`}</div>
       ) }
-
-      <Composer channelId={channelId!} currentUser={currentUser!} className="chats-room-composer" />
+      {Prompt}
     </div>
   )
 }
