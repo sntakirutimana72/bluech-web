@@ -3,8 +3,8 @@ import { ChannelEvents } from '@anycable/core'
 import type { MessageMeta } from '@anycable/core'
 import type { ChannelParamsMap } from '@anycable/core/channel'
 
-type ChannelParams = ChannelParamsMap & CableMessageAuthor & {
-  channel_id?: AlphaNumeric
+type ChannelParams = ChannelParamsMap & {
+  //
 }
 
 type ChannelMessage = {
@@ -27,11 +27,8 @@ interface Events extends ChannelEvents<any> {
 }
 
 export default class ApplicationChannel extends Channel<ChannelParams, any, Events> {
-  async typing(channel: AlphaNumeric) {
-    return this.perform('typing', {
-      channel,
-      author: { id: this.params.id, name: this.params.name },
-    })
+  async typing(channelId: AlphaNumeric) {
+    return this.perform('typing', { channelId })
   }
 
   leave() {
