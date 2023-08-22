@@ -25,7 +25,7 @@ const App = () => {
           <Route path="dashboard" element={<Dashboard />}>
             <Route index element={<Inbox />} />
             <Route path="people" element={<People />} />
-            <Route path="chats/:id" element={<ChatRoom />} />
+            <Route path="chats/:channelId" element={<ChatRoom />} />
           </Route>
           <Route path="users/logout" element={<Logout logout={logout} />} />
         </Route>
