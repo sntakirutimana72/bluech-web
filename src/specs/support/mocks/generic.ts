@@ -1,16 +1,22 @@
+import { now } from '../../../helpers/utils'
+
 export default class Generic {
+  protected static msgIdCounter = 0
+
+  protected static userIdCounter = 0
+
   static currentUser(): CurrentUser {
     return {
-      id: 80,
-      email: 'tmp-user@email.com',
-      name: 'tmp-user',
+      id: ++this.userIdCounter,
+      email: 'tmpUser@email.com',
+      name: 'tmpUser',
     }
   }
 
-  static personnel(id: AlphaNumeric): Personnel {
+  static personnel(id?: AlphaNumeric): Personnel {
     return {
-      id,
-      name: 'tmp-personnel',
+      id: id || ++this.userIdCounter,
+      name: 'tmpPersonnel',
       bio: "Hey there! I'm using bluech",
     }
   }
@@ -24,32 +30,37 @@ export default class Generic {
 
   static newUser(): NewUser {
     return {
-      email: 'tmp-user@email.com',
-      name: 'tmp-user',
+      email: 'tmpUser@email.com',
+      name: 'tmpUser',
       password: '',
     }
   }
 
-  static cableMessage(id: AlphaNumeric, authorId: AlphaNumeric): CableMessage {
+  static cableMessage(id?: AlphaNumeric, authorId?: AlphaNumeric): CableMessage {
     return {
-      id,
-      desc: 'SOME_MSG_DESC',
-      is_edited: false,
-      creation_date: new Date(),
-      last_update: null,
+      id: id || ++this.msgIdCounter,
+      desc: 'tmpDescription',
+      isEdited: false,
+      createdAt: now().toISOString(),
+      updatedAt: null,
       author: {
-        id: authorId,
-        name: 'SOME_AUTHOR',
+        id: authorId || ++this.userIdCounter,
+        name: 'tmpAuthor',
       },
     }
   }
 
-  static inboxPreview(id: AlphaNumeric): InboxPreview {
+  static inboxPreview(id?: AlphaNumeric): InboxPreview {
     return {
-      id,
-      preview: 'SOME_PREVIEW',
+      id: id || ++this.userIdCounter,
+      preview: 'tmpPreview',
       unread: 0,
-      creation_date: new Date(),
+      createdAt: now().toISOString(),
     }
+  }
+
+  static resetAll() {
+    this.userIdCounter = 0
+    this.msgIdCounter = 0
   }
 }
