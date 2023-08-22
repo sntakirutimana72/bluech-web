@@ -2,18 +2,16 @@ type AlphaNumeric = string | number
 
 type NullableNumeric = number | null
 
-// Cable Objects Types
-//
-// Message
 type CableMessage = {
   id: AlphaNumeric
   desc: string
-  is_edited: boolean
-  creation_date: Date
-  last_update: Date | null
+  isEdited: boolean
+  createdAt: string
+  updatedAt: string | null
   author: CableMessageAuthor
+  recipientId?: AlphaNumeric
 }
-// Message Author
+
 type CableMessageAuthor = {
   id: AlphaNumeric
   name: string
@@ -36,7 +34,7 @@ type InboxPreview = {
   avatar?: string
   unread: number
   preview: string
-  creation_date: Date
+  createdAt: string
 }
 
 type Personnel = CableMessageAuthor & {
@@ -58,7 +56,7 @@ type Conversation = {
 
 type ConvoParams = {
   page?: number
-  channel: AlphaNumeric
+  channelId: AlphaNumeric
 }
 
 type People = {
