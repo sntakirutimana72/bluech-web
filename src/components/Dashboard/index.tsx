@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Outlet } from 'react-router-dom'
 import { Unsubscribe } from 'nanoevents'
 import {
@@ -22,21 +22,20 @@ const Dashboard = () => {
   const { cable } = useCable()
   const { inboxStatus, peopleStatus } = useAppSelector(statusesSelector)
   const dispatch = useAppDispatch()
+  const channelRef = useRef<ChatsChannel>()
 
-  const handleTyping = (msg: TypingMessage) => {
-    const { author } = msg
-    userTyping(author.id)
+  const handleTyping = ({ author }: TypingMessage) => {
+    dispatch(userTyping(author.id))
   }
-  const handleMessage = (msg: ChatMessage) => {
-    const { message } = msg
-    mapMessage(message)
+
+  const handleMessage = ({ message } : ChatMessage) => {
+    dispatch(mapMessage(message))
   }
 
   useEffect(
     () => {
       const readiness: ThunkStatus[] = ['failed', 'loaded']
       let unbinders: Unsubscribe[]
-      let channel: ChatsChannel
 
       if (!ready && inboxStatus === 'idle' && peopleStatus === 'idle') {
         dispatch(populatePeople(1))
@@ -46,33 +45,21 @@ const Dashboard = () => {
         && readiness.includes(inboxStatus)
         && readiness.includes(peopleStatus)
       ) {
-        if (cable) {
-          const { id, name } = currentUser!
-          channel = cable.subscribe(new ChatsChannel({ id, name }))
+        if (cable && !channelRef.current) {
+          channelRef.current = cable.subscribe(new ChatsChannel())
           unbinders = [
-            channel.on('typing', handleTyping),
-            channel.on('message', handleMessage),
-            channel.on('close', () => {}),
-            channel.on('disconnect', () => {}),
+            channelRef.current.on('typing', handleTyping),
+            channelRef.current.on('message', handleMessage),
           ]
         }
         setReady(true)
       }
       return () => {
-        if (channel) {
-          unbinders.forEach((cb) => { cb() })
-          channel.leave()
-        }
+        unbinders?.forEach((cb) => { cb() })
+        channelRef.current?.leave()
       }
     },
-    [
-      ready,
-      inboxStatus,
-      peopleStatus,
-      cable,
-      currentUser,
-      dispatch,
-    ],
+    [inboxStatus, peopleStatus, cable],
   )
 
   return ready ? (
