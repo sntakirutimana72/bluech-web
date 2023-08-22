@@ -5,5 +5,5 @@ export const peopleSelector = (state: RootState) => state.people
 
 export const userSelector = (uid: AlphaNumeric) => createSelector(
   [peopleSelector],
-  (state) => state.people.find((user) => user.id === uid),
+  (state) => state.people.find(({ id }) => id.toString() === uid),
 )

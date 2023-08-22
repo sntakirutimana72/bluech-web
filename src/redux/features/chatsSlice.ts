@@ -9,7 +9,7 @@ type ChatsState = {
 
 export const populateConversation = createAsyncThunk<Conversation, ConvoParams>(
   'channels/conversation',
-  MessagesController.conversation,
+  (params: ConvoParams) => MessagesController.conversation(params),
 )
 
 const initialState: ChatsState = {
@@ -33,32 +33,33 @@ const slicer = createSlice({
     },
     mapMessage(state, action: PayloadAction<CableMessage>) {
       const { payload } = action
-      const { author: { id } } = payload
+      const { author: { id }, recipientId } = payload
+      const targetId = recipientId || id
       const { messages } = state
 
-      if (!messages[id]) {
-        messages[id] = { chats: [], pagination: {} }
+      if (!messages[targetId]) {
+        messages[targetId] = { chats: [], pagination: {} }
       }
-      messages[id].chats.push(payload)
+      messages[targetId].chats.push(payload)
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(populateConversation.pending, (state, action) => {
         const { messages } = state
-        const { meta: { arg: { channel } } } = action
-        const convo = (messages[channel] ||= { chats: [], pagination: {} })
+        const { meta: { arg: { channelId } } } = action
+        const convo = (messages[channelId] ||= { chats: [], pagination: {} })
         convo.status = 'pending'
       })
       .addCase(populateConversation.fulfilled, (state, action) => {
         const { chats, pagination } = action.payload
-        const { meta: { arg: { channel } } } = action
-        state.messages[channel] = { chats, pagination, status: 'loaded' }
+        const { meta: { arg: { channelId } } } = action
+        state.messages[channelId] = { chats, pagination, status: 'loaded' }
       })
       .addCase(populateConversation.rejected, (state, action) => {
         const { messages } = state
-        const { meta: { arg: { channel } } } = action
-        const convo = (messages[channel] ||= { chats: [], pagination: {} })
+        const { meta: { arg: { channelId } } } = action
+        const convo = (messages[channelId] ||= { chats: [], pagination: {} })
         convo.status = 'failed'
       })
   },

@@ -28,36 +28,33 @@ const slicer = createSlice({
       const { previews } = state
       const { payload: { id: dataId, preview } } = action
 
-      const inbox = previews.find(
+      let inbox = previews.find(
         ({ id }) => id === dataId,
       )
 
       if (!inbox) {
-        previews.push({
-          id: dataId, unread: 1, preview, creation_date: now(),
-        })
-      } else {
-        inbox.unread++
-        inbox.preview = preview
+        inbox = { id: dataId, unread: 0 } as InboxPreview
+        previews.push(inbox)
       }
+      inbox.unread++
+      inbox.preview = preview
+      inbox.createdAt = now().toISOString()
     },
     resetUCounter(state, action: PayloadAction<Counter>) {
       const { previews } = state
       const { payload: { id: dataId, preview } } = action
 
-      const inbox = previews.find(
+      let inbox = previews.find(
         ({ id }) => id === dataId,
       )
 
       if (!inbox) {
-        previews.push({
-          id: dataId, unread: 0, preview, creation_date: now(),
-        })
-      } else {
-        inbox.unread = 0
-        inbox.preview = preview
-        inbox.creation_date = now()
+        inbox = { id: dataId } as InboxPreview
+        previews.push(inbox)
       }
+      inbox.unread = 0
+      inbox.preview = preview
+      inbox.createdAt = now().toISOString()
     },
   },
   extraReducers: (builder) => {

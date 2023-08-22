@@ -5,8 +5,8 @@ const getState = (state: RootState) => state.chats
 
 export const chatsSelector = (ownerId: AlphaNumeric) => createSelector(
   [getState],
-  (chats) => ({
-    conversation: chats.messages[ownerId],
-    isTyping: chats.typings[ownerId],
+  ({ messages, typings }) => ({
+    conversation: messages[ownerId] || { chats: [], pagination: {} },
+    isTyping: typings[ownerId],
   }),
 )
