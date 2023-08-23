@@ -1,5 +1,4 @@
 import {
-  waitFor,
   act,
   screen,
   fireEvent,
@@ -46,51 +45,46 @@ afterEach(() => {
   localStorage.clear()
   cleanup()
 })
+afterAll(() => { Generic.resetAll() })
 
 describe('SessionProvider', () => {
-  test('without active session [mounted]', async () => {
+  test('renders without active session', async () => {
     Spy.rejected(UsersController, 'signedUser')
     await act(async () => { sessionRender(<CustomApp />) })
 
     expect(screen.getByText(/Anonymous/)).toBeInTheDocument()
   })
 
-  test('remember session', async () => {
+  test('remembers session', async () => {
     Spy.resolved(UsersController, 'signedUser', mockedUser)
     await act(async () => { sessionRender(<CustomApp />) })
 
-    await waitFor(() => {
-      expect(screen.queryByText(/Anonymous/)).toBeNull()
-      expect(screen.queryByTestId('nickname')).not.toBeNull()
-      expect(screen.queryByTestId('email')).not.toBeNull()
-    })
+    expect(screen.queryByText(/Anonymous/)).not.toBeInTheDocument()
+    expect(screen.getByTestId('nickname')).toBeInTheDocument()
+    expect(screen.getByTestId('email')).toBeInTheDocument()
   })
 
-  test('&:login', async () => {
+  test('reflects session after logging in', async () => {
     Spy.rejected(UsersController, 'signedUser')
     await act(async () => { sessionRender(<CustomApp />) })
 
     expect(screen.getByText(/Anonymous/)).toBeInTheDocument()
     fireEvent.click(screen.getByText(/Sign in/))
-    await waitFor(() => {
-      expect(screen.queryByText(/Anonymous/)).toBeNull()
-      expect(screen.queryByTestId('nickname')).not.toBeNull()
-      expect(screen.queryByTestId('email')).not.toBeNull()
-    })
+    expect(screen.queryByText(/Anonymous/)).not.toBeInTheDocument()
+    expect(screen.getByTestId('nickname')).toBeInTheDocument()
+    expect(screen.getByTestId('email')).toBeInTheDocument()
   })
 
-  test(':logout', async () => {
+  test('re-renders after logging out', async () => {
     Spy.resolved(UsersController, 'signedUser', mockedUser)
     await act(async () => { sessionRender(<CustomApp />) })
 
-    await waitFor(async () => {
-      expect(screen.queryByText(/Anonymous/)).toBeNull()
-      expect(screen.queryByText(mockedUser.email)).not.toBeNull()
-    })
+    expect(screen.queryByText(/Anonymous/)).not.toBeInTheDocument()
+    expect(screen.getByText(mockedUser.email)).toBeInTheDocument()
+
     fireEvent.click(screen.getByText(/Logout/))
-    await waitFor(() => {
-      expect(screen.queryByText(/Anonymous/)).not.toBeNull()
-      expect(screen.queryByText(mockedUser.email)).toBeNull()
-    })
+
+    expect(screen.queryByText(mockedUser.email)).not.toBeInTheDocument()
+    expect(screen.getByText(/Anonymous/)).toBeInTheDocument()
   })
 })

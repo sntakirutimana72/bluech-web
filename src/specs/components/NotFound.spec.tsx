@@ -1,29 +1,24 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import {
-  fireEvent, render, screen, waitFor,
-} from '@testing-library/react'
+import { MemoryRouter as Router, Routes, Route } from 'react-router-dom'
+import { fireEvent, render, screen } from '@testing-library/react'
 import NotFound from '../../components/NotFound'
 
 const Component = () => (
-  <BrowserRouter>
+  <Router>
     <Routes>
       <Route index element={<NotFound />} />
       <Route path="dashboard" element={<div>DASHBOARD</div>} />
     </Routes>
-  </BrowserRouter>
+  </Router>
 )
 
 test('renders successfully', () => {
   render(<Component />)
-  expect(screen).toMatchSnapshot()
-  expect(screen.getByRole('link', { name: 'Home' }))
+  expect(screen.getByRole('link', { name: 'Home' })).toBeInTheDocument()
 })
 
 test('redirects to dashboard', async () => {
   render(<Component />)
   fireEvent.click(screen.getByRole('link'))
-  await waitFor(() => {
-    expect(screen.queryByRole('link', { name: 'Home' })).toBeNull()
-    expect(screen.queryByText(/dashboard/i)).toBeTruthy()
-  })
+  expect(screen.queryByRole('link', { name: 'Home' })).not.toBeInTheDocument()
+  expect(screen.getByText(/dashboard/i)).toBeInTheDocument()
 })

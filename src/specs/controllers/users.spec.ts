@@ -5,6 +5,7 @@ import { Axios } from '../../helpers/requests'
 import { UsersController } from '../../controllers'
 
 afterEach(() => { localStorage.clear() })
+afterAll(() => { Generic.resetAll() })
 
 describe('UsersController', () => {
   const mockedUser = Generic.currentUser()
@@ -12,7 +13,7 @@ describe('UsersController', () => {
   describe('#people( page )', () => {
     test('[resolved]', async () => {
       const mockedPeople: People = {
-        people: [Generic.personnel(89)], pagination: Generic.paginate(),
+        people: [Generic.personnel()], pagination: Generic.paginate(),
       }
       Spy.resolved(Axios, 'get', { data: mockedPeople, status: 200 })
       expect(await UsersController.people(1)).toEqual(mockedPeople)

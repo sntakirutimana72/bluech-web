@@ -4,11 +4,12 @@ import { Axios } from '../../helpers/requests'
 import { InboxController } from '../../controllers/v1'
 
 afterEach(() => { localStorage.clear() })
+afterAll(() => { Generic.resetAll() })
 
 describe('InboxController', () => {
   describe('#preview()', () => {
     test('[resolved]', async () => {
-      const mockedInbox = [Generic.inboxPreview(9)]
+      const mockedInbox = [Generic.inboxPreview()]
       Spy.resolved(Axios, 'get', { data: { previews: mockedInbox }, status: 200 })
       expect(await InboxController.preview()).toEqual(mockedInbox)
     })

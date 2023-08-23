@@ -21,27 +21,28 @@ const Component = () => (
 )
 
 const previews = [
-  Generic.inboxPreview(21),
-  Generic.inboxPreview(19),
-  Generic.inboxPreview(7),
+  Generic.inboxPreview(),
+  Generic.inboxPreview(),
+  Generic.inboxPreview(),
 ]
 
 afterEach(() => {
   cleanup()
   localStorage.clear()
 })
+afterAll(() => { Generic.resetAll() })
 
 test('renders without inbox previews', async () => {
   Spy.rejected(InboxController, 'preview')
   await act(async () => { reduxRender(<Component />) })
-  expect(screen.queryByRole('button', { name: 'Refresh' })).toBeTruthy()
+  expect(screen.getByRole('button', { name: 'Refresh' })).toBeInTheDocument()
 })
 
 test('refresh button behavior', async () => {
-  const spyware = Spy.rejected(InboxController, 'preview')
+  const agent = Spy.rejected(InboxController, 'preview')
   await act(async () => { reduxRender(<Component />) })
 
-  spyware.mockResolvedValue(previews)
+  agent.mockResolvedValue(previews)
   await act(async () => {
     fireEvent.click(screen.getByRole('button', { name: 'Refresh' }))
   })
@@ -50,6 +51,7 @@ test('refresh button behavior', async () => {
 
 test('renders previews', async () => {
   Spy.resolved(InboxController, 'preview', previews)
+
   await act(async () => { reduxRender(<Component />) })
 
   const links = screen.queryAllByRole('link')

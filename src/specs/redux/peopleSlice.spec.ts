@@ -9,6 +9,7 @@ const initialState: ReturnType<typeof reducer> = {
 }
 
 afterEach(() => { localStorage.clear() })
+afterAll(() => { Generic.resetAll() })
 
 describe('peopleSlice', () => {
   test('[populatePeople.pending]', () => {
@@ -26,7 +27,7 @@ describe('peopleSlice', () => {
 
     const { status, people } = reducer(initialState, {
       type: populatePeople.fulfilled.type,
-      payload: { people: [Generic.personnel(77)], pagination: initialPagy },
+      payload: { people: [Generic.personnel()], pagination: initialPagy },
     })
 
     expect(status).toBe('loaded')

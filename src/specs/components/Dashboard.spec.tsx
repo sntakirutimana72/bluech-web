@@ -34,10 +34,14 @@ describe('Dashboard', () => {
   const channel = new CustomChatChannel()
   const currentUser = Generic.currentUser()
   const partner = Generic.personnel()
-  const newTypedMessage = Generic.cableMessage()
 
-  newTypedMessage.author = currentUser as CableMessageAuthor
-  newTypedMessage.desc = 'NEW_GENERIC_TYPED_MSG'
+  const sharedExample = async () => {
+    await act(async () => { appRender(<Main />) })
+    // Navigate to chatroom
+    const previewLink = await screen.findByTitle('Preview')
+    await act(async () => { fireEvent.click(previewLink) })
+    expect(await screen.findByRole('heading', { name: partner.name })).toBeInTheDocument()
+  }
 
   beforeEach(() => {
     // eslint-disable-next-line prefer-arrow-callback, func-names
@@ -53,7 +57,6 @@ describe('Dashboard', () => {
       chats: [],
       pagination: {},
     })
-    Spy.resolved(MessagesController, 'create', newTypedMessage)
   })
   afterEach(() => { localStorage.clear() })
   afterAll(() => { Generic.resetAll() })
@@ -63,23 +66,34 @@ describe('Dashboard', () => {
     expect(await screen.findByTitle('Preview')).toBeInTheDocument()
   })
 
-  test('renders new message', async () => {
-    await act(async () => { appRender(<Main />) })
-    // Navigate to chatroom
-    const previewLink = await screen.findByTitle('Preview')
-    await act(async () => { fireEvent.click(previewLink) })
-    expect(await screen.findByRole('heading', { name: partner.name })).toBeInTheDocument()
+  test('renders typing message on receipt', async () => {
+    await sharedExample()
     // Simulate typing message event
     const author = partner as CableMessageAuthor
-    const message = Generic.cableMessage(undefined, partner.id)
-    message.desc = 'NEW_GENERIC_DESCRIPTION'
-    await act(async () => {
-      channel.receive({ type: 'typing', author })
-      channel.receive({ type: 'message', message })
-    })
+    await act(async () => { channel.receive({ type: 'typing', author }) })
     // expect typing message to have been rendered and visible on screen
     expect(await screen.findByText(`${partner.name} is typing..`)).toBeInTheDocument()
+  })
+
+  test('renders new message on receipt', async () => {
+    await sharedExample()
+    // Simulate new message event
+    const message = Generic.cableMessage(undefined, partner.id)
+    message.desc = 'newGenericDescription'
+    await act(async () => { channel.receive({ type: 'message', message }) })
+    // expect new message to have been rendered and visible on screen
     expect(await screen.findByText(message.desc)).toBeInTheDocument()
+  })
+
+  test('renders newly sent message', async () => {
+    // Simulate a new typed message
+    const newTypedMessage = Generic.cableMessage()
+    newTypedMessage.author = currentUser as CableMessageAuthor
+    newTypedMessage.desc = 'newGenericTypedMessageDescription'
+    // Spy on user creation handler
+    Spy.resolved(MessagesController, 'create', newTypedMessage)
+    // Assert common logic
+    await sharedExample()
     // Simulate new typed message
     const prompt = screen.getByPlaceholderText<HTMLInputElement>(/Enter Message/)
     fireEvent.change(prompt, { target: { value: newTypedMessage.desc } })

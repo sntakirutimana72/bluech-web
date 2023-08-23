@@ -1,29 +1,31 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { MemoryRouter as Router, Routes, Route } from 'react-router-dom'
 import {
-  render, screen, fireEvent, waitFor,
+  render,
+  screen,
+  fireEvent,
+  waitForElementToBeRemoved,
 } from '@testing-library/react'
 import GetStarted from '../../components/GetStarted'
 
 const Component = () => (
-  <BrowserRouter>
+  <Router>
     <Routes>
       <Route index element={<GetStarted />} />
       <Route path="users/login" element={<div>Login Page</div>} />
     </Routes>
-  </BrowserRouter>
+  </Router>
 )
 
 test('renders successfully', () => {
   render(<Component />)
-  expect(screen).toMatchSnapshot()
-  expect(screen.getByRole('link', { name: 'Join Us' }))
+  expect(screen.getByRole('link', { name: 'Join Us' })).toBeInTheDocument()
 })
 
-test('redirects to login page', async () => {
+test('[Join Us] leads to login page', () => {
   render(<Component />)
-  fireEvent.click(screen.getByText(/Join Us/))
-  await waitFor(() => {
-    expect(screen.queryByText(/Join Us/)).toBeNull()
-    expect(screen.queryByText(/Login Page/)).toBeTruthy()
-  })
+
+  const joinUs = screen.getByText(/Join Us/)
+  fireEvent.click(joinUs)
+  waitForElementToBeRemoved(joinUs)
+  expect(screen.getByText(/Login Page/)).toBeInTheDocument()
 })

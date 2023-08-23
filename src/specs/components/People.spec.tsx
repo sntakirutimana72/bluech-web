@@ -21,22 +21,23 @@ const Component = () => (
 )
 
 const personnels = [
-  Generic.personnel(18),
-  Generic.personnel(13),
-  Generic.personnel(7),
+  Generic.personnel(),
+  Generic.personnel(),
+  Generic.personnel(),
 ]
 
 afterEach(() => {
   cleanup()
   localStorage.clear()
 })
+afterAll(() => { Generic.resetAll() })
 
 test('renders without people', async () => {
   Spy.rejected(UsersController, 'people')
   await act(async () => { reduxRender(<Component />) })
 
-  expect(screen.queryByTestId('ball-loader')).toBeFalsy()
-  expect(screen.queryByRole('button', { name: 'Refresh' })).toBeTruthy()
+  expect(screen.queryByTestId('ball-loader')).not.toBeInTheDocument()
+  expect(screen.getByRole('button', { name: 'Refresh' })).toBeInTheDocument()
 })
 
 test('renders people after a refresh', async () => {

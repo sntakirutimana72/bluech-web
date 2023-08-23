@@ -11,7 +11,7 @@ const CustomApp = ({ authenticated }: Props) => (
 
 test('When &:authenticated is :false or :undefined', () => {
   render(<CustomApp />)
-  expect(screen.queryByTestId('private-node')).toBeNull()
+  expect(screen.queryByTestId('private-node')).not.toBeInTheDocument()
 })
 
 test('When &:authenticated is :true', () => {

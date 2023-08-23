@@ -49,8 +49,8 @@ const Main = ({ id }: Props) => (
 describe('ChatRoom', () => {
   const cable = new TestCable()
   const currentUser = Generic.currentUser()
-  const partner = Generic.personnel(++(currentUser.id as number))
-  const chats = [Generic.cableMessage(100, currentUser.id)]
+  const partner = Generic.personnel()
+  const chats = [Generic.cableMessage(undefined, currentUser.id)]
 
   beforeEach(() => {
     Spy.returned(useCable, 'default', { cable })
@@ -64,10 +64,10 @@ describe('ChatRoom', () => {
       pagination: { current: 1, pages: 1 },
     })
   })
+  afterAll(() => { Generic.resetAll() })
 
   test('renders successfully', async () => {
     await act(async () => { appRender(<Main id={partner.id} />) })
-
     expect(await screen.findByRole('heading', { name: partner.name })).toBeInTheDocument()
     expect(await screen.findByText(chats[0].desc)).toBeInTheDocument()
   })

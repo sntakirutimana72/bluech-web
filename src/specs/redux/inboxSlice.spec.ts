@@ -8,22 +8,23 @@ import reducer, {
 const initialState: ReturnType<typeof reducer> = { status: 'idle', previews: [] }
 
 afterEach(() => { localStorage.clear() })
+afterAll(() => { Generic.resetAll() })
 
 describe('inboxSlice', () => {
   test('incrementUCounter', () => {
     const state = { ...initialState }
-    const { id, preview } = Generic.inboxPreview(5)
+    const { id, preview } = Generic.inboxPreview()
     const { previews } = reducer(state, incrementUCounter({ id, preview }))
 
     expect(previews).toEqual([
       {
-        id, preview, unread: 1,
+        id, preview, unread: 1, createdAt: previews[0].createdAt,
       },
     ])
   })
 
   test('resetUCounter', () => {
-    const inboxPreview = Generic.inboxPreview(5)
+    const inboxPreview = Generic.inboxPreview()
     ++inboxPreview.unread
     const state = { ...initialState }
     expect(inboxPreview.unread).not.toBe(0)
@@ -33,7 +34,7 @@ describe('inboxSlice', () => {
 
     expect(previews).toEqual([
       {
-        id, preview, unread: 0,
+        id, preview, unread: 0, createdAt: previews[0].createdAt,
       },
     ])
   })
@@ -56,7 +57,7 @@ describe('inboxSlice', () => {
 
     const { status, previews } = reducer(initialState, {
       type: previewInbox.fulfilled.type,
-      payload: [Generic.inboxPreview(5)],
+      payload: [Generic.inboxPreview()],
     })
 
     expect(status).toBe('loaded')

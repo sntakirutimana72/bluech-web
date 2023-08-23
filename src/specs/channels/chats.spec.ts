@@ -3,32 +3,30 @@ import { ChatsChannel } from '../../channels'
 import type { TypingMessage, ChatMessage } from '../../channels'
 import Generic from '../support/mocks/generic'
 
+afterAll(() => { Generic.resetAll() })
+
 describe('ChatsChannel', () => {
   let channel: ChatsChannel
   let cable: TestCable
 
   const partner = { id: 3, name: 'Steve' }
-  const { id, name } = Generic.currentUser()
+  const { id } = Generic.currentUser()
 
   beforeEach(() => {
     cable = new TestCable()
-    channel = new ChatsChannel({ id, name })
-    cable.subscribe(channel)
+    channel = cable.subscribe(new ChatsChannel())
   })
 
-  test('perform a typing action', async () => {
-    await channel.typing(partner.id)
-
-    expect(cable.outgoing).toEqual([
-      { action: 'typing', payload: { channel: partner.id, author: { id, name } } },
-    ])
+  test('perform typing action', async () => {
+    await channel.typing(id)
+    expect(cable.outgoing).toEqual([{ action: 'typing', payload: { channelId: id } }])
   })
 
   test('fires events on receipt', () => {
     const onTyping = jest.fn()
     const onMessage = jest.fn()
     const typingMessage: TypingMessage = { type: 'typing', author: partner }
-    const chatMessage: ChatMessage = { type: 'message', message: Generic.cableMessage(11, id) }
+    const chatMessage: ChatMessage = { type: 'message', message: Generic.cableMessage(undefined, id) }
 
     channel.on('typing', onTyping)
     channel.on('message', onMessage)
