@@ -1,79 +1,66 @@
-import { useEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
-import { Unsubscribe } from 'nanoevents';
+import { useEffect, useState, useRef } from 'react'
+import { Outlet } from 'react-router-dom'
+import { Unsubscribe } from 'nanoevents'
 import {
   useAppDispatch,
   useAppSelector,
   useSession,
   useCable,
-} from '../../hooks';
-import { ChatsChannel } from '../../channels';
-import type { ChatMessage, TypingMessage } from '../../channels';
-import { statusesSelector } from '../../redux/effects/appEffects';
-import { queryPeople } from '../../redux/features/peopleSlice';
-import { previewInbox } from '../../redux/features/inboxSlice';
-import { mapMessage, userTyping } from '../../redux/features/chatsSlice';
-import { TopNav, BottomNav } from './Navs';
-import { LoaderOverlay } from '../Elements';
+} from '../../hooks'
+import { ChatsChannel } from '../../channels'
+import type { ChatMessage, TypingMessage } from '../../channels'
+import { statusesSelector } from '../../redux/effects/appEffects'
+import { populatePeople } from '../../redux/features/peopleSlice'
+import { previewInbox } from '../../redux/features/inboxSlice'
+import { mapMessage, userTyping } from '../../redux/features/chatsSlice'
+import { TopNav, BottomNav } from './Navs'
+import { LoaderOverlay } from '../Elements'
 
 const Dashboard = () => {
-  const [ready, setReady] = useState(false);
-  const { currentUser } = useSession();
-  const { cable } = useCable();
-  const { inboxStatus, peopleStatus } = useAppSelector(statusesSelector);
-  const dispatch = useAppDispatch();
+  const [ready, setReady] = useState(false)
+  const { currentUser } = useSession()
+  const { cable } = useCable()
+  const { inboxStatus, peopleStatus } = useAppSelector(statusesSelector)
+  const dispatch = useAppDispatch()
+  const channelRef = useRef<ChatsChannel>()
 
-  const handleTyping = (msg: TypingMessage) => {
-    const { author } = msg;
-    userTyping(author.id);
-  };
-  const handleMessage = (msg: ChatMessage) => {
-    const { message } = msg;
-    mapMessage(message);
-  };
+  const handleTyping = ({ author }: TypingMessage) => {
+    dispatch(userTyping(author.id))
+  }
+
+  const handleMessage = ({ message } : ChatMessage) => {
+    dispatch(mapMessage(message))
+  }
 
   useEffect(
     () => {
-      const readiness: ThunkStatus[] = ['failed', 'loaded'];
-      let unbinders: Unsubscribe[];
-      let channel: ChatsChannel;
+      const readiness: ThunkStatus[] = ['failed', 'loaded']
+      let unbinders: Unsubscribe[]
 
       if (!ready && inboxStatus === 'idle' && peopleStatus === 'idle') {
-        dispatch(queryPeople(1));
-        dispatch(previewInbox());
+        dispatch(populatePeople(1))
+        dispatch(previewInbox())
       } else if (
         !ready
         && readiness.includes(inboxStatus)
         && readiness.includes(peopleStatus)
       ) {
-        if (cable) {
-          const { id, name } = currentUser!;
-          channel = cable.subscribe(new ChatsChannel({ id, name }));
+        if (cable && !channelRef.current) {
+          channelRef.current = cable.subscribe(new ChatsChannel())
           unbinders = [
-            channel.on('typing', handleTyping),
-            channel.on('message', handleMessage),
-            channel.on('close', () => {}),
-            channel.on('disconnect', () => {}),
-          ];
+            channelRef.current.on('typing', handleTyping),
+            channelRef.current.on('message', handleMessage),
+          ]
         }
-        setReady(true);
+        setReady(true)
       }
       return () => {
-        if (channel) {
-          unbinders.forEach((cb) => { cb(); });
-          channel.leave();
-        }
-      };
+        unbinders?.forEach((cb) => { cb() })
+        channelRef.current?.leave()
+      }
     },
-    [
-      ready,
-      inboxStatus,
-      peopleStatus,
-      cable,
-      currentUser,
-      dispatch,
-    ],
-  );
+    [inboxStatus, peopleStatus, cable],
+  )
 
   return ready ? (
     <div className="dashboard">
@@ -83,7 +70,7 @@ const Dashboard = () => {
       </div>
       <BottomNav />
     </div>
-  ) : <LoaderOverlay />;
-};
+  ) : <LoaderOverlay />
+}
 
-export default Dashboard;
+export default Dashboard

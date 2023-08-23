@@ -1,7 +1,7 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import Form from './Form';
-import type { SessionContext } from '../../../providers';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import Form from './Form'
+import type { SessionContext } from '../../../providers'
 
 type Props = Pick<SessionContext, 'login'>
 
@@ -18,6 +18,6 @@ const Login = ({ login }: Props) => (
       <Link to="/users/register">Register</Link>
     </div>
   </div>
-);
+)
 
-export default Login;
+export default Login

@@ -2,6 +2,10 @@
   "name": "bluech-web",
   "version": "0.1.0",
   "private": true,
+  "repository": "git@github.com:sntakirutimana72/bluech-web.git",
+  "author": "Steve <sntakirutimana72@gmail.com>",
+  "license": "MIT",
+
   "dependencies": {
     "@anycable/core": "^0.7.1",
     "@anycable/web": "^0.7.0",
@@ -33,12 +37,19 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "eslint": "npx eslint .",
+    "stylelint": "npx stylelint \"**/*.{css,scss}\""
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
+    ]
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "node_modules/(?!axios)/"
     ]
   },
   "browserslist": {

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import type { SessionContext } from '../../../providers';
-import { SessionController } from '../../../controllers';
-import { Text } from '../../Elements';
+import React, { useState } from 'react'
+import type { SessionContext } from '../../../providers'
+import { UsersController } from '../../../controllers'
+import { Text } from '../../Elements'
 
 type Props = React.HTMLProps<HTMLFormElement> & Pick<SessionContext, 'login'>
 type CustomFormElement = HTMLFormElement & {
@@ -12,16 +12,16 @@ type CustomFormElement = HTMLFormElement & {
 }
 
 const Form = ({ login, ...props }: Props) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState<string>();
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [errors, setErrors] = useState<string>()
 
   const handleSubmit = (event: React.FormEvent<CustomFormElement>) => {
-    event.preventDefault();
-    SessionController
+    event.preventDefault()
+    UsersController
       .login({ email, password })
-      .then(login, (err) => { setErrors(err); });
-  };
+      .then(login, (err) => { setErrors(err) })
+  }
 
   return (
     <form onSubmit={handleSubmit} {...props}>
@@ -36,7 +36,7 @@ const Form = ({ login, ...props }: Props) => {
           id: 'email',
           name: 'email',
           value: email,
-          onChange: (e) => { setEmail(e.currentTarget.value); },
+          onChange: (e) => { setEmail(e.currentTarget.value) },
           placeholder: 'Email',
           required: true,
         }}
@@ -48,7 +48,7 @@ const Form = ({ login, ...props }: Props) => {
           id: 'password',
           name: 'password',
           value: password,
-          onChange: (e) => { setPassword(e.currentTarget.value); },
+          onChange: (e) => { setPassword(e.currentTarget.value) },
           placeholder: 'Password',
           required: true,
         }}
@@ -59,7 +59,7 @@ const Form = ({ login, ...props }: Props) => {
       </div>
       <input type="submit" className="btn submit-btn" value="Sign in" />
     </form>
-  );
-};
+  )
+}
 
-export default Form;
+export default Form

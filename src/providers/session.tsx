@@ -4,10 +4,9 @@ import React, {
   createContext,
   useCallback,
   useMemo,
-} from 'react';
-import { SessionController } from '../controllers';
-import { isInit } from '../helpers/utils';
-import { LoaderOverlay } from '../components/Elements';
+} from 'react'
+import { UsersController } from '../controllers'
+import { isInit } from '../helpers/utils'
 
 export type SessionContext = {
   authenticated?: boolean
@@ -16,41 +15,43 @@ export type SessionContext = {
   logout: () => void
   restartSessionRefresh: () => void
 }
+
 type Props = { children: React.ReactNode }
 
-const initialSession = {} as SessionContext;
+const initialSession = {} as SessionContext
 
-export const sessionContext = createContext<SessionContext>(initialSession);
+export const sessionContext = createContext<SessionContext>(initialSession)
 
 const SessionProvider = ({ children }: Props) => {
-  const [currentUser, setCurrentUser] = useState<CurrentUser>();
-  const [authenticated, setAuthenticated] = useState<boolean>();
+  const [currentUser, setCurrentUser] = useState<CurrentUser>()
+  const [authenticated, setAuthenticated] = useState<boolean>()
 
   const login = useCallback((user: CurrentUser) => {
-    setCurrentUser(user);
-    setAuthenticated(true);
-  }, []);
+    setCurrentUser(user)
+    setAuthenticated(true)
+  }, [])
+
   const logout = useCallback(() => {
-    setAuthenticated(false);
-    setCurrentUser(undefined);
-  }, []);
-  const restartSessionRefresh = useCallback(() => { }, []);
+    setAuthenticated(false)
+    setCurrentUser(undefined)
+  }, [])
 
-  useEffect(() => {
-    let refreshTask: NodeJS.Timer;
+  const restartSessionRefresh = useCallback(() => { }, [])
 
-    if (!isInit(authenticated)) SessionController.signedUser().then(login, logout);
-    if (authenticated) {
-      refreshTask = setInterval(() => { SessionController.refresh().catch(logout); }, 3.48e+6);
-    }
-    return () => { clearInterval(refreshTask); };
-  }, [
-    currentUser,
-    authenticated,
-    login,
-    logout,
-    restartSessionRefresh,
-  ]);
+  useEffect(
+    () => {
+      let refreshTask: NodeJS.Timer
+
+      if (!isInit(authenticated)) {
+        UsersController.signedUser().then(login, logout)
+      } else if (authenticated) {
+        refreshTask = setInterval(() => { UsersController.refresh().catch(logout) }, 3.48e+6)
+      }
+      return () => { clearInterval(refreshTask) }
+    },
+    [authenticated],
+  )
+
   const session = useMemo<SessionContext>(
     () => ({
       currentUser, authenticated, login, logout, restartSessionRefresh,
@@ -62,12 +63,13 @@ const SessionProvider = ({ children }: Props) => {
       logout,
       restartSessionRefresh,
     ],
-  );
-  return isInit(authenticated) ? (
+  )
+
+  return (
     <sessionContext.Provider value={session}>
       {children}
     </sessionContext.Provider>
-  ) : <div className="h-screen"><LoaderOverlay /></div>;
-};
+  )
+}
 
-export default SessionProvider;
+export default SessionProvider

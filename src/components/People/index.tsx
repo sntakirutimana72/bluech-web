@@ -1,22 +1,33 @@
-import { useEffect, useState } from 'react';
-import { uid } from 'uid';
-import { Refresh } from '@mui/icons-material';
-import { LoaderOverlay } from '../Elements';
-import UserElement from './UserElement';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { peopleSelector } from '../../redux/effects/peopleEffects';
-import { queryPeople } from '../../redux/features/peopleSlice';
+import { useEffect, useState } from 'react'
+import { uid } from 'uid'
+import { Refresh } from '@mui/icons-material'
+import { LoaderOverlay } from '../Elements'
+import UserElement from './UserElement'
+import { useAppDispatch, useAppSelector } from '../../hooks'
+import { peopleSelector } from '../../redux/effects/peopleEffects'
+import { populatePeople } from '../../redux/features/peopleSlice'
 
 const People = () => {
-  const [page] = useState(1);
-  const { status, people } = useAppSelector(peopleSelector);
-  const dispatch = useAppDispatch();
+  const {
+    status,
+    people,
+    pagination: { current },
+  } = useAppSelector(peopleSelector)
+  const [page] = useState(current)
+  const dispatch = useAppDispatch()
 
-  useEffect(() => {
-    if (status === 'idle') {
-      dispatch(queryPeople(page));
-    }
-  }, [status, page, dispatch]);
+  const reloadRepository = () => {
+    dispatch(populatePeople(page || 1))
+  }
+
+  useEffect(
+    () => {
+      if (status === 'idle' || (page && page !== current && status !== 'pending')) {
+        reloadRepository()
+      }
+    },
+    [page],
+  )
 
   switch (status) {
     case 'loaded':
@@ -24,12 +35,16 @@ const People = () => {
         <div className="people-list">
           {people.map((user) => <UserElement user={user} key={uid()} />)}
         </div>
-      );
+      )
     case 'failed':
-      return <button type="button" aria-label="Refresh"><Refresh /></button>;
+      return (
+        <button type="button" aria-label="Refresh" onClick={reloadRepository}>
+          <Refresh />
+        </button>
+      )
     default:
-      return <LoaderOverlay />;
+      return <LoaderOverlay />
   }
-};
+}
 
-export default People;
+export default People

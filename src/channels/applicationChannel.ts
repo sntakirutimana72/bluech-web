@@ -1,22 +1,23 @@
-import { Channel } from '@anycable/web';
-import { ChannelEvents } from '@anycable/core';
-import type { MessageMeta } from '@anycable/core';
-import type { ChannelParamsMap } from '@anycable/core/channel';
+import { Channel } from '@anycable/web'
+import { ChannelEvents } from '@anycable/core'
+import type { MessageMeta } from '@anycable/core'
+import type { ChannelParamsMap } from '@anycable/core/channel'
 
-type ChannelParams = ChannelParamsMap & CableMessageAuthor & {
-  channel_id?: AlphaNumeric
+type ChannelParams = ChannelParamsMap & {
+  //
 }
 
 type ChannelMessage = {
-  type: 'typing' | 'message'
   [key: string]: any
 }
 
 export type TypingMessage = ChannelMessage & {
+  type: 'typing'
   author: CableMessageAuthor
 }
 
 export type ChatMessage = ChannelMessage & {
+  type: 'message'
   message: CableMessage
 }
 
@@ -26,25 +27,22 @@ interface Events extends ChannelEvents<any> {
 }
 
 export default class ApplicationChannel extends Channel<ChannelParams, any, Events> {
-  async typing(channel: AlphaNumeric) {
-    return this.perform('typing', {
-      channel,
-      author: { id: this.params.id, name: this.params.name },
-    });
+  async typing(channelId: AlphaNumeric) {
+    return this.perform('typing', { channelId })
   }
 
   leave() {
-    return this.disconnect();
+    return this.disconnect()
   }
 
   receive(message: any, meta?: MessageMeta) {
     switch (message.type) {
       case 'typing':
-        return this.emit('typing', message, meta);
+        return this.emit('typing', message, meta)
       case 'message':
-        return this.emit('message', message, meta);
+        return this.emit('message', message, meta)
       default:
-        return super.receive(message, meta);
+        return super.receive(message, meta)
     }
   }
 }

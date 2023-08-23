@@ -1,17 +1,17 @@
 type AlphaNumeric = string | number
 
-// Cable Objects Types
-//
-// Message
+type NullableNumeric = number | null
+
 type CableMessage = {
   id: AlphaNumeric
   desc: string
-  is_edited: boolean
-  creation_date: Date
-  last_update: Date
+  isEdited: boolean
+  createdAt: string
+  updatedAt: string | null
   author: CableMessageAuthor
+  recipientId?: AlphaNumeric
 }
-// Message Author
+
 type CableMessageAuthor = {
   id: AlphaNumeric
   name: string
@@ -32,12 +32,34 @@ type ThunkStatus = 'idle' | 'pending' | 'loaded' | 'failed'
 type InboxPreview = {
   id: AlphaNumeric
   avatar?: string
-  unreadCount: number
+  unread: number
   preview: string
+  createdAt: string
 }
 
-type PeopleObj = CableMessageAuthor & {
+type Personnel = CableMessageAuthor & {
   bio: string
   avatar?: string
   online?: boolean
+}
+
+type Pagination = {
+  current?: NullableNumeric
+  pages?: NullableNumeric
+}
+
+type Conversation = {
+  status?: ThunkStatus
+  chats: CableMessage[]
+  pagination: Pagination
+}
+
+type ConvoParams = {
+  page?: number
+  channelId: AlphaNumeric
+}
+
+type People = {
+  people: Personnel[]
+  pagination: Pagination
 }

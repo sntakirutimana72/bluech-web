@@ -1,5 +1,5 @@
-import { NavLink } from 'react-router-dom';
-import { Home } from '@mui/icons-material';
+import { NavLink } from 'react-router-dom'
+import { Home } from '@mui/icons-material'
 
 const NotFound = () => (
   <div className="not-found">
@@ -9,6 +9,6 @@ const NotFound = () => (
       <span>Home</span>
     </NavLink>
   </div>
-);
+)
 
-export default NotFound;
+export default NotFound

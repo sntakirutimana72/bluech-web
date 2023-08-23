@@ -1,9 +1,11 @@
 @tailwind base;
 
-@import "./resources/styles/base.css";
+@import "assets/styles/base.css";
 
 @tailwind components;
 
-@import "./resources/styles/components";
+@import "assets/styles/components.css";
 
 @tailwind utilities;
+
+@import "assets/styles/utilities.css";

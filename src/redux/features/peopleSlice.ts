@@ -1,16 +1,16 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { UsersController } from '../../controllers';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { UsersController } from '../../controllers'
 
-type PeopleState = {
+type PeopleState = People & {
   status: ThunkStatus
-  people: PeopleObj[]
 }
 
-export const queryPeople = createAsyncThunk<PeopleObj[], number>(
-  'dashboard/people',
-  UsersController.people,
-);
-const initialState: PeopleState = { status: 'idle', people: [] };
+export const populatePeople = createAsyncThunk<People, number>(
+  'home/people',
+  (page: number) => UsersController.people(page),
+)
+
+const initialState: PeopleState = { status: 'idle', people: [], pagination: {} }
 
 const slicer = createSlice({
   name: 'dashboard/people',
@@ -18,17 +18,16 @@ const slicer = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(queryPeople.pending, (state) => {
-        state.status = 'pending';
+      .addCase(populatePeople.pending, () => ({
+        ...initialState, status: 'pending',
+      }))
+      .addCase(populatePeople.fulfilled, (_, action) => ({
+        ...action.payload, status: 'loaded',
+      }))
+      .addCase(populatePeople.rejected, (state) => {
+        state.status = 'failed'
       })
-      .addCase(queryPeople.fulfilled, (state, action) => {
-        state.status = 'loaded';
-        state.people = action.payload;
-      })
-      .addCase(queryPeople.rejected, (state) => {
-        state.status = 'failed';
-      });
   },
-});
+})
 
-export default slicer.reducer;
+export default slicer.reducer

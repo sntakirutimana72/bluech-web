@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes } from 'react';
+import React, { ButtonHTMLAttributes } from 'react'
 
 type CustomButtonElement = ButtonHTMLAttributes<HTMLButtonElement>
 
@@ -21,7 +21,7 @@ const NativeNavigation = (props: Props) => {
     backBtn: { backIcon, url, ...backProps },
     optionsBtn: { optIcon, ...optionProps },
     ...selfProps
-  } = props;
+  } = props
 
   return (
     <nav {...selfProps}>
@@ -40,7 +40,7 @@ const NativeNavigation = (props: Props) => {
         </li>
       </ul>
     </nav>
-  );
-};
+  )
+}
 
-export default NativeNavigation;
+export default NativeNavigation

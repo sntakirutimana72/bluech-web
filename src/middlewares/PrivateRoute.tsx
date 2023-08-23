@@ -1,14 +1,18 @@
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import type { SessionContext } from '../providers';
+import { Navigate, Outlet, useLocation } from 'react-router-dom'
+import type { SessionContext } from '../providers'
 
 type Props = Pick<SessionContext, 'authenticated'> & {
   redirectTo: string
 }
 
 const PrivateRoute = ({ redirectTo, authenticated }: Props) => {
-  const { pathname } = useLocation();
+  const { pathname } = useLocation()
 
-  return authenticated ? <Outlet /> : <Navigate to={redirectTo} state={pathname} replace />;
-};
+  return (
+    authenticated
+      ? <Outlet />
+      : <Navigate to={redirectTo} state={{ nextTo: pathname }} replace />
+  )
+}
 
-export default PrivateRoute;
+export default PrivateRoute
