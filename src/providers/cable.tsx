@@ -1,47 +1,58 @@
 import React, {
   useEffect,
-  useState,
+  useRef,
   useMemo,
+  useCallback,
   createContext,
 } from 'react'
-import { Cable } from '@anycable/core'
 import { createCable } from '@anycable/web'
+import { Cable } from '@anycable/core'
 import SessionStore from '../store/session'
 import useSession from '../hooks/session'
 
 export type CableContext = {
   cable?: Cable
 }
+
 type Props = { children: React.ReactNode }
 
 export const cableContext = createContext<CableContext>({})
+
 const CableProvider = ({ children }: Props) => {
   const { authenticated } = useSession()
-  const [cable, setCable] = useState<Cable>()
+  const cableRef = useRef<Cable>()
 
-  const disconnect = () => {
-    if (cable) {
-      cable.disconnect()
-      setCable(undefined)
+  const disconnect = useCallback(() => {
+    if (cableRef.current) {
+      cableRef.current.disconnect()
+      cableRef.current = undefined
     }
-  }
-  useEffect(() => {
-    if (cable && !authenticated) { disconnect() }
-    if (!cable && authenticated) {
-      const newCable = createCable(process.env.REACT_APP_BLUECH_RB_API_CABLE_URL!, {
-        websocketOptions: {
-          headers: {
-            Authorization: SessionStore.fetch()!,
+  }, [])
+
+  useEffect(
+    () => {
+      if (cableRef.current && !authenticated) { disconnect() }
+      if (!cableRef.current && authenticated) {
+        cableRef.current = createCable(process.env.REACT_APP_BLUECH_RB_API_CABLE_URL!, {
+          websocketOptions: {
+            headers: { Authorization: SessionStore.fetch()! },
           },
-        },
-      })
-      setCable(newCable)
-    }
-    return () => { disconnect() }
-  }, [authenticated, cable])
-  const value = useMemo(() => ({ cable }), [cable])
+        })
+      }
+      return () => { disconnect() }
+    },
+    [authenticated, cableRef],
+  )
+
+  const initialValue = useMemo(
+    () => ({
+      cable: cableRef.current,
+    }),
+    [cableRef],
+  )
+
   return (
-    <cableContext.Provider value={value}>
+    <cableContext.Provider value={initialValue}>
       {children}
     </cableContext.Provider>
   )
