@@ -8,9 +8,6 @@ import reducer, {
 
 const initialState: ReturnType<typeof reducer> = { messages: {}, typings: {} }
 
-afterEach(() => { localStorage.clear() })
-afterAll(() => { Generic.resetAll() })
-
 describe('chatsSlice', () => {
   const mockedMeta = (id: AlphaNumeric) => ({ meta: { arg: { channelId: id } } })
 

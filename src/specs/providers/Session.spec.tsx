@@ -6,7 +6,7 @@ import {
 } from '@testing-library/react'
 import Spy from '../support/mocks/spy'
 import Generic from '../support/mocks/generic'
-import { sessionRender } from '../support/render'
+import { sessionRender, TestReduxStore } from '../support/render'
 import { useSession } from '../../hooks'
 import { UsersController } from '../../controllers'
 
@@ -43,9 +43,12 @@ const CustomApp = () => {
 
 afterEach(() => {
   localStorage.clear()
+  TestReduxStore.clear()
   cleanup()
 })
-afterAll(() => { Generic.resetAll() })
+afterAll(() => {
+  Generic.clear()
+})
 
 describe('SessionProvider', () => {
   test('renders without active session', async () => {

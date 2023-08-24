@@ -37,6 +37,8 @@ type InboxPreview = {
   createdAt: string
 }
 
+type InboxCounter = Omit<InboxPreview, 'avatar' | 'unread'>
+
 type Personnel = CableMessageAuthor & {
   bio: string
   avatar?: string

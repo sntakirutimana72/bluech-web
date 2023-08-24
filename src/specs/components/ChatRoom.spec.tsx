@@ -9,7 +9,7 @@ import { act, screen } from '@testing-library/react'
 import { TestCable } from '@anycable/core/testing'
 import Spy from '../support/mocks/spy'
 import Generic from '../support/mocks/generic'
-import { appRender } from '../support/render'
+import { appRender, TestReduxStore } from '../support/render'
 import { UsersController } from '../../controllers'
 import { MessagesController } from '../../controllers/v1'
 import { populateConversation } from '../../redux/features/chatsSlice'
@@ -64,7 +64,13 @@ describe('ChatRoom', () => {
       pagination: { current: 1, pages: 1 },
     })
   })
-  afterAll(() => { Generic.resetAll() })
+  afterEach(() => {
+    localStorage.clear()
+    TestReduxStore.clear()
+  })
+  afterAll(() => {
+    Generic.clear()
+  })
 
   test('renders successfully', async () => {
     await act(async () => { appRender(<Main id={partner.id} />) })

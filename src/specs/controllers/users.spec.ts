@@ -4,8 +4,12 @@ import SessionStore from '../../store/session'
 import { Axios } from '../../helpers/requests'
 import { UsersController } from '../../controllers'
 
-afterEach(() => { localStorage.clear() })
-afterAll(() => { Generic.resetAll() })
+afterEach(() => {
+  localStorage.clear()
+})
+afterAll(() => {
+  Generic.clear()
+})
 
 describe('UsersController', () => {
   const mockedUser = Generic.currentUser()

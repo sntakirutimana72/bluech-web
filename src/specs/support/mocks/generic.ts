@@ -59,7 +59,7 @@ export default class Generic {
     }
   }
 
-  static resetAll() {
+  static clear() {
     this.userIdCounter = 0
     this.msgIdCounter = 0
   }

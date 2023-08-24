@@ -1,10 +1,10 @@
-import { screen, render, cleanup } from '@testing-library/react'
 import {
   MemoryRouter as Router,
   Routes,
   Route,
   useLocation,
 } from 'react-router-dom'
+import { screen, render, cleanup } from '@testing-library/react'
 import { RedirectedRoute, PrivateRoute } from '../../middlewares'
 
 type Props = {

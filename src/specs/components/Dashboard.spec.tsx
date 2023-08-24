@@ -3,7 +3,7 @@ import { act, screen, fireEvent } from '@testing-library/react'
 import { TestCable } from '@anycable/core/testing'
 import Spy from '../support/mocks/spy'
 import Generic from '../support/mocks/generic'
-import { appRender } from '../support/render'
+import { appRender, TestReduxStore } from '../support/render'
 import { UsersController } from '../../controllers'
 import { InboxController, MessagesController } from '../../controllers/v1'
 import ApplicationChannel from '../../channels/applicationChannel'
@@ -58,8 +58,13 @@ describe('Dashboard', () => {
       pagination: {},
     })
   })
-  afterEach(() => { localStorage.clear() })
-  afterAll(() => { Generic.resetAll() })
+  afterEach(() => {
+    localStorage.clear()
+    TestReduxStore.clear()
+  })
+  afterAll(() => {
+    Generic.clear()
+  })
 
   test('renders successfully', async () => {
     await act(async () => { appRender(<Main />) })
@@ -70,7 +75,9 @@ describe('Dashboard', () => {
     await sharedExample()
     // Simulate typing message event
     const author = partner as CableMessageAuthor
-    await act(async () => { channel.receive({ type: 'typing', author }) })
+    await act(async () => {
+      channel.receive({ type: 'typing', author, status: true })
+    })
     // expect typing message to have been rendered and visible on screen
     expect(await screen.findByText(`${partner.name} is typing..`)).toBeInTheDocument()
   })
@@ -86,6 +93,10 @@ describe('Dashboard', () => {
   })
 
   test('renders newly sent message', async () => {
+    // Simulate typing ping signature
+    const getTypingSignal = (status: boolean) => (
+      { action: 'typing', payload: { channelId: partner.id.toString(), status } }
+    )
     // Simulate a new typed message
     const newTypedMessage = Generic.cableMessage()
     newTypedMessage.author = currentUser as CableMessageAuthor
@@ -98,11 +109,13 @@ describe('Dashboard', () => {
     const prompt = screen.getByPlaceholderText<HTMLInputElement>(/Enter Message/)
     fireEvent.change(prompt, { target: { value: newTypedMessage.desc } })
     expect(prompt.value).toEqual(newTypedMessage.desc)
-    expect(cable.outgoing).toEqual([
-      { action: 'typing', payload: { channelId: partner.id.toString() } },
-    ])
+    expect(cable.outgoing).toEqual([getTypingSignal(true)])
     // Create new typed message
     await act(async () => { fireEvent.click(screen.getByTitle(/Send/)) })
     expect(await screen.findByText(newTypedMessage.desc)).toBeInTheDocument()
+    expect(cable.outgoing).toEqual([
+      getTypingSignal(true),
+      getTypingSignal(false),
+    ])
   })
 })

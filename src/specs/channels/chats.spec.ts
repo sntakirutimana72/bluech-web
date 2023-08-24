@@ -1,9 +1,11 @@
 import { TestCable } from '@anycable/core/testing'
 import { ChatsChannel } from '../../channels'
-import type { TypingMessage, ChatMessage } from '../../channels'
 import Generic from '../support/mocks/generic'
+import type { TypingMessage, ChatMessage } from '../../channels'
 
-afterAll(() => { Generic.resetAll() })
+afterAll(() => {
+  Generic.clear()
+})
 
 describe('ChatsChannel', () => {
   let channel: ChatsChannel
@@ -18,14 +20,15 @@ describe('ChatsChannel', () => {
   })
 
   test('perform typing action', async () => {
-    await channel.typing(id)
-    expect(cable.outgoing).toEqual([{ action: 'typing', payload: { channelId: id } }])
+    const typingSignal = { channelId: id, status: true }
+    await channel.typing(typingSignal)
+    expect(cable.outgoing).toEqual([{ action: 'typing', payload: typingSignal }])
   })
 
   test('fires events on receipt', () => {
     const onTyping = jest.fn()
     const onMessage = jest.fn()
-    const typingMessage: TypingMessage = { type: 'typing', author: partner }
+    const typingMessage: TypingMessage = { type: 'typing', author: partner, status: false }
     const chatMessage: ChatMessage = { type: 'message', message: Generic.cableMessage(undefined, id) }
 
     channel.on('typing', onTyping)

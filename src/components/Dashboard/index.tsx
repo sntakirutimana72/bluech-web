@@ -11,8 +11,8 @@ import { ChatsChannel } from '../../channels'
 import type { ChatMessage, TypingMessage } from '../../channels'
 import { statusesSelector } from '../../redux/effects/appEffects'
 import { populatePeople } from '../../redux/features/peopleSlice'
-import { previewInbox } from '../../redux/features/inboxSlice'
-import { mapMessage, userTyping } from '../../redux/features/chatsSlice'
+import { previewInbox, incrementUCounter } from '../../redux/features/inboxSlice'
+import { mapMessage, userTyping, typingExpired } from '../../redux/features/chatsSlice'
 import { TopNav, BottomNav } from './Navs'
 import { LoaderOverlay } from '../Elements'
 
@@ -24,12 +24,19 @@ const Dashboard = () => {
   const dispatch = useAppDispatch()
   const channelRef = useRef<ChatsChannel>()
 
-  const handleTyping = ({ author }: TypingMessage) => {
-    dispatch(userTyping(author.id))
+  const handleTyping = ({ author: { id }, status }: TypingMessage) => {
+    if (status) {
+      dispatch(userTyping(id))
+    } else {
+      dispatch(typingExpired(id))
+    }
   }
 
   const handleMessage = ({ message } : ChatMessage) => {
+    const { desc, createdAt, author: { id } } = message
+
     dispatch(mapMessage(message))
+    dispatch(incrementUCounter({ id, createdAt, preview: desc }))
   }
 
   useEffect(

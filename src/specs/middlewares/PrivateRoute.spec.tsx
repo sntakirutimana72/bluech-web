@@ -1,5 +1,5 @@
-import { screen, render } from '@testing-library/react'
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom'
+import { screen, render } from '@testing-library/react'
 import { PrivateRoute } from '../../middlewares'
 
 type Props = { authenticated?: boolean }
