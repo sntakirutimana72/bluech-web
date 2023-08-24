@@ -1,17 +1,15 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, Draft } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { InboxController } from '../../controllers/v1'
-import { now } from '../../helpers/utils'
-
-type Counter = {
-  id: AlphaNumeric
-  preview: string
-}
 
 type InboxState = {
   status: ThunkStatus
   previews: InboxPreview[]
 }
+
+const findPreview = (targetId: AlphaNumeric, { previews }: Draft<Pick<InboxState, 'previews'>>) => (
+  previews.find(({ id }) => id.toString() === targetId.toString())
+)
 
 export const previewInbox = createAsyncThunk<InboxPreview[]>(
   'home/inbox',
@@ -24,37 +22,27 @@ const slicer = createSlice({
   name: 'dashboard/inbox',
   initialState,
   reducers: {
-    incrementUCounter(state, action: PayloadAction<Counter>) {
-      const { previews } = state
-      const { payload: { id: dataId, preview } } = action
-
-      let inbox = previews.find(
-        ({ id }) => id === dataId,
-      )
+    incrementUCounter(state, action: PayloadAction<InboxCounter>) {
+      const { payload: { id, ...others } } = action
+      let inbox = findPreview(id, state)
 
       if (!inbox) {
-        inbox = { id: dataId, unread: 0 } as InboxPreview
-        previews.push(inbox)
+        inbox = { unread: 0, id } as InboxPreview
+        state.previews.push(inbox)
       }
       inbox.unread++
-      inbox.preview = preview
-      inbox.createdAt = now().toISOString()
+      Object.assign(inbox, others)
     },
-    resetUCounter(state, action: PayloadAction<Counter>) {
-      const { previews } = state
-      const { payload: { id: dataId, preview } } = action
-
-      let inbox = previews.find(
-        ({ id }) => id === dataId,
-      )
+    resetUCounter(state, action: PayloadAction<InboxCounter>) {
+      const { payload: { id, ...others } } = action
+      let inbox = findPreview(id, state)
 
       if (!inbox) {
-        inbox = { id: dataId } as InboxPreview
-        previews.push(inbox)
+        inbox = { id } as InboxPreview
+        state.previews.push(inbox)
       }
       inbox.unread = 0
-      inbox.preview = preview
-      inbox.createdAt = now().toISOString()
+      Object.assign(inbox, others)
     },
   },
   extraReducers: (builder) => {

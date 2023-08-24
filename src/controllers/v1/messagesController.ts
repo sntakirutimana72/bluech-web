@@ -16,10 +16,12 @@ export default class MessagesController extends ApplicationController {
     })
   }
 
-  static conversation(params: ConvoParams) {
+  static conversation(convo: ConvoParams) {
     return new Promise<Conversation>((resolve, reject) => {
       Axios
-        .get(process.env.REACT_APP_BLUECH_RB_API_V1_MESSAGES!, { ...this.authorize(), params })
+        .get(process.env.REACT_APP_BLUECH_RB_API_V1_MESSAGES!, {
+          ...this.authorize(), params: { convo },
+        })
         .then(({ data: { chats, pagination } }) => {
           resolve({ chats, pagination })
         })
