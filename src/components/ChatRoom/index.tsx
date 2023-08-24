@@ -20,6 +20,7 @@ const ChatRoom = () => {
     chats,
     pagination: { current, pages },
   } = conversation
+
   const [page] = useState(current)
 
   useEffect(

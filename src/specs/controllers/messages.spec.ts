@@ -3,8 +3,12 @@ import Generic from '../support/mocks/generic'
 import { Axios } from '../../helpers/requests'
 import { MessagesController } from '../../controllers/v1'
 
-afterEach(() => { localStorage.clear() })
-afterAll(() => { Generic.resetAll() })
+afterEach(() => {
+  localStorage.clear()
+})
+afterAll(() => {
+  Generic.clear()
+})
 
 describe('MessagesController', () => {
   describe('#create( message )', () => {

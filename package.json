@@ -5,7 +5,6 @@
   "repository": "git@github.com:sntakirutimana72/bluech-web.git",
   "author": "Steve <sntakirutimana72@gmail.com>",
   "license": "MIT",
-
   "dependencies": {
     "@anycable/core": "^0.7.1",
     "@anycable/web": "^0.7.0",
@@ -67,6 +66,7 @@
   "devDependencies": {
     "@babel/cli": "^7.22.5",
     "@babel/core": "^7.22.5",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/preset-env": "^7.22.5",
     "@babel/preset-typescript": "^7.22.5",
     "@typescript-eslint/eslint-plugin": "^6.1.0",

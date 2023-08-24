@@ -5,7 +5,7 @@ import {
   Route,
 } from 'react-router-dom'
 import { screen } from '@testing-library/react'
-import { sessionRender } from '../../support/render'
+import { sessionRender, TestReduxStore } from '../../support/render'
 import Generic from '../../support/mocks/generic'
 import Spy from '../../support/mocks/spy'
 import { useSession } from '../../../hooks'
@@ -34,8 +34,13 @@ beforeEach(() => {
   SessionStore.persist('x-token')
   Spy.resolved(UsersController, 'signedUser', Generic.currentUser())
 })
-afterEach(() => { localStorage.clear() })
-afterAll(() => { Generic.resetAll() })
+afterEach(() => {
+  localStorage.clear()
+  TestReduxStore.clear()
+})
+afterAll(() => {
+  Generic.clear()
+})
 
 test('redirects to index after logging out', async () => {
   Spy.resolved(UsersController, 'logout')

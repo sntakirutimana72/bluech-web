@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useCallback } from 'react'
 import { Refresh } from '@mui/icons-material'
 import { uid } from 'uid'
 import { useAppDispatch, useAppSelector } from '../../hooks'
@@ -11,15 +11,18 @@ const Inbox = () => {
   const { status, previews } = useAppSelector(inboxSelector)
   const dispatch = useAppDispatch()
 
-  const reloadPreviews = () => {
-    dispatch(previewInbox())
-  }
+  const reloadPreviews = useCallback(
+    () => {
+      dispatch(previewInbox())
+    },
+    [],
+  )
 
   useEffect(() => {
     if (status === 'idle') {
       reloadPreviews()
     }
-  }, [status, dispatch])
+  }, [status])
 
   switch (status) {
     case 'loaded':

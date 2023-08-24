@@ -11,8 +11,14 @@ type ChannelMessage = {
   [key: string]: any
 }
 
+type TypingSignal = {
+  channelId: AlphaNumeric
+  status: boolean
+}
+
 export type TypingMessage = ChannelMessage & {
   type: 'typing'
+  status: boolean
   author: CableMessageAuthor
 }
 
@@ -27,8 +33,8 @@ interface Events extends ChannelEvents<any> {
 }
 
 export default class ApplicationChannel extends Channel<ChannelParams, any, Events> {
-  async typing(channelId: AlphaNumeric) {
-    return this.perform('typing', { channelId })
+  async typing(signal: TypingSignal) {
+    return this.perform('typing', signal)
   }
 
   leave() {

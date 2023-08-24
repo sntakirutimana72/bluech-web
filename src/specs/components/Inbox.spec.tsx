@@ -7,7 +7,7 @@ import {
 } from '@testing-library/react'
 import Spy from '../support/mocks/spy'
 import Generic from '../support/mocks/generic'
-import { reduxRender } from '../support/render'
+import { reduxRender, TestReduxStore } from '../support/render'
 import { InboxController } from '../../controllers/v1'
 import Inbox from '../../components/Inbox'
 
@@ -27,10 +27,13 @@ const previews = [
 ]
 
 afterEach(() => {
-  cleanup()
   localStorage.clear()
+  TestReduxStore.clear()
+  cleanup()
 })
-afterAll(() => { Generic.resetAll() })
+afterAll(() => {
+  Generic.clear()
+})
 
 test('renders without inbox previews', async () => {
   Spy.rejected(InboxController, 'preview')

@@ -2,6 +2,7 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import { configureStore } from '@reduxjs/toolkit'
 import { render } from '@testing-library/react'
+import { isInit } from '../../helpers/utils'
 import { SessionProvider, CableProvider } from '../../providers'
 import reducer from '../../redux/features'
 
@@ -9,7 +10,24 @@ type Wrapper = {
   children: React.ReactNode
 }
 
-const initStore = () => configureStore({ reducer })
+export class TestReduxStore {
+  protected static store?: ReturnType<typeof configureStore>
+
+  static clear() {
+    this.store = undefined
+  }
+
+  static getStore() {
+    if (!isInit(this.store)) {
+      this.initiate()
+    }
+    return this.store!
+  }
+
+  protected static initiate() {
+    this.store = configureStore({ reducer })
+  }
+}
 
 const SessionWrapper = ({ children }: Wrapper) => (
   <SessionProvider>
@@ -18,7 +36,7 @@ const SessionWrapper = ({ children }: Wrapper) => (
 )
 
 const ReduxWrapper = ({ children }: Wrapper) => (
-  <Provider store={initStore()}>
+  <Provider store={TestReduxStore.getStore()}>
     { children }
   </Provider>
 )
@@ -26,7 +44,7 @@ const ReduxWrapper = ({ children }: Wrapper) => (
 const AppWrapper = ({ children }: Wrapper) => (
   <SessionProvider>
     <CableProvider>
-      <Provider store={initStore()}>
+      <Provider store={TestReduxStore.getStore()}>
         { children }
       </Provider>
     </CableProvider>

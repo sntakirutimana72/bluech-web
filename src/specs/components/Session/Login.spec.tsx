@@ -14,10 +14,13 @@ import { UsersController } from '../../../controllers'
 const login = jest.fn()
 
 afterEach(() => {
+  localStorage.clear()
   login.mockClear()
   cleanup()
 })
-afterAll(() => { Generic.resetAll() })
+afterAll(() => {
+  Generic.clear()
+})
 
 const Component = () => (
   <Router>

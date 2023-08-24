@@ -8,7 +8,7 @@ import { act, screen } from '@testing-library/react'
 import { TestCable } from '@anycable/core/testing'
 import * as anycable from '@anycable/web'
 import Spy from './support/mocks/spy'
-import { appRender } from './support/render'
+import { appRender, TestReduxStore } from './support/render'
 import Generic from './support/mocks/generic'
 import SessionStore from '../store/session'
 import { UsersController } from '../controllers'
@@ -26,6 +26,11 @@ import NotFound from '../components/NotFound'
 class CustomTestCable extends TestCable {
   // eslint-disable-next-line class-methods-use-this
   disconnect() {}
+
+  // eslint-disable-next-line class-methods-use-this
+  connect() {
+    return Promise.resolve()
+  }
 }
 
 beforeEach(() => {
@@ -34,8 +39,13 @@ beforeEach(() => {
     value: jest.fn().mockImplementation(() => new CustomTestCable()),
   })
 })
-afterEach(() => { localStorage.clear() })
-afterAll(() => { Generic.resetAll() })
+afterEach(() => {
+  localStorage.clear()
+  TestReduxStore.clear()
+})
+afterAll(() => {
+  Generic.clear()
+})
 
 const App = ({ path = '/' }: { path?: string }) => {
   const { authenticated, logout, login } = useSession()

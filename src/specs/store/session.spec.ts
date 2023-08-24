@@ -1,6 +1,8 @@
 import Store from '../../store/session'
 
-afterAll(() => { localStorage.clear() })
+afterAll(() => {
+  localStorage.clear()
+})
 
 describe('SessionStore', () => {
   const value = 'SOME_AUH_X_AUTH_VALUE'

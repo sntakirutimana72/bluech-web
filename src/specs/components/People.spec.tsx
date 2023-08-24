@@ -7,7 +7,7 @@ import {
 } from '@testing-library/react'
 import Spy from '../support/mocks/spy'
 import Generic from '../support/mocks/generic'
-import { reduxRender } from '../support/render'
+import { reduxRender, TestReduxStore } from '../support/render'
 import PeopleList from '../../components/People'
 import { UsersController } from '../../controllers'
 
@@ -27,10 +27,13 @@ const personnels = [
 ]
 
 afterEach(() => {
-  cleanup()
   localStorage.clear()
+  TestReduxStore.clear()
+  cleanup()
 })
-afterAll(() => { Generic.resetAll() })
+afterAll(() => {
+  Generic.clear()
+})
 
 test('renders without people', async () => {
   Spy.rejected(UsersController, 'people')
