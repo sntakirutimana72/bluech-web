@@ -42,6 +42,15 @@ const slicer = createSlice({
       }
       messages[targetId].chats.push(payload)
     },
+    markedAsRead(state, action: PayloadAction<CableSeen>) {
+      const { payload: { ids, readerId } } = action
+      const { messages } = state
+      messages[readerId]?.chats.forEach((chat) => {
+        if (ids.includes(chat.id.toString())) {
+          chat.isSeen = true
+        }
+      })
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -65,5 +74,10 @@ const slicer = createSlice({
   },
 })
 
-export const { userTyping, typingExpired, mapMessage } = slicer.actions
+export const {
+  userTyping,
+  typingExpired,
+  mapMessage,
+  markedAsRead,
+} = slicer.actions
 export default slicer.reducer

@@ -3,6 +3,7 @@ import reducer, {
   userTyping,
   typingExpired,
   mapMessage,
+  markedAsRead,
   populateConversation,
 } from '../../redux/features/chatsSlice'
 
@@ -11,9 +12,10 @@ const initialState: ReturnType<typeof reducer> = { messages: {}, typings: {} }
 describe('chatsSlice', () => {
   const mockedMeta = (id: AlphaNumeric) => ({ meta: { arg: { channelId: id } } })
 
+  afterAll(() => { Generic.clear() })
+
   test('userTyping', () => {
     const authorId = 77
-
     expect(reducer(initialState, userTyping(authorId))).toEqual({
       ...initialState, typings: { [authorId]: true },
     })
@@ -22,16 +24,28 @@ describe('chatsSlice', () => {
   test('typingExpired', () => {
     const authorId = 33
     const state = { ...initialState, typings: { [authorId]: true } }
-
     expect(reducer(state, typingExpired(authorId))).toEqual(initialState)
   })
 
   test('mapMessage', () => {
     const authorId = 3
     const msg = Generic.cableMessage(undefined, authorId)
-
     expect(reducer(initialState, mapMessage(msg))).toEqual({
       ...initialState, messages: { [authorId]: { chats: [msg], pagination: {} } },
+    })
+  })
+
+  test('markedAsRead', () => {
+    const chat = Generic.cableMessage()
+    const { author: { id: readerId } } = chat
+    const actionPayload: CableSeen = { readerId, ids: ['1', '2'] }
+    const state = {
+      ...initialState,
+      messages: { [readerId]: { chats: [{ ...chat }], pagination: {} } },
+    }
+    expect(reducer(state, markedAsRead(actionPayload))).toEqual({
+      ...state,
+      messages: { [readerId]: { chats: [{ ...chat, isSeen: true }], pagination: {} } },
     })
   })
 
@@ -42,7 +56,6 @@ describe('chatsSlice', () => {
       ...mockedMeta(channelId),
     }
     const { messages } = reducer(initialState, action)
-
     expect(messages[channelId].status).toBe('pending')
   })
 
@@ -70,7 +83,6 @@ describe('chatsSlice', () => {
       type: populateConversation.rejected.type,
       ...mockedMeta(channelId),
     })
-
     expect(messages[channelId].status).toBe('failed')
   })
 })
