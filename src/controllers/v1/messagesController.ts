@@ -28,4 +28,15 @@ export default class MessagesController extends ApplicationController {
         .catch((exc) => { this.reject(exc, reject) })
     })
   }
+
+  static markAsRead(convo: MarkAsReadParams) {
+    return new Promise<string[]>((resolve, reject) => {
+      Axios
+        .patch(process.env.REACT_APP_BLUECH_RB_API_V1_MARKED_AS_READ!, {
+          ...this.authorize(), params: { convo },
+        })
+        .then(({ data: { ids } }) => { resolve(ids) })
+        .catch((exc) => { this.reject(exc, reject) })
+    })
+  }
 }
