@@ -50,19 +50,21 @@ describe('ChatRoom', () => {
   const cable = new TestCable()
   const currentUser = Generic.currentUser()
   const partner = Generic.personnel()
-  const chats = [Generic.cableMessage(undefined, currentUser.id)]
+  const chats = [
+    Generic.cableMessage(undefined, currentUser.id),
+    Generic.cableMessage(undefined, partner.id),
+  ]
 
   beforeEach(() => {
     Spy.returned(useCable, 'default', { cable })
     Spy.resolved(UsersController, 'signedUser', currentUser)
     Spy.resolved(UsersController, 'people', {
-      people: [partner],
-      pagination: { current: 1, pages: 1 },
+      people: [partner], pagination: { current: 1, pages: 1 },
     })
     Spy.resolved(MessagesController, 'conversation', {
-      chats,
-      pagination: { current: 1, pages: 1 },
+      chats, pagination: { current: 1, pages: 1 },
     })
+    Spy.resolved(MessagesController, 'markAsRead', [chats[1].id.toString()])
   })
   afterEach(() => {
     localStorage.clear()
@@ -75,6 +77,8 @@ describe('ChatRoom', () => {
   test('renders successfully', async () => {
     await act(async () => { appRender(<Main id={partner.id} />) })
     expect(await screen.findByRole('heading', { name: partner.name })).toBeInTheDocument()
-    expect(await screen.findByText(chats[0].desc)).toBeInTheDocument()
+    expect(await screen.findAllByText(chats[0].desc)).toHaveLength(chats.length)
+    const { chats: { messages } } = TestReduxStore.getState()
+    expect(messages[partner.id].chats.find(({ isSeen }) => isSeen)).not.toBeNull()
   })
 })
