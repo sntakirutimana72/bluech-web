@@ -25,24 +25,31 @@ describe('ChatsChannel', () => {
     expect(cable.outgoing).toEqual([{ action: 'typing', payload: typingSignal }])
   })
 
-  test('fires events on receipt', () => {
-    const onTyping = jest.fn()
+  test('fires :message event', () => {
     const onMessage = jest.fn()
-    const onSeen = jest.fn()
-    const asSeenMessage: AsSeenMessage = { type: 'read', readerId: 2, ids: ['2'] }
-    const typingMessage: TypingMessage = { type: 'typing', author: partner, status: false }
     const chatMessage: ChatMessage = { type: 'message', message: Generic.cableMessage(undefined, id) }
 
-    channel.on('typing', onTyping)
     channel.on('message', onMessage)
+    channel.receive(chatMessage)
+    expect(onMessage).toHaveBeenCalled()
+  })
+
+  test('fires :typing event', () => {
+    const onTyping = jest.fn()
+    const typingMessage: TypingMessage = { type: 'typing', author: partner, status: false }
+
+    channel.on('typing', onTyping)
+    channel.receive(typingMessage)
+    expect(onTyping).toHaveBeenCalled()
+  })
+
+  test('fires :read event', () => {
+    const onSeen = jest.fn()
+    const asSeenMessage: AsSeenMessage = { type: 'read', readerId: 2, ids: ['2'] }
+
     channel.on('read', onSeen)
     channel.receive(asSeenMessage)
-    channel.receive(chatMessage)
-    channel.receive(typingMessage)
-
     expect(onSeen).toHaveBeenCalled()
-    expect(onTyping).toHaveBeenCalled()
-    expect(onMessage).toHaveBeenCalled()
   })
 
   test('disconnects on leave', () => {
