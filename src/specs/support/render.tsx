@@ -11,7 +11,7 @@ type Wrapper = {
 }
 
 export class TestReduxStore {
-  protected static store?: ReturnType<typeof configureStore>
+  protected static store?: ReturnType<typeof configureStore<ReturnType<typeof reducer>>>
 
   static clear() {
     this.store = undefined
@@ -22,6 +22,10 @@ export class TestReduxStore {
       this.initiate()
     }
     return this.store!
+  }
+
+  static getState() {
+    return this.getStore().getState()
   }
 
   protected static initiate() {

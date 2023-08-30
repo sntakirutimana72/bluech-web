@@ -5,6 +5,7 @@ type NullableNumeric = number | null
 type CableMessage = {
   id: AlphaNumeric
   desc: string
+  isSeen?: boolean
   isEdited: boolean
   createdAt: string
   updatedAt: string | null
@@ -15,6 +16,11 @@ type CableMessage = {
 type CableMessageAuthor = {
   id: AlphaNumeric
   name: string
+}
+
+type CableSeen = {
+  channelId: AlphaNumeric
+  ids: string[]
 }
 
 type NewUser = {
@@ -59,6 +65,11 @@ type Conversation = {
 type ConvoParams = {
   page?: number
   channelId: AlphaNumeric
+}
+
+type MarkAsReadParams = {
+  authorId: AlphaNumeric
+  ids: AlphaNumeric[]
 }
 
 type People = {

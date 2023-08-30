@@ -45,7 +45,7 @@ describe('ChatsChannel', () => {
 
   test('fires :read event', () => {
     const onSeen = jest.fn()
-    const asSeenMessage: AsSeenMessage = { type: 'read', readerId: 2, ids: ['2'] }
+    const asSeenMessage: AsSeenMessage = { type: 'read', channelId: 2, ids: ['2'] }
 
     channel.on('read', onSeen)
     channel.receive(asSeenMessage)

@@ -1,12 +1,14 @@
 import { useEffect, useState, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { uid } from 'uid'
-import Composer from './Composer'
-import MessageElement from './MessageElement'
+import { nilFunc } from '../../helpers/utils'
+import { MessagesController } from '../../controllers/v1'
 import { useAppSelector, useAppDispatch, useSession } from '../../hooks'
-import { populateConversation } from '../../redux/features/chatsSlice'
+import { populateConversation, markedAsRead } from '../../redux/features/chatsSlice'
 import { chatsSelector } from '../../redux/effects/chatsEffects'
 import { userSelector } from '../../redux/effects/peopleEffects'
+import Composer from './Composer'
+import MessageElement from './MessageElement'
 
 const ChatRoom = () => {
   const { currentUser } = useSession()
@@ -32,6 +34,27 @@ const ChatRoom = () => {
       }
     },
     [channelId, page, status],
+  )
+
+  useEffect(
+    () => {
+      const unreadIds = chats.filter(
+        ({ isSeen, author: { id } }) => !isSeen && id.toString() === channelId!,
+      ).map(
+        ({ id }) => id,
+      )
+      if (unreadIds.length) {
+        MessagesController
+          .markAsRead({ authorId: channelId!, ids: unreadIds })
+          .then(
+            (ids) => {
+              dispatch(markedAsRead({ channelId: channelId!, ids }))
+            },
+            nilFunc,
+          )
+      }
+    },
+    [chats],
   )
 
   const ChatsList = useMemo(() => (

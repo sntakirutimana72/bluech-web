@@ -37,15 +37,15 @@ describe('chatsSlice', () => {
 
   test('markedAsRead', () => {
     const chat = Generic.cableMessage()
-    const { author: { id: readerId } } = chat
-    const actionPayload: CableSeen = { readerId, ids: ['1', '2'] }
+    const { author: { id: channelId } } = chat
+    const actionPayload: CableSeen = { channelId, ids: ['1', '2'] }
     const state = {
       ...initialState,
-      messages: { [readerId]: { chats: [{ ...chat }], pagination: {} } },
+      messages: { [channelId]: { chats: [{ ...chat }], pagination: {} } },
     }
     expect(reducer(state, markedAsRead(actionPayload))).toEqual({
       ...state,
-      messages: { [readerId]: { chats: [{ ...chat, isSeen: true }], pagination: {} } },
+      messages: { [channelId]: { chats: [{ ...chat, isSeen: true }], pagination: {} } },
     })
   })
 
