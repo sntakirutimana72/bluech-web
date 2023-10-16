@@ -1,12 +1,17 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  memo,
+} from 'react'
 import { Send } from '@mui/icons-material'
-import { useCable, useAppDispatch } from '../../hooks'
-import { nilFunc } from '../../helpers/utils'
-import { mapMessage } from '../../redux/features/chatsSlice'
-import { resetUCounter } from '../../redux/features/inboxSlice'
-import { ChatsChannel } from '../../channels'
-import { MessagesController } from '../../controllers/v1'
-import { Text } from '../Elements'
+import { useCable, useAppDispatch } from '@/hooks'
+import { nilFunc } from '@/helpers/utils'
+import { mapMessage } from '@/redux/features/chatsSlice'
+import { resetUCounter } from '@/redux/features/inboxSlice'
+import { ChatsChannel } from '@/channels'
+import { MessagesController } from '@/controllers/v1'
+import { Text } from '@/components/elements/Fields'
 
 type Props = React.HTMLProps<HTMLFormElement> & {
   channelId: AlphaNumeric
@@ -110,4 +115,4 @@ const Composer = ({ channelId, ...props }: Props) => {
   )
 }
 
-export default Composer
+export default memo(Composer)

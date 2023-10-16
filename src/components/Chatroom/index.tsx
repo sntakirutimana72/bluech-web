@@ -1,28 +1,25 @@
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { uid } from 'uid'
-import { nilFunc } from '../../helpers/utils'
-import { MessagesController } from '../../controllers/v1'
-import { useAppSelector, useAppDispatch, useSession } from '../../hooks'
-import { populateConversation, markedAsRead } from '../../redux/features/chatsSlice'
-import { chatsSelector } from '../../redux/effects/chatsEffects'
-import { userSelector } from '../../redux/effects/peopleEffects'
+import { nilFunc } from '@/helpers/utils'
+import { MessagesController } from '@/controllers/v1'
+import { useAppSelector, useAppDispatch } from '@/hooks'
+import { markedAsRead, populateConversation } from '@/redux/features/chatsSlice'
+import { clearCounter } from '@/redux/features/inboxSlice'
+import { chatsSelector } from '@/redux/effects/chatsEffects'
+import { userSelector } from '@/redux/effects/peopleEffects'
+import ChatList from './ChatList'
 import Composer from './Composer'
-import MessageElement from './MessageElement'
 
-const ChatRoom = () => {
-  const { currentUser } = useSession()
+const Chatroom = () => {
   const { channelId } = useParams()
   const partner = useAppSelector(userSelector(channelId!))
   const { conversation, isTyping } = useAppSelector(chatsSelector(channelId!))
   const dispatch = useAppDispatch()
-
   const {
     status,
     chats,
     pagination: { current, pages },
   } = conversation
-
   const [page] = useState(current)
 
   useEffect(
@@ -35,6 +32,8 @@ const ChatRoom = () => {
     },
     [channelId, page, status],
   )
+
+  useEffect(() => { dispatch(clearCounter(channelId!)) }, [channelId])
 
   useEffect(
     () => {
@@ -57,31 +56,19 @@ const ChatRoom = () => {
     [chats],
   )
 
-  const ChatsList = useMemo(() => (
-    <div className="chats-list-overlay">
-      <div className="chats-list">
-        { chats.map((msg) => (
-          <MessageElement key={uid()} msg={msg} isSelf={msg.author.id === currentUser!.id} />
-        )) }
-      </div>
-    </div>
-  ), [chats])
-
-  const Prompt = useMemo(() => (
-    <Composer channelId={channelId!} className="chats-room-composer" />
-  ), [channelId])
-
   return (
     <div className="chats-room">
       <nav className="chats-room-nav">
-        <h2>{partner?.name}</h2>
+        <h2>
+          {partner?.name}
+        </h2>
       </nav>
-      {ChatsList}
+      <ChatList list={chats} />
       { isTyping && (
         <div className="is-typing">{`${partner!.name} is typing..`}</div>
       ) }
-      {Prompt}
+      <Composer channelId={channelId!} className="chats-room-composer" />
     </div>
   )
 }
-export default ChatRoom
+export default Chatroom
