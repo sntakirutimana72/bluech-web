@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { MessagesController } from '../../controllers/v1'
+import { MessagesController } from '@/controllers/v1'
 
 type ChatsState = {
   typings: { [key: AlphaNumeric]: boolean }

@@ -1,17 +1,19 @@
 import React, { useState } from 'react'
-import type { SessionContext } from '../../../providers'
-import { UsersController } from '../../../controllers'
-import { Text } from '../../Elements'
+import type { SessionContext } from '@/providers'
+import { UsersController } from '@/controllers'
+import { Text } from '@/components/elements/Fields'
 
 type Props = React.HTMLProps<HTMLFormElement> & Pick<SessionContext, 'login'>
 type CustomFormElement = HTMLFormElement & {
   readonly elements: HTMLFormControlsCollection & {
+    name: HTMLInputElement
     email: HTMLInputElement
     password: HTMLInputElement
   }
 }
 
 const Form = ({ login, ...props }: Props) => {
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState<string>()
@@ -19,16 +21,28 @@ const Form = ({ login, ...props }: Props) => {
   const handleSubmit = (event: React.FormEvent<CustomFormElement>) => {
     event.preventDefault()
     UsersController
-      .login({ email, password })
+      .register({ name, email, password })
       .then(login, (err) => { setErrors(err) })
   }
 
   return (
     <form onSubmit={handleSubmit} {...props}>
-      <h1 className="text-gradient">Login</h1>
+      <h1 className="text-gradient">Sign up</h1>
       {
         errors && <div>{errors}</div>
       }
+      <Text
+        label={{ val: 'Name', htmlFor: 'nickname' }}
+        input={{
+          type: 'text',
+          id: 'nickname',
+          name: 'nickname',
+          value: name,
+          onChange: (e) => { setName(e.currentTarget.value) },
+          placeholder: 'Name',
+          required: true,
+        }}
+      />
       <Text
         label={{ val: 'Email', htmlFor: 'email' }}
         input={{
@@ -53,11 +67,7 @@ const Form = ({ login, ...props }: Props) => {
           required: true,
         }}
       />
-      <div className="checkbox">
-        <input type="checkbox" id="rememberable" name="rememberable" />
-        <label htmlFor="rememberable">Remember me</label>
-      </div>
-      <input type="submit" className="btn submit-btn" value="Sign in" />
+      <input type="submit" className="btn submit-btn" value="Sign up" />
     </form>
   )
 }

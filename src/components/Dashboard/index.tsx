@@ -6,20 +6,19 @@ import {
   useAppSelector,
   useSession,
   useCable,
-} from '../../hooks'
-import { ChatsChannel } from '../../channels'
-import type { ChatMessage, TypingMessage, AsSeenMessage } from '../../channels'
-import { statusesSelector } from '../../redux/effects/appEffects'
-import { populatePeople } from '../../redux/features/peopleSlice'
-import { previewInbox, incrementUCounter } from '../../redux/features/inboxSlice'
+} from '@/hooks'
+import { ChatsChannel } from '@/channels'
+import type { ChatMessage, TypingMessage, AsSeenMessage } from '@/channels'
+import { statusesSelector } from '@/redux/effects/appEffects'
+import { populatePeople } from '@/redux/features/peopleSlice'
+import { previewInbox, incrementUCounter } from '@/redux/features/inboxSlice'
 import {
   markedAsRead,
   mapMessage,
   userTyping,
   typingExpired,
-} from '../../redux/features/chatsSlice'
+} from '@/redux/features/chatsSlice'
 import { TopNav, BottomNav } from './Navs'
-import { LoaderOverlay } from '../Elements'
 
 const Dashboard = () => {
   const [ready, setReady] = useState(false)
@@ -74,7 +73,7 @@ const Dashboard = () => {
     [inboxStatus, peopleStatus, cable],
   )
 
-  return ready ? (
+  return (
     <div className="dashboard">
       <TopNav currentUser={currentUser as CurrentUser} />
       <div className="views-manager">
@@ -82,7 +81,7 @@ const Dashboard = () => {
       </div>
       <BottomNav />
     </div>
-  ) : <LoaderOverlay />
+  )
 }
 
 export default Dashboard

@@ -1,9 +1,9 @@
-import RedirectedRoute from './RedirectedRoute'
+import PublicRoute from './PublicRoute'
 import PrivateRoute from './PrivateRoute'
 import PrivateNode from './PrivateNode'
 
 export {
-  RedirectedRoute,
+  PublicRoute,
   PrivateNode,
   PrivateRoute,
 }

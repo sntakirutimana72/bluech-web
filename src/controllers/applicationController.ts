@@ -1,6 +1,6 @@
 import { isAxiosError, AxiosError } from 'axios'
-import { isNil } from '../helpers/utils'
-import SessionStore from '../store/session'
+import { isNil } from '@/helpers/utils'
+import SessionStore from '@/store/session'
 
 export type Resolve<T> = (param: PromiseLike<T> | T) => void
 export type Reject = (reason?: any) => void

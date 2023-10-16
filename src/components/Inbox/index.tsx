@@ -1,22 +1,17 @@
 import { useEffect, useCallback } from 'react'
-import { Refresh } from '@mui/icons-material'
-import { uid } from 'uid'
-import { useAppDispatch, useAppSelector } from '../../hooks'
-import { previewInbox } from '../../redux/features/inboxSlice'
-import { inboxSelector } from '../../redux/effects/inboxEffects'
-import { LoaderOverlay } from '../Elements'
-import PreviewElement from './PreviewElement'
+import { useAppDispatch, useAppSelector } from '@/hooks'
+import { previewInbox } from '@/redux/features/inboxSlice'
+import { inboxSelector } from '@/redux/effects/inboxEffects'
+import { getActionableStatus } from '@/helpers/utils'
+import { RefreshButton } from '@/components/elements/Buttons'
+import { RolexWaiter } from '@/components/elements/Waiters'
+import PreviewList from './PreviewList'
 
 const Inbox = () => {
   const { status, previews } = useAppSelector(inboxSelector)
   const dispatch = useAppDispatch()
 
-  const reloadPreviews = useCallback(
-    () => {
-      dispatch(previewInbox())
-    },
-    [],
-  )
+  const reloadPreviews = useCallback(() => { dispatch(previewInbox()) }, [])
 
   useEffect(() => {
     if (status === 'idle') {
@@ -24,22 +19,21 @@ const Inbox = () => {
     }
   }, [status])
 
-  switch (status) {
-    case 'loaded':
-      return (
-        <div className="inbox-previews">
-          {previews.map((inbox) => <PreviewElement inbox={inbox} key={uid()} />)}
-        </div>
-      )
-    case 'failed':
-      return (
-        <button type="button" aria-label="Refresh" onClick={reloadPreviews}>
-          <Refresh />
-        </button>
-      )
-    default:
-      return <LoaderOverlay />
-  }
+  const [isPending, failure, ready] = getActionableStatus(status, previews)
+
+  return (
+    <>
+      {
+        ready && <PreviewList previews={previews} />
+      }
+      {
+        failure && <RefreshButton onClick={reloadPreviews} />
+      }
+      {
+        isPending && <RolexWaiter />
+      }
+    </>
+  )
 }
 
 export default Inbox

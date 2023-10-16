@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { useSession } from '@/hooks'
 import { PublicRoute, PrivateRoute } from '@/middlewares'
-import { Login, Logout, Register } from 'src/components/session'
+import { Login, Logout, Register } from '@/components/session'
 import routes, { urls } from '@/config/routes'
 import GetStarted from '@/components/GetStarted'
 import Dashboard from '@/components/Dashboard'

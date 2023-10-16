@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit'
-import { RootState } from '../../store/redux'
+import type { RootState } from '@/store/redux'
 
 const getState = (state: RootState) => state.chats
 

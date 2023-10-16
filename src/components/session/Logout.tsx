@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
-import type { SessionContext } from '../../providers'
-import { UsersController } from '../../controllers'
+import type { SessionContext } from '@/providers'
+import { UsersController } from '@/controllers'
 
 type Props = Pick<SessionContext, 'logout'>
 
 const Logout = ({ logout }: Props) => {
-  useEffect(() => { UsersController.logout().then(logout) })
+  useEffect(() => { UsersController.logout().then(logout) }, [])
 
   return (<>Logging out..</>)
 }
