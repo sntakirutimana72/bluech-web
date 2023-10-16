@@ -17,9 +17,12 @@ module.exports = {
       },
       animation: {
         toggled: 'toggled 350ms ease-in-out',
-        'load-ball-1': 'load-bounce 1s alternate infinite ease-in-out, load-flash 3s alternate infinite ease-in-out',
-        'load-ball-2': 'load-bounce 1s .333s alternate infinite ease-in-out, load-flash 3s 1s alternate infinite ease-in-out',
-        'load-ball-3': 'load-bounce 1s .666s alternate infinite ease-in-out, load-flash 3s 2s alternate infinite ease-in-out',
+        'rolex-1': 'rolexer .8s infinite ease-in-out',
+        'rolex-2': 'rolexer .8s .25s infinite ease-in-out',
+        'rolex-3': 'rolexer .8s .5s infinite ease-in-out',
+        'wait-bouncer-1': 'bouncer 1s alternate infinite ease-in-out, flouncer 3s alternate infinite ease-in-out',
+        'wait-bouncer-2': 'bouncer 1s .333s alternate infinite ease-in-out, flouncer 3s 1s alternate infinite ease-in-out',
+        'wait-bouncer-3': 'bouncer 1s .666s alternate infinite ease-in-out, flouncer 3s 2s alternate infinite ease-in-out',
       },
       keyframes: {
         toggled: {
@@ -32,27 +35,19 @@ module.exports = {
             opacity: '1',
             display: 'block',
           },
-          '100%': {
-            transform: 'translateX(0)',
-          },
+          '100%': { transform: 'translateX(0)' },
         },
-        'load-bounce': {
-          from: {
-            position: 'relative',
-            top: '-10%',
-          },
-          to: {
-            position: 'relative',
-            top: '10%',
-          },
+        bouncer: {
+          '0%': { top: '-10%' },
+          '100%': { top: '10%' },
         },
-        'load-flash': {
-          from: {
-            background: '#a065ff',
-          },
-          to: {
-            background: '#e040ff',
-          },
+        flouncer: {
+          '0%': { background: '#a065ff' },
+          '100%': { background: '#e040ff' },
+        },
+        rolexer: {
+          '0%': { height: '15px' },
+          '100%': { height: '30px' },
         },
       },
       transitionProperty: {

@@ -2,6 +2,8 @@ type AlphaNumeric = string | number
 
 type NullableNumeric = number | null
 
+type Dict = { [key: AlphaNumeric]: any }
+
 type CableMessage = {
   id: AlphaNumeric
   desc: string
