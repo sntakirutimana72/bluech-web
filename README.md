@@ -12,9 +12,9 @@ Currently, it only supports text messaging and one-on-one single threaded user c
 
 ## UIX Templates
 
-<blockquote>
-  <img src="docs/designs/drawio.png" alt="UIX Templates" />
-</blockquote>
+<p>
+  <img src="./docs/designs/drawio.png" alt="UIX Template">
+</p>
 
 ## 🛠️ Built With
 
