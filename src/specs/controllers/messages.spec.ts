@@ -1,16 +1,13 @@
-import Spy from '../support/mocks/spy'
-import Generic from '../support/mocks/generic'
-import { Axios } from '../../helpers/requests'
-import { MessagesController } from '../../controllers/v1'
-
-afterEach(() => {
-  localStorage.clear()
-})
-afterAll(() => {
-  Generic.clear()
-})
+import { Axios } from '@/helpers/requests'
+import { MessagesController } from '@/controllers/v1'
+import Spy from '#test-support/mocks/spy'
+import Generic from '#test-support/mocks/generic'
 
 describe('MessagesController', () => {
+  afterEach(() => localStorage.clear())
+
+  afterAll(() => Generic.clear())
+
   describe('#create', () => {
     test('[resolved]', async () => {
       const message = Generic.cableMessage()

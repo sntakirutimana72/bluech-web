@@ -4,8 +4,8 @@ import {
   Route,
   useLocation,
 } from 'react-router-dom'
-import { screen, render, cleanup } from '@testing-library/react'
-import { RedirectedRoute, PrivateRoute } from '../../middlewares'
+import { screen, render } from '@testing-library/react'
+import { PublicRoute, PrivateRoute } from '@/middlewares'
 
 type Props = {
   authenticated?: boolean
@@ -26,7 +26,7 @@ const CustomApp = ({ authenticated, entry = '/' }: Props) => (
   <div>
     <Router initialEntries={[entry]}>
       <Routes>
-        <Route element={<RedirectedRoute redirectTo="/home" authenticated={authenticated} />}>
+        <Route element={<PublicRoute redirectTo="/home" authenticated={authenticated} />}>
           <Route index element={<GetStarted />} />
         </Route>
         <Route element={<PrivateRoute redirectTo="/" authenticated={authenticated} />}>
@@ -37,9 +37,7 @@ const CustomApp = ({ authenticated, entry = '/' }: Props) => (
   </div>
 )
 
-afterEach(() => { cleanup() })
-
-describe('RedirectedRoute', () => {
+describe('<PublicRoute />', () => {
   test('&:authenticated is FALSE', () => {
     render(<CustomApp />)
     expect(screen.queryByTestId('home')).not.toBeInTheDocument()

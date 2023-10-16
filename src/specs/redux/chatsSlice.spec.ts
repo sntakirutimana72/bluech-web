@@ -1,18 +1,17 @@
-import Generic from '../support/mocks/generic'
 import reducer, {
   userTyping,
   typingExpired,
   mapMessage,
   markedAsRead,
   populateConversation,
-} from '../../redux/features/chatsSlice'
-
-const initialState: ReturnType<typeof reducer> = { messages: {}, typings: {} }
+} from '@/redux/features/chatsSlice'
+import Generic from '#test-support/mocks/generic'
 
 describe('chatsSlice', () => {
-  const mockedMeta = (id: AlphaNumeric) => ({ meta: { arg: { channelId: id } } })
+  afterAll(() => Generic.clear())
 
-  afterAll(() => { Generic.clear() })
+  const initialState: ReturnType<typeof reducer> = { messages: {}, typings: {} }
+  const mockedMeta = (id: AlphaNumeric) => ({ meta: { arg: { channelId: id } } })
 
   test('userTyping', () => {
     const authorId = 77

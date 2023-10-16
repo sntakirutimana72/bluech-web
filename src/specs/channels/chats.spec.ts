@@ -1,7 +1,7 @@
 import { TestCable } from '@anycable/core/testing'
-import { ChatsChannel } from '../../channels'
-import Generic from '../support/mocks/generic'
-import type { TypingMessage, ChatMessage, AsSeenMessage } from '../../channels'
+import { ChatsChannel } from '@/channels'
+import type { TypingMessage, ChatMessage, AsSeenMessage } from '@/channels'
+import Generic from '#test-support/mocks/generic'
 
 describe('ChatsChannel', () => {
   let channel: ChatsChannel

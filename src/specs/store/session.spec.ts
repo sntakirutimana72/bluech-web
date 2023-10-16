@@ -1,10 +1,8 @@
-import Store from '../../store/session'
-
-afterAll(() => {
-  localStorage.clear()
-})
+import Store from '@/store/session'
 
 describe('SessionStore', () => {
+  afterAll(() => { localStorage.clear() })
+
   const value = 'SOME_AUH_X_AUTH_VALUE'
 
   test('&:persist &:fetch', () => {

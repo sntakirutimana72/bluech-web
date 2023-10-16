@@ -1,4 +1,4 @@
-import { now } from '../../../helpers/utils'
+import { now } from '@/helpers/utils'
 
 export default class Generic {
   protected static msgIdCounter = 0

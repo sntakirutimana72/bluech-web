@@ -1,14 +1,16 @@
-import Generic from '../support/mocks/generic'
-import reducer, { populatePeople } from '../../redux/features/peopleSlice'
-
-const initialPagy: Pagination = { current: null, pages: null }
-const initialState: ReturnType<typeof reducer> = {
-  status: 'idle',
-  people: [],
-  pagination: initialPagy,
-}
+import reducer, { populatePeople } from '@/redux/features/peopleSlice'
+import Generic from '#test-support/mocks/generic'
 
 describe('peopleSlice', () => {
+  afterAll(() => Generic.clear())
+
+  const initialPagy: Pagination = { current: null, pages: null }
+  const initialState: ReturnType<typeof reducer> = {
+    status: 'idle',
+    people: [],
+    pagination: initialPagy,
+  }
+
   test('[populatePeople.pending]', () => {
     const { status } = reducer(initialState, { type: populatePeople.pending.type })
     expect(status).toBe('pending')

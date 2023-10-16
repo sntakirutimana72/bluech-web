@@ -14,13 +14,13 @@ import SessionStore from '../store/session'
 import { UsersController } from '../controllers'
 import { InboxController } from '../controllers/v1'
 import { useSession } from '../hooks'
-import { RedirectedRoute, PrivateRoute } from '../middlewares'
-import { Login, Logout, Register } from '../components/Session'
+import { PublicRoute, PrivateRoute } from '../middlewares'
+import { Login, Logout, Register } from '../components/session'
 import GetStarted from '../components/GetStarted'
 import Dashboard from '../components/Dashboard'
 import Inbox from '../components/Inbox'
 import People from '../components/People'
-import ChatRoom from '../components/ChatRoom'
+import Chatroom from '../components/Chatroom'
 import NotFound from '../components/NotFound'
 
 class CustomTestCable extends TestCable {
@@ -53,7 +53,7 @@ const App = ({ path = '/' }: { path?: string }) => {
   return (
     <Router initialEntries={[path]}>
       <Routes>
-        <Route element={<RedirectedRoute authenticated={authenticated} redirectTo="/dashboard" />}>
+        <Route element={<PublicRoute authenticated={authenticated} redirectTo="/dashboard" />}>
           <Route path="" element={<GetStarted />} />
           <Route path="users/register" element={<Register login={login} />} />
           <Route path="users/login" element={<Login login={login} />} />
@@ -63,7 +63,7 @@ const App = ({ path = '/' }: { path?: string }) => {
           <Route path="dashboard" element={<Dashboard />}>
             <Route index element={<Inbox />} />
             <Route path="people" element={<People />} />
-            <Route path="chats/:channelId" element={<ChatRoom />} />
+            <Route path="chats/:channelId" element={<Chatroom />} />
           </Route>
           <Route path="users/logout" element={<Logout logout={logout} />} />
         </Route>

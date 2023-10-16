@@ -1,14 +1,17 @@
-import Generic from '../support/mocks/generic'
 import reducer, {
   incrementUCounter,
   resetUCounter,
+  clearCounter,
   previewInbox,
-} from '../../redux/features/inboxSlice'
-import { now } from '../../helpers/utils'
-
-const initialState: ReturnType<typeof reducer> = { status: 'idle', previews: [] }
+} from '@/redux/features/inboxSlice'
+import { now } from '@/helpers/utils'
+import Generic from '#test-support/mocks/generic'
 
 describe('inboxSlice', () => {
+  afterAll(() => Generic.clear())
+
+  const initialState: ReturnType<typeof reducer> = { status: 'idle', previews: [] }
+
   test('incrementUCounter', () => {
     const state = { ...initialState }
     const { id, preview } = Generic.inboxPreview()
@@ -35,6 +38,19 @@ describe('inboxSlice', () => {
     expect(previews).toEqual([{
       id, preview, unread: 0, createdAt,
     }])
+  })
+
+  test('clearCounter', () => {
+    const inboxPreview = Generic.inboxPreview()
+    ++inboxPreview.unread
+    const state = { ...initialState }
+
+    expect(inboxPreview.unread).not.toBe(0)
+
+    state.previews = [inboxPreview]
+    const { previews } = reducer(state, clearCounter(inboxPreview.id))
+
+    expect(previews).toEqual([{ ...inboxPreview, unread: 0 }])
   })
 
   test('[previewInbox.pending]', () => {
