@@ -26,7 +26,7 @@ const CableProvider = ({ children }: Props) => {
   const connect = useCallback(() => {
     const authToken = SessionStore.fetch()
     const pipe = createCable(`${process.env.REACT_APP_CABLE_URL!}?X-Token=${authToken}`)
-    pipe.connect().then(() => { setCable(pipe) }, nilFunc)
+    pipe.connect().then(() => setCable(pipe), nilFunc)
   }, [])
 
   const disconnect = useCallback(() => {
@@ -42,7 +42,7 @@ const CableProvider = ({ children }: Props) => {
     } else if (!cable && authenticated) {
       connect()
     }
-    return () => { disconnect() }
+    return disconnect
   }, [authenticated])
 
   const initialValue = useMemo(() => ({ cable }), [cable])

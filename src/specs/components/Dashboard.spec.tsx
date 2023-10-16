@@ -1,12 +1,14 @@
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom'
-import { act, screen, fireEvent } from '@testing-library/react'
+import {
+  act, screen, fireEvent, cleanup,
+} from '@testing-library/react'
 import { TestCable } from '@anycable/core/testing'
 import { UsersController } from '@/controllers'
 import { InboxController, MessagesController } from '@/controllers/v1'
 import ApplicationChannel from '@/channels/applicationChannel'
 import * as useCable from '@/hooks/cable'
 import * as chatsChannel from '@/channels/chatsChannel'
-import { useSession } from '@/hooks'
+import useSession from '@/hooks/session'
 import { PrivateRoute, PublicRoute } from '@/middlewares'
 import routes, { urls } from '@/config/routes'
 import Dashboard from '@/components/Dashboard'
@@ -65,6 +67,7 @@ describe('<Dashboard />', () => {
   afterEach(() => {
     localStorage.clear()
     TestReduxStore.clear()
+    cleanup()
   })
 
   afterAll(() => Generic.clear())
