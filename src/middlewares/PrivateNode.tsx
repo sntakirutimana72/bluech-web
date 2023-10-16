@@ -1,5 +1,5 @@
-import React from 'react'
-import type { SessionContext } from '../providers'
+import React, { memo } from 'react'
+import type { SessionContext } from '@/providers'
 
 type Props = Pick<SessionContext, 'authenticated'> & {
   children: React.ReactNode
@@ -12,4 +12,4 @@ const PrivateNode = ({ authenticated, children }: Props) => (
   </>
 )
 
-export default PrivateNode
+export default memo(PrivateNode)

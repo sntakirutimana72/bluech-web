@@ -1,17 +1,14 @@
-import Spy from '../support/mocks/spy'
-import Generic from '../support/mocks/generic'
-import { Axios } from '../../helpers/requests'
-import { MessagesController } from '../../controllers/v1'
-
-afterEach(() => {
-  localStorage.clear()
-})
-afterAll(() => {
-  Generic.clear()
-})
+import { Axios } from '@/helpers/requests'
+import { MessagesController } from '@/controllers/v1'
+import Spy from '#test-support/mocks/spy'
+import Generic from '#test-support/mocks/generic'
 
 describe('MessagesController', () => {
-  describe('#create( message )', () => {
+  afterEach(() => localStorage.clear())
+
+  afterAll(() => Generic.clear())
+
+  describe('#create', () => {
     test('[resolved]', async () => {
       const message = Generic.cableMessage()
       const { author: { id: recipient_id } } = message
@@ -31,7 +28,7 @@ describe('MessagesController', () => {
     })
   })
 
-  describe('#conversation({ page, channel })', () => {
+  describe('#conversation', () => {
     test('[resolved]', async () => {
       const channelId = 3
       const mockedConvo: Conversation = {
@@ -47,6 +44,23 @@ describe('MessagesController', () => {
 
       try {
         await MessagesController.conversation({ channelId: 'wrong channel' })
+      } catch (exc) {
+        expect(exc).toBe('Bad Request')
+      }
+    })
+  })
+
+  describe('#markAsRead', () => {
+    test('[resolved]', async () => {
+      const ids: AlphaNumeric[] = ['13', '15']
+      Spy.resolved(Axios, 'patch', { status: 200, data: { ids } })
+      expect(await MessagesController.markAsRead({ authorId: 3, ids })).toEqual(ids)
+    })
+
+    test('[rejected]', async () => {
+      Spy.rejected(Axios, 'patch', { message: 'Bad Request', status: 400 })
+      try {
+        await MessagesController.markAsRead({ authorId: 3, ids: [] })
       } catch (exc) {
         expect(exc).toBe('Bad Request')
       }

@@ -27,9 +27,14 @@ export type ChatMessage = ChannelMessage & {
   message: CableMessage
 }
 
+export type AsSeenMessage = ChannelMessage & CableSeen & {
+  type: 'read'
+}
+
 interface Events extends ChannelEvents<any> {
-  typing: (msg: TypingMessage, meta?: MessageMeta) => void
-  message: (msg: ChatMessage, meta?: MessageMeta) => void
+  typing(msg: TypingMessage, meta?: MessageMeta): void
+  message(msg: ChatMessage, meta?: MessageMeta): void
+  read(msg: AsSeenMessage, meta?: MessageMeta): void
 }
 
 export default class ApplicationChannel extends Channel<ChannelParams, any, Events> {
@@ -44,9 +49,9 @@ export default class ApplicationChannel extends Channel<ChannelParams, any, Even
   receive(message: any, meta?: MessageMeta) {
     switch (message.type) {
       case 'typing':
-        return this.emit('typing', message, meta)
       case 'message':
-        return this.emit('message', message, meta)
+      case 'read':
+        return this.emit(message.type, message, meta)
       default:
         return super.receive(message, meta)
     }

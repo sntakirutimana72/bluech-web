@@ -1,24 +1,28 @@
+import { memo } from 'react'
 import { NavLink } from 'react-router-dom'
 import { Person } from '@mui/icons-material'
+import { urls } from '@/config/routes'
+import { ListItemProps } from '@/components/elements/Lists'
 
-type Props = {
-  user: Personnel
-}
+export type UserListItemProps = ListItemProps & Personnel
 
-const UserElement = ({ user }: Props) => (
-  <NavLink to={`/dashboard/chats/${user.id}`} className="people-item" title={user.name}>
-    <div className="people-item-avatar">
-      {
-        user.avatar
-          ? <img src={user.avatar} alt={user.name} />
-          : <Person />
-      }
-    </div>
-    <div className="people-item-body">
-      <h3>{user.name}</h3>
-      <p>{user.bio}</p>
-    </div>
-  </NavLink>
+const UserElement = ({
+  id,
+  name,
+  bio,
+  avatar,
+}: UserListItemProps) => (
+  <li title={name}>
+    <NavLink to={urls.chatroom(id)} className="people-item">
+      <div className="people-item-avatar">
+        {avatar ? <img src={avatar} alt={name} /> : <Person />}
+      </div>
+      <div className="people-item-body">
+        <h3>{name}</h3>
+        <p>{bio}</p>
+      </div>
+    </NavLink>
+  </li>
 )
 
-export default UserElement
+export default memo(UserElement)

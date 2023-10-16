@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
-import { uid } from 'uid'
-import { Refresh } from '@mui/icons-material'
-import { LoaderOverlay } from '../Elements'
-import UserElement from './UserElement'
-import { useAppDispatch, useAppSelector } from '../../hooks'
-import { peopleSelector } from '../../redux/effects/peopleEffects'
-import { populatePeople } from '../../redux/features/peopleSlice'
+import { useEffect, useState, useCallback } from 'react'
+import { useAppDispatch, useAppSelector } from '@/hooks'
+import { peopleSelector } from '@/redux/effects/peopleEffects'
+import { populatePeople } from '@/redux/features/peopleSlice'
+import { getActionableStatus } from '@/helpers/utils'
+import { RefreshButton } from '@/components/elements/Buttons'
+import { RolexWaiter } from '@/components/elements/Waiters'
+import UserList from './UserList'
 
 const People = () => {
   const {
@@ -16,9 +16,12 @@ const People = () => {
   const [page] = useState(current)
   const dispatch = useAppDispatch()
 
-  const reloadRepository = () => {
-    dispatch(populatePeople(page || 1))
-  }
+  const reloadRepository = useCallback(
+    () => {
+      dispatch(populatePeople(page || 1))
+    },
+    [],
+  )
 
   useEffect(
     () => {
@@ -29,22 +32,21 @@ const People = () => {
     [page],
   )
 
-  switch (status) {
-    case 'loaded':
-      return (
-        <div className="people-list">
-          {people.map((user) => <UserElement user={user} key={uid()} />)}
-        </div>
-      )
-    case 'failed':
-      return (
-        <button type="button" aria-label="Refresh" onClick={reloadRepository}>
-          <Refresh />
-        </button>
-      )
-    default:
-      return <LoaderOverlay />
-  }
+  const [isPending, failure, ready] = getActionableStatus(status, people)
+
+  return (
+    <>
+      {
+        ready && <UserList users={people} />
+      }
+      {
+        failure && <RefreshButton onClick={reloadRepository} />
+      }
+      {
+        isPending && <RolexWaiter />
+      }
+    </>
+  )
 }
 
 export default People

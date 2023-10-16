@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { sessionContext } from '../providers'
+import { sessionContext } from '@/providers'
 
 const useSession = () => useContext(sessionContext)
 

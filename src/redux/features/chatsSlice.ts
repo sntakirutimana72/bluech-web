@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { MessagesController } from '../../controllers/v1'
+import { MessagesController } from '@/controllers/v1'
 
 type ChatsState = {
   typings: { [key: AlphaNumeric]: boolean }
@@ -42,6 +42,15 @@ const slicer = createSlice({
       }
       messages[targetId].chats.push(payload)
     },
+    markedAsRead(state, action: PayloadAction<CableSeen>) {
+      const { payload: { ids, channelId } } = action
+      const { messages } = state
+      messages[channelId]?.chats.forEach((chat) => {
+        if (ids.includes(chat.id.toString())) {
+          chat.isSeen = true
+        }
+      })
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -65,5 +74,10 @@ const slicer = createSlice({
   },
 })
 
-export const { userTyping, typingExpired, mapMessage } = slicer.actions
+export const {
+  userTyping,
+  typingExpired,
+  mapMessage,
+  markedAsRead,
+} = slicer.actions
 export default slicer.reducer

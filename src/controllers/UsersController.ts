@@ -1,6 +1,7 @@
 import { AxiosResponse } from 'axios'
-import { Axios } from '../helpers/requests'
-import SessionStore from '../store/session'
+import { nilFunc } from '@/helpers/utils'
+import { Axios } from '@/helpers/requests'
+import SessionStore from '@/store/session'
 import ApplicationController from './applicationController'
 import type { Resolve } from './applicationController'
 
@@ -16,7 +17,7 @@ export default class UsersController extends ApplicationController {
   static people(page: number) {
     return new Promise<People>((resolve, reject) => {
       Axios
-        .get(process.env.REACT_APP_BLUECH_RB_API_PEOPLE!, { ...this.authorize(), params: { page } })
+        .get(process.env.REACT_APP_API_PEOPLE!, { ...this.authorize(), params: { page } })
         .then(({ data: { people, pagination } }) => { resolve({ people, pagination }) })
         .catch((exc) => { this.reject(exc, reject) })
     })
@@ -25,7 +26,7 @@ export default class UsersController extends ApplicationController {
   static login(creds: CredentialsProps) {
     return new Promise<CurrentUser>((resolve, reject) => {
       Axios
-        .post(process.env.REACT_APP_BLUECH_RB_API_LOGIN!, { user: creds })
+        .post(process.env.REACT_APP_API_LOGIN!, { user: creds })
         .then((resp) => { this.onSuccess(resp, resolve) })
         .catch((exc) => { this.reject(exc, reject) })
     })
@@ -34,8 +35,8 @@ export default class UsersController extends ApplicationController {
   static logout() {
     return new Promise<void>((resolve) => {
       Axios
-        .delete(process.env.REACT_APP_BLUECH_RB_API_LOGOUT!, this.authorize())
-        .catch(() => {})
+        .delete(process.env.REACT_APP_API_LOGOUT!, this.authorize())
+        .catch(nilFunc)
         .finally(() => {
           SessionStore.destroy()
           resolve()
@@ -46,7 +47,7 @@ export default class UsersController extends ApplicationController {
   static register(requirements: NewUser) {
     return new Promise<CurrentUser>((resolve, reject) => {
       Axios
-        .post(process.env.REACT_APP_BLUECH_RB_API_REGISTER!, { user: requirements })
+        .post(process.env.REACT_APP_API_REGISTER!, { user: requirements })
         .then((resp) => { this.onSuccess(resp, resolve) })
         .catch((exc) => { this.reject(exc, reject) })
     })
@@ -56,7 +57,7 @@ export default class UsersController extends ApplicationController {
     return new Promise<CurrentUser>((resolve, reject) => {
       this.ensureAuthorizationExists(reject)
       Axios
-        .get(process.env.REACT_APP_BLUECH_RB_API_SESSION_USER!, this.authorize())
+        .get(process.env.REACT_APP_API_SESSION_USER!, this.authorize())
         .then((resp) => { this.onSuccess(resp, resolve) })
         .catch(() => { this.destroyAndReject(reject) })
     })
@@ -66,7 +67,7 @@ export default class UsersController extends ApplicationController {
     return new Promise<void>((resolve, reject) => {
       this.ensureAuthorizationExists(reject)
       Axios
-        .head(process.env.REACT_APP_BLUECH_RB_API_REFRESH_SESSION!, this.authorize())
+        .head(process.env.REACT_APP_API_REFRESH_SESSION!, this.authorize())
         .then(({ headers: { authorization } }) => {
           SessionStore.persist(authorization)
           resolve()

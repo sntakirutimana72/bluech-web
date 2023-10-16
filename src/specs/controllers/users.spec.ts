@@ -1,17 +1,14 @@
-import Spy from '../support/mocks/spy'
-import Generic from '../support/mocks/generic'
-import SessionStore from '../../store/session'
-import { Axios } from '../../helpers/requests'
-import { UsersController } from '../../controllers'
-
-afterEach(() => {
-  localStorage.clear()
-})
-afterAll(() => {
-  Generic.clear()
-})
+import { Axios } from '@/helpers/requests'
+import { UsersController } from '@/controllers'
+import SessionStore from '@/store/session'
+import Spy from '#test-support/mocks/spy'
+import Generic from '#test-support/mocks/generic'
 
 describe('UsersController', () => {
+  afterEach(() => localStorage.clear())
+
+  afterAll(() => Generic.clear())
+
   const mockedUser = Generic.currentUser()
 
   describe('#people( page )', () => {

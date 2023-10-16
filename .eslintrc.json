@@ -11,6 +11,11 @@
     "plugin:@typescript-eslint/recommended"
   ],
   "overrides": [],
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
+  },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {

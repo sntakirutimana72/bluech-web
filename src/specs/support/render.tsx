@@ -2,16 +2,16 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import { configureStore } from '@reduxjs/toolkit'
 import { render } from '@testing-library/react'
-import { isInit } from '../../helpers/utils'
-import { SessionProvider, CableProvider } from '../../providers'
-import reducer from '../../redux/features'
+import { isInit } from '@/helpers/utils'
+import { SessionProvider, CableProvider } from '@/providers'
+import reducer from '@/redux/features'
 
 type Wrapper = {
   children: React.ReactNode
 }
 
 export class TestReduxStore {
-  protected static store?: ReturnType<typeof configureStore>
+  protected static store?: ReturnType<typeof configureStore<ReturnType<typeof reducer>>>
 
   static clear() {
     this.store = undefined
@@ -22,6 +22,10 @@ export class TestReduxStore {
       this.initiate()
     }
     return this.store!
+  }
+
+  static getState() {
+    return this.getStore().getState()
   }
 
   protected static initiate() {

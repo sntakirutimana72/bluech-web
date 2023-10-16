@@ -1,4 +1,4 @@
-name: Test Units
+name: Jest Tests
 
 on: pull_request
 

@@ -1,4 +1,4 @@
-import { isInit } from '../../helpers/utils'
+import { isInit } from '@/helpers/utils'
 
 test('isInit( obj )', () => {
   expect(isInit(null)).toBeTruthy()

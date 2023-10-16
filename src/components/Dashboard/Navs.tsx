@@ -7,6 +7,7 @@ import {
   People,
   Search,
 } from '@mui/icons-material'
+import { urls } from '@/config/routes'
 import { uid } from 'uid'
 
 type Props = { currentUser: CurrentUser }
@@ -20,7 +21,7 @@ export const TopNav = ({ currentUser }: Props) => {
 
   return (
     <nav className="top-nav desktop-top-nav">
-      <NavLink to="/dashboard" className="nav-logo">
+      <NavLink to={urls.HOME} className="nav-logo">
         <span data-testid="app-name">bluech</span>
       </NavLink>
       <button type="button" onClick={toggleToolbar} className={toggled ? 'open' : undefined}>
@@ -39,7 +40,7 @@ export const TopNav = ({ currentUser }: Props) => {
             <ManageAccounts />
             <span>Account</span>
           </NavLink>
-          <NavLink to="/users/logout" className="acc-nav-item">
+          <NavLink to={urls.LOGOUT} className="acc-nav-item">
             <Logout />
             <span>Logout</span>
           </NavLink>
@@ -56,20 +57,16 @@ const BottomNavLink = ({ children, ...props }: NavLinkProps) => (
 )
 
 export const BottomNav = () => {
-  const toUrl = '/dashboard'
-  const config = {
-    className: 'bottom-nav-item',
-  }
-
+  const config = { className: 'bottom-nav-item' }
   return (
     <nav className="bottom-nav desktop-bottom-nav">
       {
         [
           {
-            ...config, title: 'Chats', to: toUrl, children: <Inbox />,
+            ...config, title: 'Chats', to: urls.HOME, children: <Inbox />,
           },
           {
-            ...config, title: 'People', to: `${toUrl}/people`, children: <People />,
+            ...config, title: 'People', to: urls.PEOPLE, children: <People />,
           },
         ].map((props) => <BottomNavLink {...props} key={uid()} />)
       }

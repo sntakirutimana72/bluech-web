@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { UsersController } from '../../controllers'
+import { UsersController } from '@/controllers'
 
 type PeopleState = People & {
   status: ThunkStatus
@@ -18,9 +18,9 @@ const slicer = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(populatePeople.pending, () => ({
-        ...initialState, status: 'pending',
-      }))
+      .addCase(populatePeople.pending, (state) => {
+        state.status = 'pending'
+      })
       .addCase(populatePeople.fulfilled, (_, action) => ({
         ...action.payload, status: 'loaded',
       }))

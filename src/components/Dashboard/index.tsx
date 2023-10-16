@@ -6,15 +6,19 @@ import {
   useAppSelector,
   useSession,
   useCable,
-} from '../../hooks'
-import { ChatsChannel } from '../../channels'
-import type { ChatMessage, TypingMessage } from '../../channels'
-import { statusesSelector } from '../../redux/effects/appEffects'
-import { populatePeople } from '../../redux/features/peopleSlice'
-import { previewInbox, incrementUCounter } from '../../redux/features/inboxSlice'
-import { mapMessage, userTyping, typingExpired } from '../../redux/features/chatsSlice'
+} from '@/hooks'
+import { ChatsChannel } from '@/channels'
+import type { ChatMessage, TypingMessage, AsSeenMessage } from '@/channels'
+import { statusesSelector } from '@/redux/effects/appEffects'
+import { populatePeople } from '@/redux/features/peopleSlice'
+import { previewInbox, incrementUCounter } from '@/redux/features/inboxSlice'
+import {
+  markedAsRead,
+  mapMessage,
+  userTyping,
+  typingExpired,
+} from '@/redux/features/chatsSlice'
 import { TopNav, BottomNav } from './Navs'
-import { LoaderOverlay } from '../Elements'
 
 const Dashboard = () => {
   const [ready, setReady] = useState(false)
@@ -24,19 +28,18 @@ const Dashboard = () => {
   const dispatch = useAppDispatch()
   const channelRef = useRef<ChatsChannel>()
 
-  const handleTyping = ({ author: { id }, status }: TypingMessage) => {
-    if (status) {
-      dispatch(userTyping(id))
-    } else {
-      dispatch(typingExpired(id))
-    }
+  const onTyping = ({ author: { id }, status }: TypingMessage) => {
+    dispatch(status ? userTyping(id) : typingExpired(id))
   }
 
-  const handleMessage = ({ message } : ChatMessage) => {
+  const onMessage = ({ message } : ChatMessage) => {
     const { desc, createdAt, author: { id } } = message
-
     dispatch(mapMessage(message))
     dispatch(incrementUCounter({ id, createdAt, preview: desc }))
+  }
+
+  const onSeen = (msgUpdate: AsSeenMessage) => {
+    dispatch(markedAsRead(msgUpdate as CableSeen))
   }
 
   useEffect(
@@ -55,8 +58,9 @@ const Dashboard = () => {
         if (cable && !channelRef.current) {
           channelRef.current = cable.subscribe(new ChatsChannel())
           unbinders = [
-            channelRef.current.on('typing', handleTyping),
-            channelRef.current.on('message', handleMessage),
+            channelRef.current.on('typing', onTyping),
+            channelRef.current.on('message', onMessage),
+            channelRef.current.on('read', onSeen),
           ]
         }
         setReady(true)
@@ -69,7 +73,7 @@ const Dashboard = () => {
     [inboxStatus, peopleStatus, cable],
   )
 
-  return ready ? (
+  return (
     <div className="dashboard">
       <TopNav currentUser={currentUser as CurrentUser} />
       <div className="views-manager">
@@ -77,7 +81,7 @@ const Dashboard = () => {
       </div>
       <BottomNav />
     </div>
-  ) : <LoaderOverlay />
+  )
 }
 
 export default Dashboard
