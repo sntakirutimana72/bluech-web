@@ -1,5 +1,6 @@
-![Development](https://img.shields.io/badge/Development-v)
 [![API-Endpoints](https://img.shields.io/badge/Server-Endpoints-ee4f51)](https://github.com/sntakirutimana72/bluech)
+![Tests](https://github.com/sntakirutimana72/bluech-web/actions/workflows/specs.yml/badge.svg)
+![Linters](https://github.com/sntakirutimana72/bluech-web/actions/workflows/linters.yml/badge.svg)
 
 
 # Bluech-Web
