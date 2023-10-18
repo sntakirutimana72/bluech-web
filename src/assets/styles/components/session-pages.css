@@ -22,7 +22,7 @@
 
     & .field {
       & input {
-        @apply py-2.5 bg-white shadow-none rounded-md ring-2 ring-gray-300 focus:ring-blueish;
+        @apply py-2 bg-white shadow-none rounded ring-2 ring-gray-200 focus:ring-blueish;
       }
 
       & label {
@@ -31,22 +31,12 @@
     }
 
     & .btn {
-      @apply text-2xl font-medium px-12 py-1.5 rounded-md;
-    }
-
-    &.login-form {
-      & .submit-btn {
-        @apply bg-gradient-to-r from-violet-900 to-blueish text-light;
-      }
+      @apply bg-gradient-to-r from-violet-900 to-blueish text-light text-2xl font-medium px-12 py-1.5 rounded-md;
     }
 
     &.register-form {
-      & h1 {
-        @apply bg-gradient-to-r from-darkish to-emerald-400;
-      }
-
-      & .submit-btn {
-        @apply bg-gradient-to-r from-blue-400 to-green-300 text-light mt-8;
+      & .btn {
+        @apply mt-7;
       }
     }
   }
@@ -63,12 +53,9 @@
     }
   }
 
-  & .forgot-password {
-    @apply text-violet-700 m-5 mb-0 self-end w-fit;
-  }
-
+  & .forgot-password,
   & .already-have-acc {
-    @apply text-lg text-blueish self-end m-5;
+    @apply text-violet-700 m-5 mb-0 self-end w-fit;
   }
 
   & .session-otherwise {
