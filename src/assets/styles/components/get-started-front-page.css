@@ -1,19 +1,19 @@
-.get-started__front {
-  @apply min-h-screen flex flex-col justify-center px-2.5 pt-8 relative;
+.get-started--front {
+  @apply relative min-h-screen flex flex-col justify-center px-3 pt-8 overflow-x-clip text-light-2x bg-gradient-to-r from-violet-950 to-black;
 
   & h1 {
-    @apply text-8xl text-blueish font-medium bg-gradient-to-r from-blueish from-30% via-stone-400 via-50% to-sky-200 to-90%;
+    @apply text-5xl text-light font-medium z-[1];
   }
 
   & p {
-    @apply text-4xl text-darkish-3x mt-4 leading-tight;
+    @apply text-xl mt-6 mb-16 leading-tight;
   }
 
   & a {
-    @apply text-5xl text-light font-medium bg-gradient-to-r from-darkish-2x to-emerald-300 rounded-lg shadow-md py-3 px-10 w-fit mt-8;
+    @apply text-xl font-medium rounded-xl border-2 border-gray-800 py-2 px-8 w-fit;
   }
 
-  & .get-started__dangling-cover {
-    @apply absolute top-0 right-1 bg-transparent;
+  & .get-started--dangling-cover {
+    @apply absolute -top-12 -right-10 bg-inherit;
   }
 }

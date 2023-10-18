@@ -13,7 +13,8 @@ module.exports = {
         'darkish-2.5x': '#6f6f6f',
         'darkish-3x': '#9f9f9f',
         reddish: '#ee4f51',
-        light: '#f5f6fa',
+        light: '#f0f0f0',
+        'light-2x': '#afafaf',
       },
       animation: {
         toggled: 'toggled 350ms ease-in-out',
