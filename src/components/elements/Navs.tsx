@@ -14,7 +14,7 @@ type Props = React.HTMLProps<HTMLElement> & {
   }
 }
 
-const NativeNavigation = (props: Props) => {
+export const NativeNav = (props: Props) => {
   const {
     title,
     icon,
@@ -42,5 +42,3 @@ const NativeNavigation = (props: Props) => {
     </nav>
   )
 }
-
-export default NativeNavigation

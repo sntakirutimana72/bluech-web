@@ -1,30 +1,42 @@
 .session-pg {
-  @apply flex flex-col my-8;
+  @apply flex flex-col my-4;
+
+  & nav {
+    @apply flex items-center px-4;
+
+    & button {
+      @apply flex items-center text-darkish text-3xl bg-gradient-to-r from-blueish to-violet-800 font-medium;
+
+      & img {
+        @apply w-8 mr-1;
+      }
+    }
+  }
 
   & .session-form {
-    @apply flex flex-col px-4 gap-7;
+    @apply flex flex-col px-4 mt-11 gap-7;
 
     & h1 {
-      @apply text-center text-darkish text-7xl bg-gradient-to-r from-darkish to-blueish font-medium mt-12;
+      @apply text-darkish text-3xl bg-gradient-to-r from-violet-900 to-blueish;
     }
 
     & .field {
       & input {
-        @apply focus:ring-2 focus:ring-indigo-300;
+        @apply py-2.5 bg-white shadow-none rounded-md ring-2 ring-gray-300 focus:ring-blueish;
       }
 
       & label {
-        @apply text-xl text-darkish-2.5x;
+        @apply hidden;
       }
     }
 
     & .btn {
-      @apply text-4xl font-medium px-12 py-2 rounded-md;
+      @apply text-2xl font-medium px-12 py-1.5 rounded-md;
     }
 
     &.login-form {
       & .submit-btn {
-        @apply bg-gradient-to-r from-blueish to-blue-300 text-light;
+        @apply bg-gradient-to-r from-violet-900 to-blueish text-light;
       }
     }
 
@@ -43,35 +55,35 @@
     @apply flex items-center gap-2;
 
     & input {
-      @apply border-teal-300 shadow-sm rounded-md w-5 h-5;
+      @apply border-2 border-light-2x shadow-sm rounded-md w-5 h-5;
     }
 
     & label {
-      @apply text-xl text-darkish-3x;
+      @apply text-lg text-darkish-3x;
     }
   }
 
   & .forgot-password {
-    @apply text-lg text-indigo-500 mx-5 mt-6 self-end w-fit;
+    @apply text-violet-700 m-5 mb-0 self-end w-fit;
   }
 
   & .already-have-acc {
-    @apply text-lg text-blueish self-end mx-5 my-8;
+    @apply text-lg text-blueish self-end m-5;
   }
 
   & .session-otherwise {
-    @apply flex items-center gap-5 mx-4 mt-14 mb-8;
+    @apply flex items-center gap-5 mx-4 my-5;
 
     & hr {
       @apply flex-1 bg-darkish-3x;
     }
 
     & span {
-      @apply text-lg text-indigo-500 font-medium;
+      @apply text-blueish font-medium;
     }
 
     & a {
-      @apply text-lg text-darkish font-medium px-5 py-0.5 rounded-md shadow-md bg-white;
+      @apply text-lg text-darkish font-medium px-5 py-0.5 rounded-md shadow-md bg-gradient-to-r from-violet-800 to-darkish;
     }
   }
 }

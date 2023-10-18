@@ -10,3 +10,21 @@ export const RefreshButton = ({ children, ...props }: RefreshButtonProps) => (
     }
   </button>
 )
+
+export interface ButtonWithImgProps extends Omit<HTMLAttributes<HTMLButtonElement>, 'children'> {
+  text: string | null
+  src: string
+  sticker: string
+}
+
+export const ButtonWithImg = ({
+  text,
+  src,
+  sticker,
+  ...props
+}: ButtonWithImgProps) => (
+  <button type="button" {...props}>
+    <img src={src} alt={sticker} />
+    {text}
+  </button>
+)
