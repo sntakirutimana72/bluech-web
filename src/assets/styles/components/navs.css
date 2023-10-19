@@ -1,65 +1,53 @@
-.top-nav {
-  @apply relative flex justify-between items-center px-2 py-4 bg-white text-blueish;
+.titlebar {
+  @apply relative flex justify-between items-center px-2 py-4 text-blueish;
 
-  & .nav-logo {
-    @apply flex items-center gap-2;
+  & .titlebar-logo {
+    @apply flex items-center text-3xl bg-gradient-to-r from-blueish to-violet-800 font-medium;
 
-    & span {
-      @apply text-4xl font-medium;
-    }
-  }
-
-  & button {
-    @apply flex flex-col w-12 h-8 justify-between bg-none border-none p-0;
-
-    &.open {
-      & span {
-        @apply even:scale-y-0 rotate-[38deg] last:w-12 last:-rotate-[38deg];
-      }
-    }
-
-    & span {
-      @apply w-12 h-1 even:self-end last:self-end rounded bg-blueish first:origin-top-left last:origin-bottom-left transition-transform delay-200 ease-in-out even:w-8 even:delay-100 last:w-5;
+    & img {
+      @apply w-8 mr-1;
     }
   }
 
   & .acc-options {
-    @apply hidden absolute z-10 max-w-full max-h-full top-full right-1 translate-x-full rounded-3xl rounded-tr-none rounded-br-none;
+    @apply hidden absolute z-10 w-full h-full top-full right-0 translate-x-full bg-light;
 
     &.open {
       @apply block translate-x-0;
     }
 
-    & > .container {
-      @apply flex flex-col text-xl p-6 gap-1 bg-white border-2 border-[#e8e8e860] shadow-lg rounded-3xl rounded-tr-none rounded-br-none;
+    & .acc-options-container {
+      @apply flex flex-col text-lg py-2 px-4 gap-1;
 
-      & .acc-nav-item {
+      & .acc-options-item {
         @apply flex items-center gap-3 py-3;
       }
 
-      & img {
+      & .acc-options-img {
         @apply w-36 h-36;
       }
 
-      & > div {
-        @apply flex flex-col items-center gap-1 mb-6;
+      & .acc-options-body {
+        @apply flex flex-col mb-7;
       }
     }
   }
 }
 
-.bottom-nav {
-  @apply flex justify-center items-center px-4 gap-3.5 bg-white text-blueish;
+.taskbar {
+  @apply flex justify-evenly items-center bg-gray-100 py-2 px-3 gap-7 text-blueish font-bold;
 
-  & .bottom-nav-item {
-    @apply p-2.5 px-3 rounded-xl bg-none border-none focus:bg-blueish focus:text-light focus:outline-0;
-
+  & .taskbar-link {
     &.active {
-      @apply bg-blueish text-light;
+      @apply text-black;
     }
 
-    & svg {
-      @apply w-10 h-10;
+    & label {
+      @apply flex flex-col items-center justify-center text-sm;
+
+      & svg {
+        @apply w-6 h-6;
+      }
     }
   }
 }
