@@ -1,5 +1,6 @@
-@import "./components/get-started-front-page.css";
-@import "./components/session-pages.css";
+@import "./components/get-started.css";
+@import "./components/login-register.css";
+@import "./components/logout.css";
 @import "./components/navs.css";
 @import "./components/dashboard.css";
 @import "./components/channels-chats.css";
