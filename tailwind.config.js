@@ -30,7 +30,7 @@ module.exports = {
           '0%': {
             opacity: '0',
             display: 'none',
-            transform: 'translateX(100%)',
+            transform: 'translateX(-100%)',
           },
           '1%': {
             opacity: '1',
