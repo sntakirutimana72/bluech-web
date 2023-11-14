@@ -4,7 +4,7 @@ import { PublicRoute, PrivateRoute } from '@/middlewares'
 import { Login, Logout, Register } from '@/components/session'
 import routes, { urls } from '@/config/routes'
 import GetStarted from '@/components/GetStarted'
-import Dashboard from '@/components/Dashboard'
+import Home from 'src/components/Home'
 import Inbox from '@/components/Inbox'
 import People from '@/components/People'
 import Chatroom from '@/components/Chatroom'
@@ -23,7 +23,7 @@ const App = () => {
         </Route>
 
         <Route element={<PrivateRoute authenticated={authenticated} redirectTo={urls.LANDING} />}>
-          <Route path={routes.home.INDEX} element={<Dashboard />}>
+          <Route path={routes.home.INDEX} element={<Home />}>
             <Route index element={<Inbox />} />
             <Route path={routes.home.PEOPLE} element={<People />} />
             <Route path={routes.home.CHATROOM} element={<Chatroom />} />

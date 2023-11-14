@@ -7,7 +7,7 @@ const Component = () => (
   <Router>
     <Routes>
       <Route index element={<NotFound />} />
-      <Route path={routes.home.INDEX} element={<div>DASHBOARD</div>} />
+      <Route path={routes.home.INDEX} element={<div>HOME</div>} />
     </Routes>
   </Router>
 )
@@ -18,10 +18,10 @@ describe('<NotFound />', () => {
     expect(screen.getByRole('link', { name: 'Home' })).toBeInTheDocument()
   })
 
-  test('redirects to dashboard', async () => {
+  test('redirects to home', async () => {
     render(<Component />)
     fireEvent.click(screen.getByRole('link'))
     expect(screen.queryByRole('link', { name: 'Home' })).not.toBeInTheDocument()
-    expect(screen.getByText(/dashboard/i)).toBeInTheDocument()
+    expect(screen.getByText(/home/i)).toBeInTheDocument()
   })
 })

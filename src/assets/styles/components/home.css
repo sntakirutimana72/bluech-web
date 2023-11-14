@@ -1,8 +1,8 @@
-.dashboard {
-  @apply flex flex-col h-screen;
+.home {
+  @apply flex flex-col h-screen bg-light;
 
   & .views-manager {
-    @apply flex-1 overflow-y-auto bg-gradient-to-r from-blueish to-purple-400;
+    @apply flex-1 overflow-y-auto;
 
     & .inbox-previews,
     & .people-list {

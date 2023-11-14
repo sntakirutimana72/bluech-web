@@ -3,7 +3,7 @@ const routes = {
   ACCOUNT: 'users/account',
   LOGOUT: 'users/logout',
   home: {
-    INDEX: 'dashboard',
+    INDEX: 'home',
     PEOPLE: 'people',
     CHATROOM: 'chats/:channelId',
     SEARCH: 'search',

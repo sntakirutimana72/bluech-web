@@ -17,7 +17,7 @@ import { useSession } from '../hooks'
 import { PublicRoute, PrivateRoute } from '../middlewares'
 import { Login, Logout, Register } from '../components/session'
 import GetStarted from '../components/GetStarted'
-import Dashboard from '../components/Dashboard'
+import Home from '../components/Home'
 import Inbox from '../components/Inbox'
 import People from '../components/People'
 import Chatroom from '../components/Chatroom'
@@ -53,14 +53,14 @@ const App = ({ path = '/' }: { path?: string }) => {
   return (
     <Router initialEntries={[path]}>
       <Routes>
-        <Route element={<PublicRoute authenticated={authenticated} redirectTo="/dashboard" />}>
+        <Route element={<PublicRoute authenticated={authenticated} redirectTo="/home" />}>
           <Route path="" element={<GetStarted />} />
           <Route path="users/register" element={<Register login={login} />} />
           <Route path="users/login" element={<Login login={login} />} />
         </Route>
 
         <Route element={<PrivateRoute authenticated={authenticated} redirectTo="/" />}>
-          <Route path="dashboard" element={<Dashboard />}>
+          <Route path="home" element={<Home />}>
             <Route index element={<Inbox />} />
             <Route path="people" element={<People />} />
             <Route path="chats/:channelId" element={<Chatroom />} />
@@ -87,8 +87,8 @@ describe('renders app', () => {
       expect(screen.getByText(/Join Us/)).toBeInTheDocument()
     })
 
-    test('/dashboard redirects to /', async () => {
-      await act(async () => { appRender(<App path="/dashboard" />) })
+    test('/home redirects to /', async () => {
+      await act(async () => { appRender(<App path="/home" />) })
       expect(screen.queryByTestId('app-name')).not.toBeInTheDocument()
       expect(screen.getByText(/Join Us/)).toBeInTheDocument()
     })
@@ -108,12 +108,12 @@ describe('renders app', () => {
         .mockImplementation(() => Promise.reject())
     })
 
-    test('renders /dashboard', async () => {
+    test('renders /home', async () => {
       await act(async () => { appRender(<App />) })
       expect(screen.queryByText(/Join Us/)).not.toBeInTheDocument()
     })
 
-    test('/users/login redirects to /dashboard', async () => {
+    test('/users/login redirects to /home', async () => {
       await act(async () => { appRender(<App path="/users/login" />) })
       expect(screen.queryByRole('button', { description: 'Login' })).not.toBeInTheDocument()
     })

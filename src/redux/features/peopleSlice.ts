@@ -13,7 +13,7 @@ export const populatePeople = createAsyncThunk<People, number>(
 const initialState: PeopleState = { status: 'idle', people: [], pagination: {} }
 
 const slicer = createSlice({
-  name: 'dashboard/people',
+  name: 'home/people',
   initialState,
   reducers: {},
   extraReducers: (builder) => {

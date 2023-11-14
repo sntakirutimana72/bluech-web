@@ -16,7 +16,7 @@ export const previewInbox = createAsyncThunk<InboxPreview[]>(
 const initialState: InboxState = { status: 'idle', previews: [] }
 
 const slicer = createSlice({
-  name: 'dashboard/inbox',
+  name: 'home/inbox',
   initialState,
   reducers: {
     incrementUCounter(state, action: PayloadAction<InboxCounter>) {
