@@ -1,0 +1,19 @@
+.get-started--front {
+  @apply relative min-h-screen flex flex-col justify-center px-3 pt-8 overflow-x-clip text-light-2x bg-gradient-to-r from-violet-950 to-black;
+
+  & h1 {
+    @apply text-5xl text-light font-medium z-[1];
+  }
+
+  & p {
+    @apply text-xl mt-6 mb-16 leading-tight;
+  }
+
+  & a {
+    @apply text-xl font-medium rounded-xl border-2 border-gray-800 py-2 px-8 w-fit;
+  }
+
+  & .get-started--dangling-cover {
+    @apply absolute -top-12 -right-10 bg-inherit;
+  }
+}

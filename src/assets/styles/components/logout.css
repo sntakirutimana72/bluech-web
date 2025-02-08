@@ -1,0 +1,11 @@
+.logout {
+  @apply flex flex-col items-center justify-center h-screen;
+
+  & .rolex-waiter {
+    @apply relative h-11;
+  }
+
+  & p {
+    @apply text-xl bg-gradient-to-r from-violet-700 to-blueish;
+  }
+}

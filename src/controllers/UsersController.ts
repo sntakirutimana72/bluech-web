@@ -54,12 +54,17 @@ export default class UsersController extends ApplicationController {
   }
 
   static signedUser() {
-    return new Promise<CurrentUser>((resolve, reject) => {
-      this.ensureAuthorizationExists(reject)
-      Axios
-        .get(process.env.REACT_APP_API_SESSION_USER!, this.authorize())
-        .then((resp) => { this.onSuccess(resp, resolve) })
-        .catch(() => { this.destroyAndReject(reject) })
+    return new Promise<CurrentUser>((resolve) => {
+      // this.ensureAuthorizationExists(reject)
+      // Axios
+      //   .get(process.env.REACT_APP_API_SESSION_USER!, this.authorize())
+      //   .then((resp) => { this.onSuccess(resp, resolve) })
+      //   .catch(() => { this.destroyAndReject(reject) })
+      resolve({
+        id: 1,
+        name: 'Steven',
+        email: 'steven@gmail.com',
+      } as CurrentUser)
     })
   }
 

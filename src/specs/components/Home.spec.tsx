@@ -11,7 +11,7 @@ import * as chatsChannel from '@/channels/chatsChannel'
 import useSession from '@/hooks/session'
 import { PrivateRoute, PublicRoute } from '@/middlewares'
 import routes, { urls } from '@/config/routes'
-import Dashboard from '@/components/Dashboard'
+import Home from 'src/components/Home'
 import Chatroom from '@/components/Chatroom'
 import Inbox from '@/components/Inbox'
 import { appRender, TestReduxStore } from '#test-support/render'
@@ -28,7 +28,7 @@ const Main = () => {
     <Router initialEntries={[urls.HOME]}>
       <Routes>
         <Route element={<PrivateRoute redirectTo={urls.LANDING} authenticated={isAuth} />}>
-          <Route path={routes.home.INDEX} element={<Dashboard />}>
+          <Route path={routes.home.INDEX} element={<Home />}>
             <Route index element={<Inbox />} />
             <Route path={routes.home.CHATROOM} element={<Chatroom />} />
           </Route>
@@ -41,7 +41,7 @@ const Main = () => {
   )
 }
 
-describe('<Dashboard />', () => {
+describe('<Home />', () => {
   const cable = new TestCable()
   // eslint-disable-next-line new-cap
   const channel = new CustomChatChannel()

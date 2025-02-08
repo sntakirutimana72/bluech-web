@@ -1,0 +1,76 @@
+.session-pg {
+  @apply flex flex-col my-4;
+
+  & nav {
+    @apply flex items-center px-4;
+
+    & button {
+      @apply flex items-center text-darkish text-3xl bg-gradient-to-r from-blueish to-violet-800 font-medium;
+
+      & img {
+        @apply w-8 mr-1;
+      }
+    }
+  }
+
+  & .session-form {
+    @apply flex flex-col px-4 mt-11 gap-7;
+
+    & h1 {
+      @apply text-darkish text-3xl bg-gradient-to-r from-violet-900 to-blueish;
+    }
+
+    & .field {
+      & input {
+        @apply py-2 bg-white shadow-none rounded ring-2 ring-gray-200 focus:ring-blueish;
+      }
+
+      & label {
+        @apply hidden;
+      }
+    }
+
+    & .btn {
+      @apply bg-gradient-to-r from-violet-900 to-blueish text-light text-2xl font-medium px-12 py-1.5 rounded-md;
+    }
+
+    &.register-form {
+      & .btn {
+        @apply mt-7;
+      }
+    }
+  }
+
+  & .checkbox {
+    @apply flex items-center gap-2;
+
+    & input {
+      @apply border-2 border-light-2x shadow-sm rounded-md w-5 h-5;
+    }
+
+    & label {
+      @apply text-lg text-darkish-3x;
+    }
+  }
+
+  & .forgot-password,
+  & .already-have-acc {
+    @apply text-violet-700 m-5 mb-0 self-end w-fit;
+  }
+
+  & .session-otherwise {
+    @apply flex items-center gap-5 mx-4 my-5;
+
+    & hr {
+      @apply flex-1 bg-darkish-3x;
+    }
+
+    & span {
+      @apply text-blueish font-medium;
+    }
+
+    & a {
+      @apply text-lg text-darkish font-medium px-5 py-0.5 rounded-md shadow-md bg-gradient-to-r from-violet-800 to-darkish;
+    }
+  }
+}
